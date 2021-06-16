@@ -33,4 +33,4 @@ public class AdvertisementManagement {
         this.content = content;
     } // 생성자 끝
 
-} // Class 끝
+} // Class End
