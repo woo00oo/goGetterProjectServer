@@ -34,6 +34,6 @@ class LibraryLocationRepositoryTest {
           // then → 테스트를 검증하는 과정 (~한 값이 나와야 함.)
         assertThat(libraryLocation).isEqualTo(saveLibraryLocation);
 
-    } // Method끝
+    } // Method End
 
 }

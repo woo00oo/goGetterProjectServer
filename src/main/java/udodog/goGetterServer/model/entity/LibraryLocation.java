@@ -45,4 +45,4 @@ public class LibraryLocation {
         this.libraryPhoneNumber = libraryPhoneNumber;
     } // 생성자 끝
 
-} // Class 끝
+} // Class End
