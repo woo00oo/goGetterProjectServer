@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import udodog.goGetterServer.model.enumclass.UserGrade;
+import udodog.goGetterServer.model.entity.enumclass.UserGrade;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -52,4 +52,5 @@ public class User {
         this.grade = grade;
         this.createdAt = createdAt;
     }
+
 }
