@@ -23,7 +23,7 @@ public class BookReport {
     @JoinColumn(name = "book_id")
     private Book book;
 
-    @ManyToOne(targetEntity = Book.class, fetch = FetchType.LAZY)
+    @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
