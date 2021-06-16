@@ -7,8 +7,6 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import udodog.goGetterServer.model.entity.Book;
 
-import static org.assertj.core.api.Assertions.*;
-
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class BookRepositoryTest {
@@ -26,12 +24,12 @@ class BookRepositoryTest {
                 .genre("기술서적")
                 .price(3000)
                 .build();
-
+        
         //when
         Book saveBook = bookRepository.save(book);
-
-        //then
-        assertThat(book).isEqualTo(saveBook);
         
+        //then
+        Assertions.assertThat(book).isEqualTo(saveBook);
+
     }
 }
