@@ -28,4 +28,4 @@ public class BlackMemberManagement {
         this.blackMemberMgtId = blackMemberMgtId;
         this.userId = userId;
     } // 생성자 끝
-} // Class 끝
+} // Class End
