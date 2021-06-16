@@ -11,7 +11,6 @@ import udodog.goGetterServer.model.entity.User;
 import udodog.goGetterServer.model.enumclass.UserGrade;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -24,8 +23,6 @@ class DiscussonBoardRepositoryTest {
     private DiscussonBoardRepository discussonBoardRepository;
 
     @Test
-    @Transactional
-    @Rollback(value = false)
     void saveDicussion(){
 
         //given
