@@ -24,7 +24,6 @@ public class DiscussionBoard {
     private User user;
 
     private String title;
-
     private String content;
 
     @CreatedDate
