@@ -1,9 +1,11 @@
-package udodog.goGetterServer.model.entity;
+package udodog.goGetterServer.repository;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import udodog.goGetterServer.model.entity.BlackMemberManagement;
+import udodog.goGetterServer.model.entity.User;
 import udodog.goGetterServer.model.enumclass.UserGrade;
 import udodog.goGetterServer.repository.BlackMemberManagementRepository;
 import udodog.goGetterServer.repository.UserRepository;
@@ -13,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-class BlackMemberManagementTest {
+class BlackMemberManagementRepositoryTest {
 
     @Autowired
     private UserRepository userRepository;

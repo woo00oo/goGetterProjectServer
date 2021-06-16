@@ -33,4 +33,4 @@ class AdvertisementManagementRepositoryTest {
         assertThat(advertisementManagement).isEqualTo(saveAdvertisementManagement);
 
     } // Method 끝
-} // Class 끝
+} // Class End
