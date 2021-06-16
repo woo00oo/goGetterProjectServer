@@ -26,7 +26,7 @@ class DiscussonBoardRepositoryTest {
     @Test
     @Transactional
     @Rollback(value = false)
-    void 토론게시판_저장(){
+    void saveDicussion(){
 
         //given
         User user = User.builder()
@@ -52,6 +52,5 @@ class DiscussonBoardRepositoryTest {
 
         //then
         assertThat(discussionBoard).isEqualTo(saveDiscussion);
-
     }
 }

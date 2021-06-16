@@ -30,7 +30,7 @@ class DiscussonBoardReadhitRepositoryTest {
     @Test
     @Transactional
     @Rollback(value = false)
-    void 토론게시판조회수_저장(){
+    void saveDiscussiontReadhit(){
 
         //given
         //given

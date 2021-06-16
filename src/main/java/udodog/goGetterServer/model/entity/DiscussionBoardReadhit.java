@@ -20,7 +20,6 @@ public class DiscussionBoardReadhit {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "discussion_id")
     private DiscussionBoard discussionBoard;
-
     int count;
 
     @Builder
