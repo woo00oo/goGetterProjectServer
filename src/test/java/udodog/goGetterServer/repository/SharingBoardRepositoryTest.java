@@ -8,7 +8,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import udodog.goGetterServer.model.entity.SharingBoard;
 import udodog.goGetterServer.model.entity.User;
-import udodog.goGetterServer.model.entity.enumclass.UserGrade;
+import udodog.goGetterServer.model.enumclass.UserGrade;
 
 import java.time.LocalDate;
 import static org.assertj.core.api.Assertions.assertThat;

@@ -1,4 +1,4 @@
-package udodog.goGetterServer.model.entity.enumclass;
+package udodog.goGetterServer.model.enumclass;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

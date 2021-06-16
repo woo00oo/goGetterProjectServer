@@ -5,15 +5,15 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import udodog.goGetterServer.model.entity.Like;
+import udodog.goGetterServer.model.entity.SharingBoardLike;
 import udodog.goGetterServer.model.entity.SharingBoard;
 import udodog.goGetterServer.model.entity.User;
-import udodog.goGetterServer.model.entity.enumclass.UserGrade;
+import udodog.goGetterServer.model.enumclass.UserGrade;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-class LikeRepositoryTest {
+class SharingBoardLikeRepositoryTest {
 
     @Autowired private UserRepository userRepository;
     @Autowired private SharingBoardRepository sharingBoardRepository;
@@ -50,17 +50,17 @@ class LikeRepositoryTest {
         saveSharingBoard = sharingBoardRepository.save(sharingBoard);
 
 
-        Like like = Like.
+        SharingBoardLike sharingBoardLike = SharingBoardLike.
                     builder().
                     user(saveUser).
                     sharingBoard(saveSharingBoard).
                     build();
 
         //when
-        Like saveLike = likeRepository.save(like);
+        SharingBoardLike saveSharingBoardLike = likeRepository.save(sharingBoardLike);
 
         //then
-        assertThat(saveLike).isEqualTo(like);
+        assertThat(saveSharingBoardLike).isEqualTo(sharingBoardLike);
     }
 
 

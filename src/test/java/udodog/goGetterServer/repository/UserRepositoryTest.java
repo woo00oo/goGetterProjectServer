@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import udodog.goGetterServer.model.entity.User;
-import udodog.goGetterServer.model.entity.enumclass.UserGrade;
+import udodog.goGetterServer.model.enumclass.UserGrade;
 
 
 import static org.assertj.core.api.Assertions.*;
