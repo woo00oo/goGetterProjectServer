@@ -27,8 +27,7 @@ public class Book {
     private Integer price;
 
     @Builder
-    public Book(Long id, String bookName, String author, String genre, Integer price) {
-        this.id = id;
+    public Book(String bookName, String author, String genre, Integer price) {
         this.bookName = bookName;
         this.author = author;
         this.genre = genre;

@@ -27,8 +27,7 @@ public class CouponBox {
     private LocalDate endDate;
 
     @Builder
-    public CouponBox(Long id, User user, Coupon coupon, LocalDate endDate) {
-        this.id = id;
+    public CouponBox(User user, Coupon coupon, LocalDate endDate) {
         this.user = user;
         this.coupon = coupon;
         this.endDate = endDate;

@@ -41,15 +41,13 @@ public class User {
     private String profileUrl;
 
     @Builder
-    public User(Long id, String email, String password, String name, String nickName, String phoneNumber,
-                UserGrade grade, LocalDate createdAt) {
-        this.id = id;
+    public User(String email, String password, String name, String nickName, String phoneNumber,
+                UserGrade grade) {
         this.email = email;
         this.password = password;
         this.name = name;
         this.nickName = nickName;
         this.phoneNumber = phoneNumber;
         this.grade = grade;
-        this.createdAt = createdAt;
     }
 }
