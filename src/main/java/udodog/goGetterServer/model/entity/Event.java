@@ -30,8 +30,7 @@ public class Event {
     private String imgUrl;
 
     @Builder
-    public Event(Long id, String title, String content, LocalDate start_date, LocalDate end_date, String imgUrl) {
-        this.id = id;
+    public Event(String title, String content, LocalDate start_date, LocalDate end_date, String imgUrl) {
         this.title = title;
         this.content = content;
         this.start_date = start_date;

@@ -22,8 +22,7 @@ public class BookReportTag {
     private String tagName;
 
     @Builder
-    public BookReportTag(Long id, BookReport bookReport, String tagName) {
-        this.id = id;
+    public BookReportTag(BookReport bookReport, String tagName) {
         this.bookReport = bookReport;
         this.tagName = tagName;
     }

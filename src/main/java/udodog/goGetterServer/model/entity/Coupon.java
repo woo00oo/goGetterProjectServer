@@ -25,8 +25,7 @@ public class Coupon {
     private Integer validDate;
 
     @Builder
-    public Coupon(Long id, String name, Long serialNumber, Integer validDate) {
-        this.id = id;
+    public Coupon(String name, Long serialNumber, Integer validDate) {
         this.name = name;
         this.serialNumber = serialNumber;
         this.validDate = validDate;

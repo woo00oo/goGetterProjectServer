@@ -35,12 +35,10 @@ public class BookReport {
     private LocalDateTime createdAt;
 
     @Builder
-    public BookReport(Long id, Book book, User user, String title, String content, LocalDateTime createdAt) {
-        this.id = id;
+    public BookReport(Book book, User user, String title, String content) {
         this.book = book;
         this.user = user;
         this.title = title;
         this.content = content;
-        this.createdAt = createdAt;
     }
 }
