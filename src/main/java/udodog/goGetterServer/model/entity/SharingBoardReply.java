@@ -6,12 +6,9 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import java.time.LocalDate;
 
-@Entity @Builder
-@Getter @Setter
-@EqualsAndHashCode(of="id")
-@AllArgsConstructor @NoArgsConstructor
+@Entity
+@Getter @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-
 public class SharingBoardReply {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,4 +26,10 @@ public class SharingBoardReply {
     @CreatedDate
     private LocalDate createdAt;
 
+    @Builder
+    public SharingBoardReply(User user, SharingBoard sharingBoard, String comment) {
+        this.user = user;
+        this.sharingBoard = sharingBoard;
+        this.comment = comment;
+    }
 }

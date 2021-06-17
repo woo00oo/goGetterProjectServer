@@ -6,13 +6,12 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Set;
 
-@Entity @Builder
-@EqualsAndHashCode(of = "id")
-@Getter @Setter
-@NoArgsConstructor @AllArgsConstructor
+@Entity
 @EntityListeners(AuditingEntityListener.class)
+@Getter @NoArgsConstructor
 public class SharingBoard {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,5 +30,12 @@ public class SharingBoard {
     private LocalDate createdAt;
 
     @OneToMany(mappedBy = "sharingBoard" )
-    private Set<SharingBoardReply> sharingBoardReplies;
+    private Set<SharingBoardReply> sharingBoardReplies = new HashSet<>();
+
+    @Builder
+    public SharingBoard(User user, String title, String content) {
+        this.user = user;
+        this.title = title;
+        this.content = content;
+    }
 }

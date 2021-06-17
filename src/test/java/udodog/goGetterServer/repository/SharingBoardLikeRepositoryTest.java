@@ -19,18 +19,12 @@ class SharingBoardLikeRepositoryTest {
     @Autowired private SharingBoardRepository sharingBoardRepository;
     @Autowired private LikeRepository likeRepository;
 
-    private User user;
-    private User saveUser;
-
-    private SharingBoard sharingBoard;
-    private SharingBoard saveSharingBoard;
-
     @Test
     @DisplayName("Like Repository Save Test")
     void saveLike(){
 
         //given
-        user = User.builder().
+        User user = User.builder().
                 email("testEmail@gmail.com").
                 phoneNumber("010-1234-5678").
                 name("user1").
@@ -39,15 +33,15 @@ class SharingBoardLikeRepositoryTest {
                 grade(UserGrade.USER).
                 build();
 
-        saveUser = userRepository.save(user);
+        User saveUser = userRepository.save(user);
 
-        sharingBoard = SharingBoard.builder().
+        SharingBoard sharingBoard = SharingBoard.builder().
                 user(saveUser).
                 content("Sharing Board Test Content").
                 title("Sharing Board Test Title").
                 build();
 
-        saveSharingBoard = sharingBoardRepository.save(sharingBoard);
+        SharingBoard saveSharingBoard = sharingBoardRepository.save(sharingBoard);
 
 
         SharingBoardLike sharingBoardLike = SharingBoardLike.
@@ -61,6 +55,7 @@ class SharingBoardLikeRepositoryTest {
 
         //then
         assertThat(saveSharingBoardLike).isEqualTo(sharingBoardLike);
+
     }
 
 

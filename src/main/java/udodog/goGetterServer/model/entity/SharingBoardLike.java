@@ -3,10 +3,8 @@ package udodog.goGetterServer.model.entity;
 import lombok.*;
 import javax.persistence.*;
 
-@Entity @Builder
-@EqualsAndHashCode(of = "id")
-@Getter @Setter
-@NoArgsConstructor @AllArgsConstructor
+@Entity
+@Getter @NoArgsConstructor
 public class SharingBoardLike {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,4 +16,9 @@ public class SharingBoardLike {
     @ManyToOne
     private SharingBoard sharingBoard;
 
+    @Builder
+    public SharingBoardLike(User user, SharingBoard sharingBoard) {
+        this.user = user;
+        this.sharingBoard = sharingBoard;
+    }
 }
