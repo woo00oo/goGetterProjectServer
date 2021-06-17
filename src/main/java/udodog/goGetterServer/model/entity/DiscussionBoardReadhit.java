@@ -21,8 +21,7 @@ public class DiscussionBoardReadhit {
     int count;
 
     @Builder
-    public DiscussionBoardReadhit(Long id, DiscussionBoard discussionBoard, int count) {
-        this.id = id;
+    public DiscussionBoardReadhit(DiscussionBoard discussionBoard, int count) {
         this.discussionBoard = discussionBoard;
         this.count = count;
     }
