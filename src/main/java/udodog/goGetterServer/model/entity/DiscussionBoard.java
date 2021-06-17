@@ -30,11 +30,9 @@ public class DiscussionBoard {
     private LocalDate createAt;
 
     @Builder
-    public DiscussionBoard(Long id, User user, String title, String content, LocalDate createAt) {
-        this.id = id;
+    public DiscussionBoard(User user, String title, String content) {
         this.user = user;
         this.title = title;
         this.content = content;
-        this.createAt = createAt;
     }
 }
