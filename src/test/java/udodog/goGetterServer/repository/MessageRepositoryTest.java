@@ -20,6 +20,7 @@ class MessageRepositoryTest {
     @Test
     @DisplayName("Message Repository Save Test")
     void saveMessage(){
+
         //given
         User user1 = User.builder().
                 email("testEmail@gmail.com").
@@ -46,8 +47,6 @@ class MessageRepositoryTest {
                           sender(sender).
                           receiver(receiver).
                           content("Message Test Content").
-                          isChecked(false).
-                          isDeleted(false).
                           title("Message Test Title").
                           build();
 

@@ -8,11 +8,9 @@ import javax.persistence.*;
 import java.time.LocalDate;
 
 
-@Entity @Builder
-@EqualsAndHashCode(of = "id")
-@Getter @Setter
-@NoArgsConstructor @AllArgsConstructor
+@Entity
 @EntityListeners(AuditingEntityListener.class)
+@Getter @NoArgsConstructor
 public class Message {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,17 +22,33 @@ public class Message {
     @OneToOne
     private User sender;
 
+
     private String title;
 
     @Lob
     @Basic(fetch = FetchType.EAGER)
     private String content;
 
-    private boolean isChecked;
-
     @CreatedDate
     private LocalDate sendAt;
 
+    private boolean isChecked;
+
     private boolean isDeleted;
 
+    @Builder
+    public Message(User receiver, User sender, String title, String content) {
+        this.receiver = receiver;
+        this.sender = sender;
+        this.title = title;
+        this.content = content;
+    }
+
+    public void checkMessage(){
+        this.isChecked = true;
+    }
+
+    public void deleteMessage(){
+        this.isDeleted = true;
+    }
 }

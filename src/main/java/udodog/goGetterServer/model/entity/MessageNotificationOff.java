@@ -3,11 +3,8 @@ package udodog.goGetterServer.model.entity;
 import lombok.*;
 import javax.persistence.*;
 
-@Entity @Builder
-@EqualsAndHashCode(of = "id")
-@Getter @Setter
+@Entity @Getter
 @NoArgsConstructor
-@AllArgsConstructor
 public class MessageNotificationOff {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,4 +16,9 @@ public class MessageNotificationOff {
     @OneToOne
     private User receiver;
 
+    @Builder
+    public MessageNotificationOff(User sender, User receiver) {
+        this.sender = sender;
+        this.receiver = receiver;
+    }
 }
