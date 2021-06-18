@@ -23,7 +23,6 @@ class SharingBoardReplyRepositoryTest {
     @Test
     @DisplayName("SharingBoardReply Repository save Test")
     void saveSharingBoardReply(){
-
         //given
         User user = User.builder().
                 email("testEmail@gmail.com").

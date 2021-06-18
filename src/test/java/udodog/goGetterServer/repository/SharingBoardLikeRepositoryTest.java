@@ -22,6 +22,7 @@ class SharingBoardLikeRepositoryTest {
     @Test
     @DisplayName("Like Repository Save Test")
     void saveLike(){
+
         //given
         User user = User.builder().
                 email("testEmail@gmail.com").

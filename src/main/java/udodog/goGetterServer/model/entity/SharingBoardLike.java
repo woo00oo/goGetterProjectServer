@@ -13,7 +13,7 @@ public class SharingBoardLike {
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch =FetchType.LAZY)
     private SharingBoard sharingBoard;
 
     @Builder
