@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.data.util.Lazy;
 
 import javax.persistence.*;
 
@@ -18,14 +19,13 @@ public class BlackMemberManagement {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long blackMemberMgtId;
 
-    @OneToOne
+    @OneToOne(targetEntity = User.class, fetch = FetchType.LAZY)
     // FK에 관련 설정
     @JoinColumn(name = "user_id")
-    private User userId;
-    
+    private User user;
+
     @Builder
-    public BlackMemberManagement(Long blackMemberMgtId, User userId) {
-        this.blackMemberMgtId = blackMemberMgtId;
-        this.userId = userId;
+    public BlackMemberManagement(User user) {
+        this.user = user;
     } // 생성자 끝
 } // Class End
