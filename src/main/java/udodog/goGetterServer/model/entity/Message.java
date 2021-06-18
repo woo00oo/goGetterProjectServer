@@ -18,7 +18,7 @@ public class Message {
     @OneToOne(fetch = FetchType.LAZY)
     private User receiver;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch =  FetchType.LAZY)
     private User sender;
 
     private String title;

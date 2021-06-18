@@ -13,7 +13,7 @@ public class MessageNotificationOff {
     @OneToOne(fetch = FetchType.LAZY)
     private User sender;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch =  FetchType.LAZY)
     private User receiver;
 
     @Builder
