@@ -53,12 +53,12 @@ class SharingBoardReplyRepositoryTest {
 
         //when
         SharingBoardReply saveSharingBoardReply = sharingBoardReplyRepository.save(sharingBoardReply);
-        saveSharingBoard.getSharingBoardReplies().add(saveSharingBoardReply);
+        saveSharingBoard.getSharingBoardReplyList().add(saveSharingBoardReply);
 
 
         //then
         assertThat(saveSharingBoardReply).isEqualTo(sharingBoardReply);
-        assertTrue(saveSharingBoard.getSharingBoardReplies().contains(saveSharingBoardReply));
+        assertTrue(saveSharingBoard.getSharingBoardReplyList().contains(saveSharingBoardReply));
     }
 
 }

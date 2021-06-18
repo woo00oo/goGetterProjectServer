@@ -6,8 +6,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.LinkedList;
+import java.util.List;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
@@ -17,20 +17,18 @@ public class SharingBoard {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
     private String title;
 
-    @Lob
-    @Basic(fetch = FetchType.EAGER)
     private String content;
 
     @CreatedDate
     private LocalDate createdAt;
 
     @OneToMany(mappedBy = "sharingBoard" )
-    private Set<SharingBoardReply> sharingBoardReplies = new HashSet<>();
+    private List<SharingBoardReply> sharingBoardReplyList = new LinkedList<>();
 
     @Builder
     public SharingBoard(User user, String title, String content) {
