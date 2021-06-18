@@ -7,21 +7,16 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import udodog.goGetterServer.model.entity.BlackMemberManagement;
 import udodog.goGetterServer.model.entity.User;
 import udodog.goGetterServer.model.enumclass.UserGrade;
-import udodog.goGetterServer.repository.BlackMemberManagementRepository;
-import udodog.goGetterServer.repository.UserRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class BlackMemberManagementRepositoryTest {
 
-    @Autowired
-    private UserRepository userRepository;
+    @Autowired private UserRepository userRepository;
 
-    @Autowired
-    private BlackMemberManagementRepository blackMemberManagementRepository;
+    @Autowired private BlackMemberManagementRepository blackMemberManagementRepository;
 
     @Test
     void 블랙_회원_등록() {
@@ -39,10 +34,12 @@ class BlackMemberManagementRepositoryTest {
         User saveUser = userRepository.save(user);
 
         BlackMemberManagement blackMemberManagement = BlackMemberManagement.builder()
-                .userId(saveUser)
+                .user(saveUser)
                 .build();
 
-
+//        BlackMemberManagement blackMemberManagement = BlackMemberManagement.builder()
+//                .userId(saveUser)
+//                .build();
 
           // when → 실제로 테스트를 실행하는 과정 (~을 했을 때)
         BlackMemberManagement saveBlackMemberManagement = blackMemberManagementRepository.save(blackMemberManagement);
