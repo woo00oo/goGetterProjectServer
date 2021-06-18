@@ -21,7 +21,6 @@ class MessageNotificationOffRepositoryTest {
     @Test
     @DisplayName("Message Notification Off Repository Save Test")
     void saveMessage(){
-
         //given
         User user1 = User.builder().
                 email("testEmail@gmail.com").

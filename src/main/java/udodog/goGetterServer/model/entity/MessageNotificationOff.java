@@ -10,10 +10,10 @@ public class MessageNotificationOff {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     private User sender;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     private User receiver;
 
     @Builder

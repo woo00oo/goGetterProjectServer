@@ -20,7 +20,6 @@ class MessageRepositoryTest {
     @Test
     @DisplayName("Message Repository Save Test")
     void saveMessage(){
-
         //given
         User user1 = User.builder().
                 email("testEmail@gmail.com").

@@ -7,7 +7,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import java.time.LocalDate;
 
-
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Getter @NoArgsConstructor
@@ -16,17 +15,14 @@ public class Message {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     private User receiver;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     private User sender;
-
 
     private String title;
 
-    @Lob
-    @Basic(fetch = FetchType.EAGER)
     private String content;
 
     @CreatedDate
