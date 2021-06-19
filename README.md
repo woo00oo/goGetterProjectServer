@@ -1,6 +1,14 @@
 # 📖 프로젝트 소개
-<br><br><br>
 
+### 저희 팀 프로젝트는 리엑트와 스프링 부트를 활용하여 독서 기록 및 토론 커뮤니티 Web Application을 개발하였습니다.
+
+>  책의 인상깊은 구절이나 내용을 나만의 공간에 기록하거나, 사람들과 공유하며 자유롭게 토론하는 커뮤니티 공간을 제공하고자 합니다 
+
+## 👨‍👩‍👦‍👦 팀 소개
+
+Go-Getter (뜻 : 야심이 있는 사람, 열정이 있는 사람! )
+
+<img width="150" alt="팀 로고" src="https://user-images.githubusercontent.com/57715611/122641068-dfa0ce00-d13d-11eb-905a-cdd775a3ccae.png">
 
 ## 👩‍👩‍👧‍👦 크루 소개
 
@@ -8,10 +16,11 @@
 |---|---|---|---|
 |프로젝트 총괄|홍세준|https://github.com/JunyHarang|https://junyharang.tistory.com/|
 |백엔드 팀장|변현우|https://github.com/woo00oo|https://velog.io/@woo00oo|
-|프론트엔드 팀장|서영수|https://github.com/seoyoungsoo|
 |백엔드 팀원|박준환|https://github.com/torvlf|
-|프론트엔드 팀원|박설아||
 |백엔드 팀원|김유비|https://github.com/kimyubi|
+|프론트엔드 팀장|서영수|https://github.com/seoyoungsoo|
+|프론트엔드 팀원|박설아|https://github.com/developer-sora|
+
 
 <br><br><br>
 
