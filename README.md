@@ -47,6 +47,9 @@ Go-Getter (뜻 : 야심이 있는 사람, 열정이 있는 사람! )
 
 <br><br><br>
 
+## Proto Type
+[🛠 Figma ProtoType](https://www.notion.so/Page-Design-eaa046e4c1984b519318795f1ffa7207#a8391bdb48f54b4488811b1b99e361dc)
+
 ## 📚 Wiki
 
   * [👫 Team Rule](https://www.notion.so/Team-Rule-2bfa7eb59ac3475d9e3e0083254e0580)
