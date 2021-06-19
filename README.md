@@ -25,6 +25,8 @@ Go-Getter (뜻 : 야심이 있는 사람, 열정이 있는 사람! )
 <br><br><br>
 
 ## 🛠 기능 소개
+ * [💡 요구사항 분석](https://www.notion.so/3ff7e07cc47145c984184bae356be938)
+ 
 <br><br><br>
 
 
