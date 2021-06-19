@@ -8,7 +8,7 @@
 |---|---|---|---|---|
 |프로젝트 총괄|홍세준||https://github.com/JunyHarang|https://junyharang.tistory.com/|
 |백엔드 팀장|변현우||https://github.com/woo00oo||
-|프론트엔 팀장|서영수||https://github.com/seoyoungsoo||
+|프론트엔드 팀장|서영수||https://github.com/seoyoungsoo||
 |백엔드 팀원|박준환||||
 |프론트엔드 팀원|박설아||||
 |백엔드 팀원|김유비||https://github.com/kimyubi||
