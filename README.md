@@ -12,6 +12,8 @@ Go-Getter (뜻 : 야심이 있는 사람, 열정이 있는 사람! )
 
 <img width="150" alt="팀 로고" src="https://user-images.githubusercontent.com/57715611/122641068-dfa0ce00-d13d-11eb-905a-cdd775a3ccae.png">
 
+<br><br><br>
+
 ## 👩‍👩‍👧‍👦 크루 소개
 
 |담당|이름|GitHub|Blog|
@@ -36,6 +38,7 @@ Go-Getter (뜻 : 야심이 있는 사람, 열정이 있는 사람! )
 
 ![image](https://user-images.githubusercontent.com/57715611/122636334-b4a98080-d123-11eb-82e7-ec9a6786b52e.png)
 
+<br><br>
 
 
 ## 💻 Web Architecture
