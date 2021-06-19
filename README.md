@@ -3,10 +3,10 @@
 
 
 ## 👩‍👩‍👧‍👦 크루 소개
-|담당|이름|사진|GitHub|Blog|
-|:---:|:---:|:---:|:---:|
-|프로젝트 총괄|홍세준||https://github.com/JunyHarang|https://junyharang.tistory.com/|
-|백엔드 팀장|변현우||https://github.com/woo00oo||
+| 담당 | 이름 | 사진 | GitHub | Blog |
+| :---: | :---: | :---: | :---: |
+| 프로젝트 총괄 | 홍세준 || https://github.com/JunyHarang | https://junyharang.tistory.com/ |
+| 백엔드 팀장 | 변현우 || https://github.com/woo00oo ||
 
 <br>
 
