@@ -4,14 +4,14 @@
 
 ## 👩‍👩‍👧‍👦 크루 소개
 
-|담당|이름|사진|GitHub|Blog|
-|---|---|---|---|---|
-|프로젝트 총괄|홍세준|![명함사진](https://gofile.me/6KsQQ/h1jE4CfVe)|https://github.com/JunyHarang|https://junyharang.tistory.com/|
-|백엔드 팀장|변현우||https://github.com/woo00oo||
-|프론트엔드 팀장|서영수||https://github.com/seoyoungsoo||
-|백엔드 팀원|박준환||https://github.com/torvlf||
-|프론트엔드 팀원|박설아||||
-|백엔드 팀원|김유비||https://github.com/kimyubi||
+|담당|이름|GitHub|Blog|
+|---|---|---|---|
+|프로젝트 총괄|홍세준|https://github.com/JunyHarang|https://junyharang.tistory.com/|
+|백엔드 팀장|변현우|https://github.com/woo00oo|https://velog.io/@woo00oo|
+|프론트엔드 팀장|서영수|https://github.com/seoyoungsoo|
+|백엔드 팀원|박준환|https://github.com/torvlf|
+|프론트엔드 팀원|박설아||
+|백엔드 팀원|김유비|https://github.com/kimyubi|
 
 <br><br><br>
 
@@ -20,11 +20,14 @@
 
 
 ## 👨‍🔧 Tech Stack 
-<br><br><br>
+
+![image](https://user-images.githubusercontent.com/57715611/122636334-b4a98080-d123-11eb-82e7-ec9a6786b52e.png)
+
 
 
 ## 💻 Web Architecture
-<br><br><br>
+
+![image](https://user-images.githubusercontent.com/57715611/122636295-757b2f80-d123-11eb-8370-f0c13c4f334b.png)
 
 
 ## 📚 Wiki
