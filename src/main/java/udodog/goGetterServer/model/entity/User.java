@@ -50,4 +50,5 @@ public class User {
         this.phoneNumber = phoneNumber;
         this.grade = grade;
     }
+
 }

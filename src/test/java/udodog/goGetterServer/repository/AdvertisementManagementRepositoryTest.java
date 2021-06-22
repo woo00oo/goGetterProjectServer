@@ -12,8 +12,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class AdvertisementManagementRepositoryTest {
 
-    @Autowired
-    private AdvertisementManagementRepository advertisementManagementRepository;
+    @Autowired private AdvertisementManagementRepository advertisementManagementRepository;
 
     @Test
     void 광고_저장() {
