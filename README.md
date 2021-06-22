@@ -36,7 +36,7 @@ Go-Getter (뜻 : 야심이 있는 사람, 열정이 있는 사람! )
 
 ## 👨‍🔧 Tech Stack 
 
-![image](https://user-images.githubusercontent.com/57715611/122636334-b4a98080-d123-11eb-82e7-ec9a6786b52e.png)
+![image](https://user-images.githubusercontent.com/57715611/122844675-20b30100-d33d-11eb-8a63-f742ded5a5c9.png)
 
 <br><br>
 
