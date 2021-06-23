@@ -1,5 +1,6 @@
 package udodog.goGetterServer.service.user;
 
+import lombok.extern.slf4j.Slf4j;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,14 +12,20 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.junit4.SpringRunner;
 import udodog.goGetterServer.model.dto.DefaultRes;
+import udodog.goGetterServer.model.dto.request.UserSignUpRequestDto;
+import udodog.goGetterServer.model.entity.User;
+import udodog.goGetterServer.model.enumclass.UserGrade;
 import udodog.goGetterServer.repository.UserRepository;
 
 import java.util.concurrent.Executor;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
 
 
 @RunWith(SpringRunner.class)
+@Slf4j
 public class UserServiceTest {
 
     UserService userService;
@@ -56,7 +63,7 @@ public class UserServiceTest {
         DefaultRes defaultRes = userService.emailConfirm(httpServletRequest, email);
 
         //then
-        assertThat(defaultRes.getMessage()).isEqualTo("성공");
+        assertThat(defaultRes.getMessage()).isEqualTo("전송성공");
     }
 
     @Test
@@ -71,6 +78,34 @@ public class UserServiceTest {
         DefaultRes defaultRes = userService.issuanceConfirm(httpServletRequest, number);
 
         assertThat(defaultRes.getMessage()).isEqualTo("일치");
+    }
+
+    @Test
+    public void 회원가입(){
+
+        //given
+        String email = "96woo94@naver.com";
+        String password = "1234";
+        String name = "변현우";
+        String nickName = "woo00oo";
+        String phoneNumber = "010-1111-2222";
+        UserSignUpRequestDto userSignUpRequestDto = new UserSignUpRequestDto(email,password,name,nickName,phoneNumber);
+
+        User mockUser = User.builder()
+                .email(userSignUpRequestDto.getEmail())
+                .password(userSignUpRequestDto.getPassword())
+                .name(userSignUpRequestDto.getName())
+                .nickName(userSignUpRequestDto.getNickName())
+                .phoneNumber(userSignUpRequestDto.getPhoneNumber())
+                .grade(UserGrade.USER)
+                .build();
+
+        //when
+        given(userRepository.save(any())).willReturn(mockUser);
+        DefaultRes result = userService.signUp(userSignUpRequestDto);
+
+        //given
+        assertThat(result.getMessage()).isEqualTo("성공");
     }
 
 }
