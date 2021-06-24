@@ -21,4 +21,5 @@ public class DiscussionReseponseDto {
         this.title = discussionBoard.getTitle();
         this.creatAt = discussionBoard.getCreateAt();
     }
+
 }

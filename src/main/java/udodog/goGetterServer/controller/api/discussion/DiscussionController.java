@@ -43,4 +43,5 @@ public class DiscussionController {
     ){
         return new ResponseEntity<>(discussionListConvertor.toModel(discussionService.getBoardList(pageable)), HttpStatus.OK);
     }
+
 }

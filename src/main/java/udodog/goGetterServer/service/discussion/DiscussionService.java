@@ -35,7 +35,7 @@ public class DiscussionService {
 
     private List<DiscussionReseponseDto> data(Page<DiscussionBoard> discussionBoardPage) {
 
-        // ModelMapper를 사용해서 Entity To Dto Converter
+        // ModelMapper를 이용해서 Entity To Dto Converter
         List<DiscussionReseponseDto> discussionBoardList = discussionBoardPage.stream()
                 .map(list -> mapper.map(list, DiscussionReseponseDto.class))
                 .collect(Collectors.toList());

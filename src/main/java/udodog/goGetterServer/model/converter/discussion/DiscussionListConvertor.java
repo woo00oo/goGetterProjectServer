@@ -18,6 +18,7 @@ public class DiscussionListConvertor implements RepresentationModelAssembler<Def
 
     @Override
     public EntityModel<DefaultRes<List<DiscussionReseponseDto>>> toModel(DefaultRes<List<DiscussionReseponseDto>>defaultRes) {
+
         return EntityModel.of(defaultRes,
                 linkTo(methodOn(DiscussionController.class).getBoardList(null)).withRel("list"));
     }
