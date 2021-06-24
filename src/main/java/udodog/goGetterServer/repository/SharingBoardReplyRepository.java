@@ -7,4 +7,5 @@ import udodog.goGetterServer.model.entity.SharingBoardReply;
 
 @Repository
 public interface SharingBoardReplyRepository extends JpaRepository<SharingBoardReply,Long> {
+    void deleteBySharingBoardId(Long id);
 }

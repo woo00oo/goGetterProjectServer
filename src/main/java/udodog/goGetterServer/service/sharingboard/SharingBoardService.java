@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import udodog.goGetterServer.model.dto.DefaultRes;
 import udodog.goGetterServer.model.dto.Pagination;
 import udodog.goGetterServer.model.dto.request.sharingboard.UpdateBoardRequest;
@@ -15,6 +16,7 @@ import udodog.goGetterServer.model.dto.response.sharingboard.BoardResponse;
 import udodog.goGetterServer.model.dto.response.sharingboard.SimpleBoardResponse;
 import udodog.goGetterServer.model.entity.SharingBoard;
 import udodog.goGetterServer.repository.SharingBoardLikeRepository;
+import udodog.goGetterServer.repository.SharingBoardReplyRepository;
 import udodog.goGetterServer.repository.SharingBoardRepository;
 
 import java.util.LinkedList;
@@ -27,6 +29,7 @@ public class SharingBoardService {
 
     private final SharingBoardRepository sharingBoardRepository;
     private final SharingBoardLikeRepository sharingBoardLikeRepository;
+    private final SharingBoardReplyRepository sharingBoardReplyRepository;
     private final ModelMapper modelMapper;
 
     public DefaultRes<List<SimpleBoardResponse>> getBoardList(Pageable pageable) {
@@ -49,41 +52,18 @@ public class SharingBoardService {
                 });
     }
 
-//    public DefaultRes createSharingBoard(creatBoardRequest request) {
-//        SharingBoard sharingBoard = modelMapper.map(request, SharingBoard.class);
-//        SharingBoard saveBoard = sharingBoardRepository.save(sharingBoard);
-//
-//        if(sharingBoard.getId().equals(saveBoard.getId())){
-//            return DefaultRes.response(HttpStatus.CREATED.value(),"글 등록 성공");
-//        }
-//
-//        return DefaultRes.response(HttpStatus.OK.value(),"글 등록 실패");
-//
-//    }
-//
+    public DefaultRes createSharingBoard(creatBoardRequest request) {
+        SharingBoard sharingBoard = modelMapper.map(request, SharingBoard.class);
+        SharingBoard saveBoard = sharingBoardRepository.save(sharingBoard);
 
-//
-//    public DefaultRes deleteSharingBoard(Long boardId) {
-//
-//        Optional<SharingBoard> boardById = sharingBoardRepository.findById(boardId);
-//
-//        if (boardById.isEmpty()){
-//            return DefaultRes.response(HttpStatus.NO_CONTENT.value(),"글이 존재하지 않음");
-//
-//        }
-//
-//        sharingBoardRepository.deleteById(boardId);
-//        Optional<SharingBoard> afterDeleteBoard = sharingBoardRepository.findById(boardId);
-//
-//        if (afterDeleteBoard.isPresent()){
-//            return DefaultRes.response(HttpStatus.OK.value(),"글 삭제 실패");
-//        }
-//
-//        return DefaultRes.response(HttpStatus.OK.value(),"글 삭제 성공");
-//
-//    }
-//
-//
+        if(sharingBoard.getId().equals(saveBoard.getId())){
+            return DefaultRes.response(HttpStatus.OK.value(),"글 등록 성공");
+        }
+
+        return DefaultRes.response(HttpStatus.OK.value(),"글 등록 실패");
+
+    }
+
 //    public DefaultRes<BoardResponse> updateSharingBoard(Long boardId, UpdateBoardRequest request) {
 //        Optional<SharingBoard> boardById = sharingBoardRepository.findById(boardId);
 //
@@ -102,6 +82,28 @@ public class SharingBoardService {
 //    }
 //
 //
+
+
+    @Transactional
+    public DefaultRes deleteSharingBoard(Long boardId, Long UserId) {
+
+        Optional<SharingBoard> boardById = sharingBoardRepository.findById(boardId);
+
+        if (boardById.isEmpty()){
+            return DefaultRes.response(HttpStatus.OK.value(),"글이 존재하지 않음");
+        }
+
+        if(!boardById.get().getUser().getId().equals(UserId)){
+            return DefaultRes.response(HttpStatus.OK.value(),"글 삭제 실패");
+        }
+
+        sharingBoardReplyRepository.deleteBySharingBoardId(boardById.get().getId());
+        sharingBoardRepository.deleteById(boardId);
+
+        return DefaultRes.response(HttpStatus.OK.value(),"글 삭제 성공");
+
+    }
+
     @NotNull
     private List<SimpleBoardResponse> getSimpleBoardResponseList(Page<SharingBoard> sharingBoardList) {
         List<SimpleBoardResponse> simpleBoardResponseList = new LinkedList<>();
