@@ -8,7 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import udodog.goGetterServer.model.converter.user.UserConverter;
 import udodog.goGetterServer.model.dto.DefaultRes;
-import udodog.goGetterServer.model.dto.request.UserSignUpRequestDto;
+import udodog.goGetterServer.model.dto.request.user.UserSignInRequestDto;
+import udodog.goGetterServer.model.dto.request.user.UserSignUpRequestDto;
 import udodog.goGetterServer.service.user.UserService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,6 +18,7 @@ import javax.validation.Valid;
 @Api(tags = {"회원 관련 API"})
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api")
 public class UserController {
 
     private final UserService userService;
@@ -54,7 +56,7 @@ public class UserController {
     @PostMapping("/signup")
     public ResponseEntity<EntityModel<DefaultRes>> signUp(
             @ApiParam(value = "필수 : 모든 항목" +
-                    " \t\n 비밀번호는 인코딩 적용해서 요청 ")
+                    " \t\n 비밀번호는 인코딩 처리 ")
             @Valid @RequestBody UserSignUpRequestDto requestDto
             ){
         return new ResponseEntity<>(userConverter.toModel(userService.signUp(requestDto)), HttpStatus.OK);
@@ -62,11 +64,13 @@ public class UserController {
 
     @ApiOperation(value = "로그인 API",notes = "로그인 API 입니다.")
     @ApiResponses(value ={
-            @ApiResponse(code=200, message = "1.성공 \t\n 2.아이디불일치 \t\n 3.이메일불일치")
+            @ApiResponse(code=200, message = "1.성공 \t\n 2.아이디불일치 \t\n 3.비밀번호불일치")
     })
     @PostMapping("/signin")
-    public ResponseEntity<EntityModel<DefaultRes>> signin(){
-        return null;
+    public ResponseEntity<EntityModel<DefaultRes>> signin(
+            @Valid @RequestBody UserSignInRequestDto requestDto
+    ){
+        return new ResponseEntity<>(userConverter.toModel(userService.signIn(requestDto)), HttpStatus.OK);
     }
 
 }
