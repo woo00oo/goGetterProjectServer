@@ -2,11 +2,6 @@ package udodog.goGetterServer.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.hateoas.client.LinkDiscoverer;
-import org.springframework.hateoas.client.LinkDiscoverers;
-import org.springframework.hateoas.mediatype.collectionjson.CollectionJsonLinkDiscoverer;
-
-import org.springframework.plugin.core.SimplePluginRegistry;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -15,20 +10,9 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @EnableSwagger2
 @Configuration
 public class SwaggerConfig {
-
-    @Bean
-    public LinkDiscoverers discoverers() {
-        List<LinkDiscoverer> plugins = new ArrayList<>();
-        plugins.add(new CollectionJsonLinkDiscoverer());
-        return new LinkDiscoverers(SimplePluginRegistry.create(plugins));
-
-    }
 
     @Bean
     public Docket api(){
@@ -47,8 +31,15 @@ public class SwaggerConfig {
                 .title("우도독 프로젝트 API 문서")
                 .version("1.0")
                 .description(
-                        "설명을 최신화 합니다.")
+                        "<h2> API 변경사항이 있으면 즉시 팀원들에게 보고하기! </h2> \t\n\t\n" +
+                        "/api -> 블랙회원, 일반회원, 관리자 사용 가능 API \t\n\t\n" +
+                        "/userapi -> 일반회원, 관리자 사용 가능 API \t\n\t\n" +
+                        "/admapi -> 관리자 \t\n\t\n" +
+                        "해당 URI로 시작하는 API들은 헤더에 토큰을 포함해서 요청."
+
+                )
                 .build();
     }
+
 
 }
