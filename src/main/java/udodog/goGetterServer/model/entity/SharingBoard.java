@@ -3,6 +3,7 @@ package udodog.goGetterServer.model.entity;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import udodog.goGetterServer.model.dto.request.sharingboard.UpdateBoardRequest;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -35,5 +36,20 @@ public class SharingBoard {
         this.user = user;
         this.title = title;
         this.content = content;
+    }
+
+    public Integer getReplyCnt(){
+        return this.sharingBoardReplyList.size();
+    }
+
+    public SharingBoard updateBoard(UpdateBoardRequest request) {
+        if(!this.title.equals(request.getTitle())){
+            this.title = request.getTitle();
+        }
+
+        if(!this.content.equals(request.getContent())){
+            this.content = request.getContent();
+        }
+        return this;
     }
 }

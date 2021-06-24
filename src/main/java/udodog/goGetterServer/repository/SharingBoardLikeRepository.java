@@ -5,5 +5,7 @@ import org.springframework.stereotype.Repository;
 import udodog.goGetterServer.model.entity.SharingBoardLike;
 
 @Repository
-public interface LikeRepository extends JpaRepository<SharingBoardLike,Long> {
+public interface SharingBoardLikeRepository extends JpaRepository<SharingBoardLike,Long> {
+
+    Integer countBySharingBoardId(Long id);
 }
