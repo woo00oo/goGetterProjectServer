@@ -4,7 +4,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -18,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import udodog.goGetterServer.model.converter.discussion.DiscussionConvertor;
 import udodog.goGetterServer.model.converter.discussion.DiscussionListConvertor;
 import udodog.goGetterServer.model.dto.DefaultRes;
+import udodog.goGetterServer.model.dto.response.discussion.DiscussionDetailResponse;
 import udodog.goGetterServer.model.dto.response.discussion.DiscussionReseponseDto;
 import udodog.goGetterServer.service.discussion.DiscussionService;
 
@@ -39,9 +39,19 @@ public class DiscussionController {
 
     @GetMapping("/discussions") // 전체 조회 Controller
     public ResponseEntity<EntityModel<DefaultRes<List<DiscussionReseponseDto>>>> getBoardList(
-            @PageableDefault(sort = "id", direction = Sort.Direction.DESC, size = 7) Pageable pageable
+            @PageableDefault(sort = "createAt", direction = Sort.Direction.DESC, size = 7) Pageable pageable // 최신 날짜순으로 내림차순, 페이지당 7개씩 출력
     ){
         return new ResponseEntity<>(discussionListConvertor.toModel(discussionService.getBoardList(pageable)), HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "토론게시판 상세 페이지 API",notes = "상세 페이지 API입니다.")
+    @ApiResponses(value ={
+            @ApiResponse(code=200, message = "1. 상세보기성공 \t\n 2. 데이터없음 \t\n 3. 토큰에러")
+    })
+
+    @GetMapping("/api/discussions")
+    public ResponseEntity<EntityModel<DefaultRes<DiscussionDetailResponse>>> getDetailBoard(@RequestParam("id") Long id){
+        return new ResponseEntity<>(discussionConvertor.toModel(discussionService.getDetailBoard(id)), HttpStatus.OK);
     }
 
 }

@@ -8,11 +8,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import udodog.goGetterServer.model.dto.DefaultRes;
 import udodog.goGetterServer.model.dto.Pagination;
+import udodog.goGetterServer.model.dto.response.discussion.DiscussionDetailResponse;
 import udodog.goGetterServer.model.dto.response.discussion.DiscussionReseponseDto;
 import udodog.goGetterServer.model.entity.DiscussionBoard;
 import udodog.goGetterServer.repository.DiscussonBoardRepository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -41,5 +43,23 @@ public class DiscussionService {
                 .collect(Collectors.toList());
 
         return discussionBoardList;
+    }
+
+    public DefaultRes<DiscussionDetailResponse> getDetailBoard(Long id) {
+
+        Optional<DiscussionBoard> discussionBoard = discussionBoardRepository.findById(id);
+
+        if(discussionBoard.isEmpty()){
+            return DefaultRes.response(HttpStatus.OK.value(), "데이터없음");
+        }else {
+            return DefaultRes.response(HttpStatus.OK.value(), "상세보기성공", detailData(discussionBoard));
+        }
+    }
+
+    private DiscussionDetailResponse detailData(Optional<DiscussionBoard> discussionBoard) {
+
+        DiscussionDetailResponse discussionDetailResponse = mapper.map(discussionBoard, DiscussionDetailResponse.class);
+
+        return discussionDetailResponse;
     }
 }

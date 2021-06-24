@@ -6,20 +6,22 @@ import udodog.goGetterServer.model.entity.User;
 
 import java.time.LocalDate;
 
+@NoArgsConstructor
 @Getter
+@ToString
 public class DiscussionReseponseDto {
 
     private Long id;
     private User user;
     private String title;
-    private LocalDate creatAt;
+    private LocalDate createAt;
 
     @Builder
-    public DiscussionReseponseDto(DiscussionBoard discussionBoard){
-        this.id = discussionBoard.getId();
-        this.user = discussionBoard.getUser();
-        this.title = discussionBoard.getTitle();
-        this.creatAt = discussionBoard.getCreateAt();
+    public DiscussionReseponseDto(Long id, User user, String title, LocalDate createAt){
+        this.id = id;
+        this.user = user;
+        this.title = title;
+        this.createAt = createAt;
     }
 
 }
