@@ -51,4 +51,8 @@ public class User {
         this.grade = grade;
     }
 
+    public void setRefreshToken(String refreshToken){
+        this.token = refreshToken;
+    }
+
 }
