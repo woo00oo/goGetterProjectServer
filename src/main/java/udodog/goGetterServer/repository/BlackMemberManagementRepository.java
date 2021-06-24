@@ -7,9 +7,8 @@ import udodog.goGetterServer.model.entity.BlackMemberManagement;
 
 public interface BlackMemberManagementRepository extends JpaRepository<BlackMemberManagement, Long> {
 
-<<<<<<< Updated upstream
     Page<BlackMemberManagement> findAll(Pageable pageable);
-=======
+
     Page<BlackMemberManagement> findByAll(Pageable pageable);
->>>>>>> Stashed changes
+
 } // Class 끝
