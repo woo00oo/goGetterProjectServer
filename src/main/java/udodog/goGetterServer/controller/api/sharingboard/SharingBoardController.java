@@ -62,16 +62,17 @@ public class SharingBoardController {
     }
 
 
-//    @ApiOperation(value = "공유 게시판 글 수정 API", notes = "공유 게시판 게시글 수정 시 사용되는 API입니다.")
-//    @PatchMapping("/userapi/sharings")
-//    @ApiResponses(value ={
-//            @ApiResponse(code = 200, message = "1. 글 수정 성공 \n\t 2. 글 수정 실패"),
-//            @ApiResponse(code = 204, message = "글이 존재하지 않음")
-//    })
-//    public ResponseEntity<DefaultRes> updateSharingBoard(@RequestParam("id") Long boardId, @RequestBody UpdateBoardRequest request){
-//        return new ResponseEntity<>(sharingBoardService.updateSharingBoard(boardId,request), HttpStatus.OK);
-//    }
-//
+    // test 필요
+    @ApiOperation(value = "공유 게시판 글 수정 API", notes = "공유 게시판 게시글 수정 시 사용되는 API입니다.")
+    @PatchMapping("/userapi/sharings")
+    @ApiResponses(value ={
+            @ApiResponse(code = 200, message = "1.글 수정 성공 \t\n 2.글 수정 실패 \t\n 3.글이 존재하지 않음 \t\n 4. 토큰 에러"),
+    })
+    public ResponseEntity<DefaultRes> updateSharingBoard(@RequestParam("id") Long boardId, @RequestBody UpdateBoardRequest request){
+        return new ResponseEntity<>(sharingBoardService.updateSharingBoard(boardId,request), HttpStatus.OK);
+    }
+
+
     @ApiOperation(value = "공유 게시판 글 삭제 API", notes = "공유 게시판 게시글 삭제 시 사용되는 API입니다.")
     @ApiResponses(value ={
             @ApiResponse(code = 200, message = "1.글 삭제 성공 \t\n 2.글 삭제 실패 \t\n 3.글이 존재하지 않음 \t\n 4.토큰 에러"),

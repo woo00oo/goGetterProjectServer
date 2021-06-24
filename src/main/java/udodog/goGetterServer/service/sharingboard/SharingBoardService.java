@@ -64,24 +64,24 @@ public class SharingBoardService {
 
     }
 
-//    public DefaultRes<BoardResponse> updateSharingBoard(Long boardId, UpdateBoardRequest request) {
-//        Optional<SharingBoard> boardById = sharingBoardRepository.findById(boardId);
-//
-//        if (boardById.isEmpty()){
-//            return DefaultRes.response(HttpStatus.NO_CONTENT.value(),"글이 존재하지 않음");
-//        }
-//
-//        SharingBoard updateBoard = boardById.get().updateBoard(request);
-//        SharingBoard saveBoard = sharingBoardRepository.save(updateBoard);
-//
-//        if(saveBoard.getId().equals(boardId)){
-//            return DefaultRes.response(HttpStatus.OK.value(),"글 수정 성공");
-//        }
-//
-//        return DefaultRes.response(HttpStatus.OK.value(),"글 수정 실패");
-//    }
-//
-//
+    public DefaultRes<BoardResponse> updateSharingBoard(Long boardId, UpdateBoardRequest request) {
+        Optional<SharingBoard> boardById = sharingBoardRepository.findById(boardId);
+
+        if (boardById.isEmpty()){
+            return DefaultRes.response(HttpStatus.NO_CONTENT.value(),"글이 존재하지 않음");
+        }
+
+        SharingBoard updateBoard = boardById.get().updateBoard(request);
+        SharingBoard saveBoard = sharingBoardRepository.save(updateBoard);
+
+        if(saveBoard.getId().equals(boardId)){
+            return DefaultRes.response(HttpStatus.OK.value(),"글 수정 성공");
+        }
+
+        return DefaultRes.response(HttpStatus.OK.value(),"글 수정 실패");
+    }
+
+
 
 
     @Transactional

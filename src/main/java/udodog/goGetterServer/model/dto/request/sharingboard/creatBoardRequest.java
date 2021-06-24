@@ -1,11 +1,14 @@
 package udodog.goGetterServer.model.dto.request.sharingboard;
 
 import com.sun.istack.NotNull;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import udodog.goGetterServer.model.entity.User;
+
+import javax.validation.constraints.NotEmpty;
 
 
 @Data
@@ -14,11 +17,13 @@ import udodog.goGetterServer.model.entity.User;
 @Builder
 public class creatBoardRequest {
 
-    private User user;
+    @NotEmpty
+    @ApiModelProperty(value = "현재 로그인중인 사용자의 userId")
+    private Long userId;
 
-    @NotNull
+    @NotEmpty
     private String title;
 
-    @NotNull
+    @NotEmpty
     private String content;
 }

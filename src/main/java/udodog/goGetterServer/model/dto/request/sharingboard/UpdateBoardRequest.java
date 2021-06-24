@@ -1,13 +1,11 @@
 package udodog.goGetterServer.model.dto.request.sharingboard;
 
-import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import udodog.goGetterServer.model.entity.User;
 
-import java.time.LocalDate;
+import javax.validation.constraints.NotEmpty;
 
 
 @Data
@@ -16,12 +14,14 @@ import java.time.LocalDate;
 @Builder
 public class UpdateBoardRequest {
 
-    private User user;
 
-    @NotNull
+    @NotEmpty
+    private Long userId;
+
+    @NotEmpty
     private String title;
 
-    @NotNull
+    @NotEmpty
     private String content;
 
 }
