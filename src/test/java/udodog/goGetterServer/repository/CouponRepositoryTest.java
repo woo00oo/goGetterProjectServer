@@ -31,3 +31,4 @@ class CouponRepositoryTest {
         Assertions.assertThat(coupon).isEqualTo(saveCoupon);
     }
 }
+
