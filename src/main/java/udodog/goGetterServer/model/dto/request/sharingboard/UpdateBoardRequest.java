@@ -7,12 +7,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import udodog.goGetterServer.model.entity.User;
 
+import java.time.LocalDate;
+
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class creatBoardRequest {
+public class UpdateBoardRequest {
 
     private User user;
 
@@ -21,4 +23,5 @@ public class creatBoardRequest {
 
     @NotNull
     private String content;
+
 }

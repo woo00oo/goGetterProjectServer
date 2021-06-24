@@ -19,11 +19,11 @@ import static org.assertj.core.api.Assertions.assertThat;
         classes = JpaAuditingConfig.class
 ))
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-class SharingBoardLikeRepositoryTest {
+class SharingBoardSharingBoardLikeRepositoryTest {
 
     @Autowired private UserRepository userRepository;
     @Autowired private SharingBoardRepository sharingBoardRepository;
-    @Autowired private LikeRepository likeRepository;
+    @Autowired private SharingBoardLikeRepository sharingBoardLikeRepository;
 
     @Test
     @DisplayName("Like Repository Save Test")
@@ -57,7 +57,7 @@ class SharingBoardLikeRepositoryTest {
                     build();
 
         //when
-        SharingBoardLike saveSharingBoardLike = likeRepository.save(sharingBoardLike);
+        SharingBoardLike saveSharingBoardLike = sharingBoardLikeRepository.save(sharingBoardLike);
 
         //then
         assertThat(saveSharingBoardLike).isEqualTo(sharingBoardLike);

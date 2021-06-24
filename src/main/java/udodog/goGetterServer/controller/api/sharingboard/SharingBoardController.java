@@ -43,7 +43,7 @@ public class SharingBoardController {
 
     @ApiOperation(value = "공유 게시판 상세 조회 API", notes = "공유 게시판 게시글 상세 조회 시 사용되는 API입니다.")
     @ApiResponses(value ={
-            @ApiResponse(code = 200, message = "조회 성공"),
+            @ApiResponse(code = 200, message = "1.조회 성공 /t/n 2.데이터 없음 /t/n 3.토큰 에러"),
     })
     @GetMapping(value = {"/api/user/sharings" ,"/api/bkuser/sharings"})
     public ResponseEntity<EntityModel<DefaultRes<BoardResponse>>> getBoardDetail(@RequestParam("id") Long boardId){
