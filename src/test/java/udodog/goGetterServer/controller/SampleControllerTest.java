@@ -1,6 +1,7 @@
 package udodog.goGetterServer.controller;
 
 import org.junit.jupiter.api.Test;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -20,6 +21,9 @@ class SampleControllerTest {
 
     @MockBean
     private EntityToModelConvertor entityToModelConvertor;
+
+    @MockBean
+    private ModelMapper modelMapper;
 
     @Test
     public void 디폴트_응답_테스트() throws Exception {
