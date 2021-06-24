@@ -38,7 +38,17 @@ public class SharingBoardService {
 
         return DefaultRes.response(HttpStatus.OK.value(),"조회 성공",getSimpleBoardResponseList(sharingBoardList),new Pagination(sharingBoardList));
     }
-//
+
+        public DefaultRes<BoardResponse> getBoardDetail(Long boardId) {
+        Optional<SharingBoard> sharingBoard = sharingBoardRepository.findById(boardId);
+
+        return sharingBoard.map(board -> DefaultRes.response(HttpStatus.OK.value(), "조회 성공",modelMapper.map(board,BoardResponse.class)))
+                .orElseGet(()->{
+                    return DefaultRes.response(HttpStatus.OK.
+                            value(), "데이터 없음");
+                });
+    }
+
 //    public DefaultRes createSharingBoard(creatBoardRequest request) {
 //        SharingBoard sharingBoard = modelMapper.map(request, SharingBoard.class);
 //        SharingBoard saveBoard = sharingBoardRepository.save(sharingBoard);
@@ -51,14 +61,7 @@ public class SharingBoardService {
 //
 //    }
 //
-//    public DefaultRes<BoardResponse> getBoardDetail(Long boardId) {
-//        Optional<SharingBoard> sharingBoard = sharingBoardRepository.findById(boardId);
-//
-//        return sharingBoard.map(board -> DefaultRes.response(HttpStatus.OK.value(), "조회 성공",modelMapper.map(board,BoardResponse.class)))
-//                .orElseGet(()->{
-//                    return DefaultRes.response(HttpStatus.NO_CONTENT.value(), "데이터 없음");
-//                });
-//    }
+
 //
 //    public DefaultRes deleteSharingBoard(Long boardId) {
 //
