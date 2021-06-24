@@ -5,10 +5,19 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
+import udodog.goGetterServer.config.JpaAuditingConfig;
 import udodog.goGetterServer.model.entity.AdvertisementManagement;
 
 import static org.assertj.core.api.Assertions.assertThat;
-@DataJpaTest
+
+
+
+@DataJpaTest(includeFilters = @ComponentScan.Filter(
+        type = FilterType.ASSIGNABLE_TYPE,
+        classes = JpaAuditingConfig.class
+))
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class AdvertisementManagementRepositoryTest {
 
