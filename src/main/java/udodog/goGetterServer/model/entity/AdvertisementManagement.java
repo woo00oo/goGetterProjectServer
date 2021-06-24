@@ -6,10 +6,10 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 
+
 @Getter
 @NoArgsConstructor          // 기본 생성자
 @Entity
-@EntityListeners(AuditingEntityListener.class)
 public class AdvertisementManagement {
 
     @Id
@@ -25,8 +25,7 @@ public class AdvertisementManagement {
     private String content;
     
     @Builder
-    public AdvertisementManagement(Long id, String name, String image, String url, String content) {
-        this.id = id;
+    public AdvertisementManagement(String name, String image, String url, String content) {
         this.name = name;
         this.image = image;
         this.url = url;

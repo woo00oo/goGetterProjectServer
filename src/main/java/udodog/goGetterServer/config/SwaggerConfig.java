@@ -31,8 +31,15 @@ public class SwaggerConfig {
                 .title("우도독 프로젝트 API 문서")
                 .version("1.0")
                 .description(
-                        "설명을 최신화 합니다.")
+                        "<h2> API 변경사항이 있으면 즉시 팀원들에게 보고하기! </h2> \t\n\t\n" +
+                        "/api -> 블랙회원, 일반회원, 관리자 사용 가능 API \t\n\t\n" +
+                        "/userapi -> 일반회원, 관리자 사용 가능 API \t\n\t\n" +
+                        "/admapi -> 관리자 \t\n\t\n" +
+                        "해당 URI로 시작하는 API들은 헤더에 토큰을 포함해서 요청."
+
+                )
                 .build();
     }
+
 
 }

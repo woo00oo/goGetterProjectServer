@@ -7,5 +7,5 @@ import udodog.goGetterServer.model.entity.BlackMemberManagement;
 
 public interface BlackMemberManagementRepository extends JpaRepository<BlackMemberManagement, Long> {
 
-    Page<BlackMemberManagement> findByAll(Pageable pageable);
+    Page<BlackMemberManagement> findAll(Pageable pageable);
 } // Class 끝

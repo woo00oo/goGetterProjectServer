@@ -8,7 +8,7 @@ import udodog.goGetterServer.model.entity.User;
 @RequiredArgsConstructor
 public class BlackMemberManagementResDto {
 
-    private Long userId;
+    private User user;
 
     private String name;
 
@@ -19,7 +19,7 @@ public class BlackMemberManagementResDto {
     private String phoneNumber;
 
     public BlackMemberManagementResDto(User user) { // User 객체를 받기 위한 생성자
-        this.userId = user.getId();
+        this.user = user;
         this.name = user.getName();
         this.nickName = user.getNickName();
         this.email = user.getEmail();
