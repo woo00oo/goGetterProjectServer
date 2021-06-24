@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import udodog.goGetterServer.model.dto.DefaultRes;
 import udodog.goGetterServer.model.dto.Pagination;
-import udodog.goGetterServer.model.dto.response.discussion.ListDiscussionResponse;
+import udodog.goGetterServer.model.dto.response.discussion.DiscussionReseponseDto;
 import udodog.goGetterServer.model.entity.DiscussionBoard;
 import udodog.goGetterServer.repository.DiscussonBoardRepository;
 
@@ -23,7 +23,7 @@ public class DiscussionService {
     private final ModelMapper mapper;
 
     // 전체 목록 조회
-    public DefaultRes<List> getBoardList(Pageable pageable) {// 페이징 변수
+    public DefaultRes<List<DiscussionReseponseDto>> getBoardList(Pageable pageable) {// 페이징 변수
         Page<DiscussionBoard> discussionBoardPage = discussionBoardRepository.findAll(pageable);
 
         if(discussionBoardPage.getTotalElements() == 0){
@@ -33,11 +33,11 @@ public class DiscussionService {
         }
     }
 
-    private List<ListDiscussionResponse> data(Page<DiscussionBoard> discussionBoardPage) {
+    private List<DiscussionReseponseDto> data(Page<DiscussionBoard> discussionBoardPage) {
 
         // ModelMapper를 사용해서 Entity To Dto Converter
-        List<ListDiscussionResponse> discussionBoardList = discussionBoardPage.stream()
-                .map(list -> mapper.map(list, ListDiscussionResponse.class))
+        List<DiscussionReseponseDto> discussionBoardList = discussionBoardPage.stream()
+                .map(list -> mapper.map(list, DiscussionReseponseDto.class))
                 .collect(Collectors.toList());
 
         return discussionBoardList;
