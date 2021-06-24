@@ -1,8 +1,9 @@
-package udodog.goGetterServer.model.dto.request;
+package udodog.goGetterServer.model.dto.request.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import udodog.goGetterServer.model.entity.User;
 import udodog.goGetterServer.model.enumclass.UserGrade;
 
@@ -10,6 +11,7 @@ import javax.validation.constraints.NotEmpty;
 
 @Getter
 @AllArgsConstructor
+@NoArgsConstructor
 public class UserSignUpRequestDto {
 
     @NotEmpty
