@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import udodog.goGetterServer.model.dto.DefaultRes;
+import udodog.goGetterServer.model.dto.request.UserSignUpRequestDto;
 import udodog.goGetterServer.model.entity.User;
 import udodog.goGetterServer.model.utils.MailHandler;
 import udodog.goGetterServer.repository.UserRepository;
@@ -30,9 +31,9 @@ public class UserService {
 
     public DefaultRes emailConfirm(HttpServletRequest request, String email){
 
-        Optional<User> optionalUser = userRepository.findByEmail(email);
+        Optional<String> optionalEmail = userRepository.findByEmail(email);
 
-        return optionalUser.map(user -> DefaultRes.response(HttpStatus.OK.value(), "이메일중복"))
+        return optionalEmail.map(e -> DefaultRes.response(HttpStatus.OK.value(), "이메일중복"))
                 .orElseGet(()->{
                     CompletableFuture.runAsync(()->sendMail(request, email), executor);
                     return DefaultRes.response(HttpStatus.OK.value(), "전송성공");
@@ -96,5 +97,17 @@ public class UserService {
 
     }
 
+    public DefaultRes signUp(UserSignUpRequestDto requestDto){
+
+        String email = requestDto.getEmail();
+        Optional<String> optionalEmail = userRepository.findByEmail(email);
+
+        return optionalEmail.map(e -> DefaultRes.response(HttpStatus.OK.value(), "이메일중복"))
+                .orElseGet(()->{
+                    userRepository.save(requestDto.toEntity());
+                    return DefaultRes.response(HttpStatus.OK.value(),"성공");
+                });
+
+    }
 
 }
