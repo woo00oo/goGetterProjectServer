@@ -49,7 +49,11 @@ public class BlackMemberManagementController {
 
     @GetMapping("/admapi/blackmembers")
     public ResponseEntity<EntityModel<DefaultRes<List<BlackMemberManagementResDto>>>> searchBlackMember(
+<<<<<<< Updated upstream
             @PageableDefault(sort = "blackMemberMgtId", direction = Sort.Direction.DESC, size = 15)Pageable pageable) { // Black 회원 조회 페이징 처리
+=======
+            @PageableDefault(sort = "id", direction = Sort.Direction.DESC, size = 15)Pageable pageable) { // Black 회원 조회 페이징 처리
+>>>>>>> Stashed changes
 
         //        BlackMemberManagement bmm = new BlackMemberManagement();
 
