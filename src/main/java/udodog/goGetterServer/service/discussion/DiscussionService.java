@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import udodog.goGetterServer.model.dto.DefaultRes;
 import udodog.goGetterServer.model.dto.Pagination;
+import udodog.goGetterServer.model.dto.request.discussion.DiscussionInsertRequestDto;
 import udodog.goGetterServer.model.dto.response.discussion.DiscussionDetailResponse;
 import udodog.goGetterServer.model.dto.response.discussion.DiscussionReseponseDto;
 import udodog.goGetterServer.model.entity.DiscussionBoard;
@@ -45,7 +46,8 @@ public class DiscussionService {
         return discussionBoardList;
     }
 
-    public DefaultRes<DiscussionDetailResponse> getDetailBoard(Long id) {
+    // 상세 보기
+    public DefaultRes<DiscussionDetailResponse> getDetailBoard(Long id) {   // 게시판 id
 
         Optional<DiscussionBoard> discussionBoard = discussionBoardRepository.findById(id);
 
@@ -56,10 +58,23 @@ public class DiscussionService {
         }
     }
 
+    // ModelMapper를 이용해서 맵핑
     private DiscussionDetailResponse detailData(Optional<DiscussionBoard> discussionBoard) {
 
         DiscussionDetailResponse discussionDetailResponse = mapper.map(discussionBoard, DiscussionDetailResponse.class);
 
         return discussionDetailResponse;
+    }
+
+    public DefaultRes insertBoard(DiscussionInsertRequestDto insertDto) {
+
+        if(insertDto == null){
+            return DefaultRes.response(HttpStatus.OK.value(), "등록실패");
+        }else {
+            discussionBoardRepository.save(insertDto.toEntity());
+            return DefaultRes.response(HttpStatus.OK.value(), "등록성공");
+        }
+
+
     }
 }

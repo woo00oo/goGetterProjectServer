@@ -21,7 +21,8 @@ public class DiscussionListConvertor implements RepresentationModelAssembler<Def
 
         return EntityModel.of(defaultRes,
                 linkTo(methodOn(DiscussionController.class).getBoardList(null)).withRel("list"),
-                linkTo(methodOn(DiscussionController.class).getDetailBoard(null)).withRel("detail"));
+                linkTo(methodOn(DiscussionController.class).getDetailBoard(null)).withRel("detail"),
+                linkTo(methodOn(DiscussionController.class).insertBoard(null)).withRel("insert"));
     }
 
 }
