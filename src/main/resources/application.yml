@@ -1,0 +1,14 @@
+spring:
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: junyharang8592@gmail.com
+    password: Juny3170!#%
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+springdoc:
+  paths-to-exclude=/swagger-resources/**:
