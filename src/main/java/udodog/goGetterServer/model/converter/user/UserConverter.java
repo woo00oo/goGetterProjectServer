@@ -17,7 +17,8 @@ public class UserConverter implements RepresentationModelAssembler<DefaultRes, E
         return EntityModel.of(entity,
                 linkTo(methodOn(UserController.class).emailConfirm(null,null)).withRel("email-confirm"),
                 linkTo(methodOn(UserController.class).issuanceConfirm(null,null)).withRel("issuance-confirm"),
-                linkTo(methodOn(UserController.class).signUp(null)).withRel("sign-up"));
+                linkTo(methodOn(UserController.class).signUp(null)).withRel("sign-up"),
+                linkTo(methodOn(UserController.class).signin(null)).withRel("sign-in"));
     }
 
 }
