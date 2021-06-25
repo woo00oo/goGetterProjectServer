@@ -12,11 +12,15 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.junit4.SpringRunner;
 import udodog.goGetterServer.model.dto.DefaultRes;
-import udodog.goGetterServer.model.dto.request.UserSignUpRequestDto;
+import udodog.goGetterServer.model.dto.request.user.UserSignInRequestDto;
+import udodog.goGetterServer.model.dto.request.user.UserSignUpRequestDto;
+import udodog.goGetterServer.model.dto.response.user.UserSignInResponseDto;
 import udodog.goGetterServer.model.entity.User;
 import udodog.goGetterServer.model.enumclass.UserGrade;
+import udodog.goGetterServer.model.utils.JwtUtil;
 import udodog.goGetterServer.repository.UserRepository;
 
+import java.util.Optional;
 import java.util.concurrent.Executor;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -41,11 +45,15 @@ public class UserServiceTest {
     @Mock
     Executor executor;
 
+    @Mock
+    JwtUtil jwtUtil;
+
     @Before
     public void setUp(){
         MockitoAnnotations.openMocks(this);
         mockHttpSession = new MockHttpSession();
         httpServletRequest = new MockHttpServletRequest();
+        jwtUtil = new JwtUtil("HONGPARKKIMSEOPARKBYEONGOGETTER!");
         userService = new UserService(mailSender, executor, userRepository);
     }
 
@@ -106,6 +114,37 @@ public class UserServiceTest {
 
         //given
         assertThat(result.getMessage()).isEqualTo("성공");
+    }
+
+    @Test
+    public void 로그인(){
+
+        //given
+        String email = "96woo94@naver.com";
+        String password = "test1234";
+        String name = "변현우";
+        String nickName = "woo00oo";
+        String phoneNumber = "010-1111-2222";
+
+        User mockUser = User.builder()
+                .email(email)
+                .password(password)
+                .name(name)
+                .nickName(nickName)
+                .phoneNumber(phoneNumber)
+                .grade(UserGrade.USER)
+                .build();
+
+        UserSignInRequestDto userSignInRequestDto = new UserSignInRequestDto(email, password);
+
+        //when
+        given(userRepository.findByEmail(email)).willReturn(Optional.of(email));
+        given(userRepository.findByUser(email, password)).willReturn(Optional.of(mockUser));
+        DefaultRes<UserSignInResponseDto> res = userService.signIn(userSignInRequestDto);
+
+        //then
+        assertThat(res.getMessage()).isEqualTo("성공");
+
     }
 
 }

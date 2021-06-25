@@ -4,9 +4,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import udodog.goGetterServer.model.dto.DefaultRes;
-import udodog.goGetterServer.model.dto.request.UserSignUpRequestDto;
+import udodog.goGetterServer.model.dto.request.user.UserSignInRequestDto;
+import udodog.goGetterServer.model.dto.request.user.UserSignUpRequestDto;
+import udodog.goGetterServer.model.dto.response.user.UserSignInResponseDto;
 import udodog.goGetterServer.model.entity.User;
+import udodog.goGetterServer.model.utils.JwtUtil;
 import udodog.goGetterServer.model.utils.MailHandler;
 import udodog.goGetterServer.repository.UserRepository;
 
@@ -107,6 +111,28 @@ public class UserService {
                     userRepository.save(requestDto.toEntity());
                     return DefaultRes.response(HttpStatus.OK.value(),"성공");
                 });
+
+    }
+
+    @Transactional
+    public DefaultRes<UserSignInResponseDto> signIn(UserSignInRequestDto requestDto){
+
+        Optional<String> optionalEmail = userRepository.findByEmail(requestDto.getEmail());
+
+        return optionalEmail.map(email ->{
+
+            Optional<User> optionalUser = userRepository.findByUser(email, requestDto.getPassword());
+
+            return optionalUser.map(user -> {
+                String accessToken = JwtUtil.createAccessToken(user.getId(), user.getGrade());
+                String refreshToken = JwtUtil.createRefreshToken(user.getId(), user.getGrade());
+                user.setRefreshToken(refreshToken);
+
+                return DefaultRes.response(HttpStatus.OK.value(),"성공", new UserSignInResponseDto(accessToken,refreshToken));
+
+            }).orElseGet(()-> DefaultRes.response(HttpStatus.OK.value(), "비밀번호불일치"));
+
+        }).orElseGet(()->DefaultRes.response(HttpStatus.OK.value(), "아이디불일치"));
 
     }
 

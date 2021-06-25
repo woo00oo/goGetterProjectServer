@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public enum UserGrade {
 
+    BLACK("블랙회원"),
     USER("일반회원"),
     ADMIN("관리자")
     ;
