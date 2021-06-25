@@ -32,7 +32,7 @@ public class UserControllerTest {
     public void 이메일_전송() throws Exception {
 
         String email = "sample@sample.com";
-        mvc.perform(get("/email-confirm").param("email",email))
+        mvc.perform(get("/api/email-confirm").param("email",email))
                 .andExpect(status().isOk());
 
     }
@@ -41,7 +41,7 @@ public class UserControllerTest {
     public void 발급번호_확인() throws Exception {
 
         String number = "12345678";
-        mvc.perform(get("/issuance-confirm").param("number",number))
+        mvc.perform(get("/api/issuance-confirm").param("number",number))
                 .andExpect(status().isOk());
     }
 
