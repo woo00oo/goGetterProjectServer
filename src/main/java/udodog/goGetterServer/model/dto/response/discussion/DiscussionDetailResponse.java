@@ -12,14 +12,14 @@ import java.time.LocalDate;
 public class DiscussionDetailResponse {
 
     private Long id;
-    private User user;
+    private String userNickname;
     private String title;
     private String content;
     private LocalDate createAt;
 
     public DiscussionDetailResponse(DiscussionBoard discussionBoard){
         this.id = discussionBoard.getId();
-        this.user = discussionBoard.getUser();
+        this.userNickname = discussionBoard.getUser().getNickName();
         this.title = discussionBoard.getTitle();
         this.content = discussionBoard.getContent();
         this.createAt = discussionBoard.getCreateAt();

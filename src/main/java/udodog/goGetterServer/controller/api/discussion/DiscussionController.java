@@ -60,9 +60,9 @@ public class DiscussionController {
     @PostMapping("/api/user/discussions")
     public ResponseEntity<EntityModel<DefaultRes<DiscussionInsertRequestDto>>> insertBoard(
             @ApiParam(value = "필수 : 모든 항목" )
-            @Valid@RequestBody DiscussionInsertRequestDto insertDto
+            @Valid@RequestBody DiscussionInsertRequestDto requestDto
     ){
-        return new ResponseEntity<>(discussionConvertor.toModel(discussionService.insertBoard(insertDto)), HttpStatus.OK);
+        return new ResponseEntity<>(discussionConvertor.toModel(discussionService.insertBoard(requestDto)), HttpStatus.OK);
     }
 
     @ApiOperation(value = "토론게시판 글수정 API",notes = "글수정 API입니다.")
@@ -71,7 +71,7 @@ public class DiscussionController {
     })
 
     @PutMapping("/api/user/discussions")
-    public ResponseEntity<EntityModel<DefaultRes<DiscussionDetailResponse>>> updateBoard(
+    public ResponseEntity<EntityModel<DefaultRes>> updateBoard(
             @RequestBody DiscussionEditRequest updatetRequestDto, @PathVariable Long id){
         return new ResponseEntity<>(discussionConvertor.toModel(discussionService.updateBoard(updatetRequestDto, id)), HttpStatus.OK);
     }

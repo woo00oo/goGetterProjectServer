@@ -56,26 +56,26 @@ public class DiscussionService {
         }
     }
 
-    // ModelMapper를 이용해서 맵핑
     private DiscussionDetailResponse detailData(Optional<DiscussionBoard> discussionBoard) {
 
-        DiscussionDetailResponse discussionDetailResponse = mapper.map(discussionBoard, DiscussionDetailResponse.class);
+        DiscussionDetailResponse discussionDetailResponse = discussionBoard.map(DiscussionDetailResponse::new)
+                .orElseThrow(()->new IllegalArgumentException("해당 게시글이 없습니다."));
 
         return discussionDetailResponse;
     }
 
-    public DefaultRes insertBoard(DiscussionInsertRequestDto insertDto) {
+    public DefaultRes insertBoard(DiscussionInsertRequestDto requestDto) {
 
-        if(insertDto == null){
+        if(requestDto == null){
             return DefaultRes.response(HttpStatus.OK.value(), "등록실패");
         }else {
-            discussionBoardRepository.save(insertDto.toEntity());
+            discussionBoardRepository.save(requestDto.toEntity());
             return DefaultRes.response(HttpStatus.OK.value(), "등록성공");
         }
     }
 
     // 게시글 수정
-    public DefaultRes<DiscussionDetailResponse> updateBoard(DiscussionEditRequest update, long id) {
+    public DefaultRes updateBoard(DiscussionEditRequest update, long id) {
 
         Optional<DiscussionBoard> optionalBoard = discussionBoardRepository.findById(id);
 
@@ -91,11 +91,10 @@ public class DiscussionService {
         }else {
             return DefaultRes.response(HttpStatus.OK.value(), "수정실패");
         }
-
     }
 
     // 게시글 삭제
-    public DefaultRes<DiscussionDetailResponse> delete(Long id) {
+    public DefaultRes delete(Long id) {
         Optional<DiscussionBoard> optionalBoard = discussionBoardRepository.findById(id);
 
         if (!optionalBoard.isEmpty()){

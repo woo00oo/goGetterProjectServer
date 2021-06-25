@@ -1,6 +1,7 @@
 package udodog.goGetterServer.model.dto.request.discussion;
 
 import lombok.*;
+import udodog.goGetterServer.model.entity.DiscussionBoard;
 import udodog.goGetterServer.model.entity.User;
 
 @NoArgsConstructor
@@ -12,14 +13,21 @@ public class DiscussionEditRequest {
     private String title;
     private String content;
 
-    @Builder
-    public DiscussionEditRequest update (DiscussionEditRequest modBoard){
+    public DiscussionEditRequest (DiscussionBoard modBoard){
 
         this.id = modBoard.getId();
         this.user = modBoard.getUser();
         this.title = modBoard.getTitle();
         this.content = modBoard.getContent();
 
-        return this;
+    }
+
+    @Builder
+    public DiscussionBoard toEntity(){
+        return DiscussionBoard.builder()
+                .user(user)
+                .title(title)
+                .content(content)
+                .build();
     }
 }
