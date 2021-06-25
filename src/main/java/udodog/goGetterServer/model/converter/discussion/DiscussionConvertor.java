@@ -17,6 +17,8 @@ public class DiscussionConvertor implements RepresentationModelAssembler<Default
     public EntityModel<DefaultRes<DiscussionDetailResponse>> toModel(DefaultRes<DiscussionDetailResponse> entity) {
 
         return EntityModel.of(entity,
-                linkTo(methodOn(DiscussionController.class).getDetailBoard(null)).withRel("detail"));
+                linkTo(methodOn(DiscussionController.class).getDetailBoard(null)).withRel("detail"),
+                linkTo(methodOn(DiscussionController.class).updateBoard(null, null)).withRel("update"),
+                linkTo(methodOn(DiscussionController.class).deleteBoard(null)).withRel("delete"));
     }
 }

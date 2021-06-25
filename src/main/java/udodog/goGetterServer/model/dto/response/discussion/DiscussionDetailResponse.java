@@ -17,8 +17,6 @@ public class DiscussionDetailResponse {
     private String content;
     private LocalDate createAt;
 
-
-    @Builder
     public DiscussionDetailResponse(DiscussionBoard discussionBoard){
         this.id = discussionBoard.getId();
         this.user = discussionBoard.getUser();

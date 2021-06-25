@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import udodog.goGetterServer.model.dto.DefaultRes;
 import udodog.goGetterServer.model.dto.Pagination;
+import udodog.goGetterServer.model.dto.request.discussion.DiscussionEditRequest;
 import udodog.goGetterServer.model.dto.request.discussion.DiscussionInsertRequestDto;
 import udodog.goGetterServer.model.dto.response.discussion.DiscussionDetailResponse;
 import udodog.goGetterServer.model.dto.response.discussion.DiscussionReseponseDto;
@@ -38,15 +39,12 @@ public class DiscussionService {
 
     private List<DiscussionReseponseDto> data(Page<DiscussionBoard> discussionBoardPage) {
 
-        // ModelMapper를 이용해서 Entity To Dto Converter
-        List<DiscussionReseponseDto> discussionBoardList = discussionBoardPage.stream()
-                .map(list -> mapper.map(list, DiscussionReseponseDto.class))
+       return discussionBoardPage.stream()
+                .map(DiscussionReseponseDto :: new)
                 .collect(Collectors.toList());
-
-        return discussionBoardList;
     }
 
-    // 상세 보기
+    // 게시글 상세 보기
     public DefaultRes<DiscussionDetailResponse> getDetailBoard(Long id) {   // 게시판 id
 
         Optional<DiscussionBoard> discussionBoard = discussionBoardRepository.findById(id);
@@ -74,7 +72,37 @@ public class DiscussionService {
             discussionBoardRepository.save(insertDto.toEntity());
             return DefaultRes.response(HttpStatus.OK.value(), "등록성공");
         }
+    }
 
+    // 게시글 수정
+    public DefaultRes<DiscussionDetailResponse> updateBoard(DiscussionEditRequest update, long id) {
 
+        Optional<DiscussionBoard> optionalBoard = discussionBoardRepository.findById(id);
+
+        if(optionalBoard.isEmpty()){
+            DefaultRes.response(HttpStatus.OK.value(), "데이터없음");
+        }
+
+        DiscussionBoard updateBoard = optionalBoard.get().updateBoard(update);
+
+        if(updateBoard.equals(optionalBoard)){
+            DiscussionBoard save = discussionBoardRepository.save(updateBoard);
+            return DefaultRes.response(HttpStatus.OK.value(), "수정성공");
+        }else {
+            return DefaultRes.response(HttpStatus.OK.value(), "수정실패");
+        }
+
+    }
+
+    // 게시글 삭제
+    public DefaultRes<DiscussionDetailResponse> delete(Long id) {
+        Optional<DiscussionBoard> optionalBoard = discussionBoardRepository.findById(id);
+
+        if (!optionalBoard.isEmpty()){
+            discussionBoardRepository.deleteById(id);
+            return DefaultRes.response(HttpStatus.OK.value(), "삭제성공");
+        }else{
+            return DefaultRes.response(HttpStatus.OK.value(), "삭제실패");
+        }
     }
 }

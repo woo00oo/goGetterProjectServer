@@ -8,20 +8,18 @@ import java.time.LocalDate;
 
 @NoArgsConstructor
 @Getter
-@ToString
 public class DiscussionReseponseDto {
 
     private Long id;
-    private User user;
+    private String userNickname;
     private String title;
     private LocalDate createAt;
 
-    @Builder
-    public DiscussionReseponseDto(Long id, User user, String title, LocalDate createAt){
-        this.id = id;
-        this.user = user;
-        this.title = title;
-        this.createAt = createAt;
+    public DiscussionReseponseDto(DiscussionBoard discussionBoard) {
+        this.id = discussionBoard.getId();
+        this.userNickname = discussionBoard.getUser().getNickName();
+        this.title = discussionBoard.getTitle();
+        this.createAt = discussionBoard.getCreateAt();
     }
 
 }

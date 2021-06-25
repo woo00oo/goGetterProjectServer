@@ -24,9 +24,9 @@ public class DiscussionInsertRequestDto {
     @Builder
     public DiscussionBoard toEntity(){
         return DiscussionBoard.builder()
-                .user(user)
-                .title(title)
-                .content(content)
+                .user(this.user)
+                .title(this.title)
+                .content(this.content)
                 .build();
     }
 }

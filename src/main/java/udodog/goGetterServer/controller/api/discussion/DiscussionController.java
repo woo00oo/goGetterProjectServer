@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import udodog.goGetterServer.model.converter.discussion.DiscussionConvertor;
 import udodog.goGetterServer.model.converter.discussion.DiscussionListConvertor;
 import udodog.goGetterServer.model.dto.DefaultRes;
+import udodog.goGetterServer.model.dto.request.discussion.DiscussionEditRequest;
 import udodog.goGetterServer.model.dto.request.discussion.DiscussionInsertRequestDto;
 import udodog.goGetterServer.model.dto.response.discussion.DiscussionDetailResponse;
 import udodog.goGetterServer.model.dto.response.discussion.DiscussionReseponseDto;
@@ -46,14 +47,14 @@ public class DiscussionController {
             @ApiResponse(code=200, message = "1. 상세보기성공 \t\n 2. 데이터없음 \t\n 3. 토큰에러")
     })
 
-    @GetMapping("/api/userapi/discussions") // 상세보기 Controller
+    @GetMapping("/api/user/discussions") // 상세보기 Controller
     public ResponseEntity<EntityModel<DefaultRes<DiscussionDetailResponse>>> getDetailBoard(@RequestParam("id") Long id){
         return new ResponseEntity<>(discussionConvertor.toModel(discussionService.getDetailBoard(id)), HttpStatus.OK);
     }
 
     @ApiOperation(value = "토론게시판 글쓰기 API",notes = "글쓰기 API입니다.")
     @ApiResponses(value ={
-            @ApiResponse(code=200, message = "1.등록성공 \\t\\n 2.등록실패")
+            @ApiResponse(code=200, message = "1.등록성공 \\t\\n 2.등록실패 \\t\\n 3. 토큰에러")
     })
 
     @PostMapping("/api/user/discussions")
@@ -64,4 +65,23 @@ public class DiscussionController {
         return new ResponseEntity<>(discussionConvertor.toModel(discussionService.insertBoard(insertDto)), HttpStatus.OK);
     }
 
+    @ApiOperation(value = "토론게시판 글수정 API",notes = "글수정 API입니다.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "1.수정성공 \\t\\n 2.수정실패 \\t\\n 3.데이터없음 \\t\\n 4.토큰에러")
+    })
+
+    @PutMapping("/api/user/discussions")
+    public ResponseEntity<EntityModel<DefaultRes<DiscussionDetailResponse>>> updateBoard(
+            @RequestBody DiscussionEditRequest updatetRequestDto, @PathVariable Long id){
+        return new ResponseEntity<>(discussionConvertor.toModel(discussionService.updateBoard(updatetRequestDto, id)), HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "토론게시판 글삭제 API",notes = "글삭제 API입니다.")
+    @ApiResponses(value ={
+            @ApiResponse(code=200, message = "1.삭제성공 \\t\\n 2. 삭제실패 \\t\\n 3. 토큰에러")
+    })
+    @DeleteMapping("/api/user/discussions")
+    public ResponseEntity<EntityModel<DefaultRes<DiscussionDetailResponse>>> deleteBoard (@PathVariable Long id){
+        return new ResponseEntity<>(discussionConvertor.toModel(discussionService.delete(id)), HttpStatus.OK);
+    }
 }
