@@ -68,10 +68,10 @@ public class SharingBoardService {
         Optional<SharingBoard> boardById = sharingBoardRepository.findById(boardId);
 
         if (boardById.isEmpty()){
-            return DefaultRes.response(HttpStatus.NO_CONTENT.value(),"글이 존재하지 않음");
+            return DefaultRes.response(HttpStatus.OK.value(),"글이 존재하지 않음");
         }
 
-        if(!boardId.equals(request.getUserId())){
+        if(!isWriter(request, boardById)){
             return DefaultRes.response(HttpStatus.OK.value(),"글 수정 실패");
         }
 
@@ -87,7 +87,9 @@ public class SharingBoardService {
         return DefaultRes.response(HttpStatus.OK.value(),"글 수정 실패");
     }
 
-
+    private boolean isWriter(UpdateBoardRequest request, Optional<SharingBoard> boardById) {
+        return boardById.get().getUser().getId().equals(request.getUserId());
+    }
 
 
     @Transactional

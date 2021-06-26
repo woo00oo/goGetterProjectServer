@@ -1,19 +1,14 @@
 package udodog.goGetterServer.model.dto.request.sharingboard;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.validation.constraints.NotEmpty;
 
 
-@Data
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 public class UpdateBoardRequest {
-
 
     @NotEmpty
     private Long userId;
