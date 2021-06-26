@@ -71,8 +71,14 @@ public class SharingBoardService {
             return DefaultRes.response(HttpStatus.NO_CONTENT.value(),"글이 존재하지 않음");
         }
 
+        if(!boardId.equals(request.getUserId())){
+            return DefaultRes.response(HttpStatus.OK.value(),"글 수정 실패");
+        }
+
+        // UPDATE
         SharingBoard updateBoard = boardById.get().updateBoard(request);
         SharingBoard saveBoard = sharingBoardRepository.save(updateBoard);
+        //
 
         if(saveBoard.getId().equals(boardId)){
             return DefaultRes.response(HttpStatus.OK.value(),"글 수정 성공");
@@ -109,11 +115,10 @@ public class SharingBoardService {
         List<SimpleBoardResponse> simpleBoardResponseList = new LinkedList<>();
 
         for(SharingBoard sharingBoard : sharingBoardList){
-            SimpleBoardResponse simpleBoardResponse = modelMapper.map(sharingBoard, SimpleBoardResponse.class);
+            Integer replyCnt = sharingBoard.getReplyCnt();
+            Integer likeCnt = sharingBoardLikeRepository.countBySharingBoardId(sharingBoard.getId());
 
-            simpleBoardResponse.setReplyCnt(sharingBoard.getReplyCnt());
-            simpleBoardResponse.setLikeCnt(sharingBoardLikeRepository.countBySharingBoardId(sharingBoard.getId()));
-
+            SimpleBoardResponse simpleBoardResponse = new SimpleBoardResponse(sharingBoard, replyCnt, likeCnt);
             simpleBoardResponseList.add(simpleBoardResponse);
         }
         return simpleBoardResponseList;

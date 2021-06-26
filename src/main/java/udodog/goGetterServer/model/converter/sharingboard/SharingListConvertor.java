@@ -21,6 +21,7 @@ public class SharingListConvertor implements RepresentationModelAssembler<Defaul
 
         return EntityModel.of(defaultRes,
                 linkTo(methodOn(SharingBoardController.class).getBoardList(null)).withSelfRel(),
-                linkTo(methodOn(SharingBoardController.class).getBoardDetail(null)).withRel("detail"));
+                linkTo(methodOn(SharingBoardController.class).getBoardDetail(null)).withRel("detail"),
+                linkTo(methodOn(SharingBoardController.class).createSharingBoard(null)).withRel("create"));
     }
 }

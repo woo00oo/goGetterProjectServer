@@ -31,6 +31,7 @@ public class SharingBoard {
     @OneToMany(mappedBy = "sharingBoard" )
     private List<SharingBoardReply> sharingBoardReplyList = new LinkedList<>();
 
+
     @Builder
     public SharingBoard(User user, String title, String content) {
         this.user = user;
@@ -43,13 +44,10 @@ public class SharingBoard {
     }
 
     public SharingBoard updateBoard(UpdateBoardRequest request) {
-        if(!this.title.equals(request.getTitle())){
-            this.title = request.getTitle();
-        }
 
-        if(!this.content.equals(request.getContent())){
-            this.content = request.getContent();
-        }
+        this.title = request.getTitle();
+        this.content = request.getContent();
+
         return this;
     }
 }
