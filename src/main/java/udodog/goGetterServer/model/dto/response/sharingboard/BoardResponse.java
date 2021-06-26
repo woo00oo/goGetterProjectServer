@@ -1,27 +1,21 @@
 package udodog.goGetterServer.model.dto.response.sharingboard;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
+import udodog.goGetterServer.model.entity.SharingBoard;
 import udodog.goGetterServer.model.entity.SharingBoardReply;
-import udodog.goGetterServer.model.entity.User;
 
-import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
-@Data
-@AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@Getter
 public class BoardResponse {
 
     private Long id;
 
-    private User user;
+    private WriterInfo writerInfo;
 
     private String title;
 
@@ -29,5 +23,23 @@ public class BoardResponse {
 
     private LocalDate createdAt;
 
-    private List<SharingBoardReply> sharingBoardReplyList = new LinkedList<>();
+    private List<SharingBoardReply> sharingBoardReplyList;
+
+    public BoardResponse(Optional<SharingBoard> sharingBoard) {
+        SharingBoard board = sharingBoard.get();
+
+        this.id = board.getId();
+        WriterInfo writerInfo = WriterInfo.
+                builder().
+                nickName(board.getUser().getNickName()).
+                profileUrl(board.getUser().getProfileUrl()).
+                build();
+
+        this.writerInfo = writerInfo;
+        this.title = board.getTitle();
+        this.content = board.getContent();
+        this.createdAt = board.getCreatedAt();
+        this.sharingBoardReplyList = board.getSharingBoardReplyList();
+
+    }
 }

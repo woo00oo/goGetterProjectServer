@@ -45,7 +45,7 @@ public class SharingBoardService {
         public DefaultRes<BoardResponse> getBoardDetail(Long boardId) {
         Optional<SharingBoard> sharingBoard = sharingBoardRepository.findById(boardId);
 
-        return sharingBoard.map(board -> DefaultRes.response(HttpStatus.OK.value(), "조회 성공",modelMapper.map(board,BoardResponse.class)))
+        return sharingBoard.map(board -> DefaultRes.response(HttpStatus.OK.value(), "조회 성공",new BoardResponse(sharingBoard)))
                 .orElseGet(()->{
                     return DefaultRes.response(HttpStatus.OK.
                             value(), "데이터 없음");
