@@ -51,8 +51,7 @@ public class SharingBoardController {
     }
 
 
-    // test 필요
-    @ApiOperation(value = "공유 게시판 글 작성 조회 API", notes = "공유 게시판 게시글 작성 시 사용되는 API입니다.")
+    @ApiOperation(value = "공유 게시판 글 작성 API", notes = "공유 게시판 게시글 작성 시 사용되는 API입니다.")
     @ApiResponses(value ={
             @ApiResponse(code = 200, message = "1.글 등록 성공 \t\n 2.글 등록 실패 \t\n 3.토큰 에러"),
     })

@@ -13,13 +13,13 @@ import java.util.Optional;
 @Repository
 public interface SharingBoardRepository extends JpaRepository<SharingBoard,Long> {
 
-    @Query(value = "select board from SharingBoard board join fetch board.user join fetch board.sharingBoardReplyList",
+    @Query(value = "select board from SharingBoard board join fetch board.user",
             countQuery = "select count(board) from SharingBoard ")
     Page<SharingBoard> findAll(Pageable pageable);
 
 
 
-    @Query(value = "select board from SharingBoard board join fetch board.user join fetch board.sharingBoardReplyList where board.id = :boardId")
+    @Query(value = "select board from SharingBoard board join fetch board.user where board.id = :boardId")
     Optional<SharingBoard> findById(@Param("boardId") Long id);
 
 }

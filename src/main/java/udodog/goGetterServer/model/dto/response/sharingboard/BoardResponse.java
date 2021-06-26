@@ -23,8 +23,6 @@ public class BoardResponse {
 
     private LocalDate createdAt;
 
-    private List<SharingBoardReply> sharingBoardReplyList;
-
     public BoardResponse(Optional<SharingBoard> sharingBoard) {
         SharingBoard board = sharingBoard.get();
 
@@ -39,7 +37,6 @@ public class BoardResponse {
         this.title = board.getTitle();
         this.content = board.getContent();
         this.createdAt = board.getCreatedAt();
-        this.sharingBoardReplyList = board.getSharingBoardReplyList();
 
     }
 }

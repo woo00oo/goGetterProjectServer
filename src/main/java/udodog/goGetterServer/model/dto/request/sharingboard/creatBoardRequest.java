@@ -1,20 +1,12 @@
 package udodog.goGetterServer.model.dto.request.sharingboard;
 
-import com.sun.istack.NotNull;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import udodog.goGetterServer.model.entity.User;
-
+import lombok.*;
 import javax.validation.constraints.NotEmpty;
 
 
-@Data
-@AllArgsConstructor
+@Getter
 @NoArgsConstructor
-@Builder
 public class creatBoardRequest {
 
     @NotEmpty

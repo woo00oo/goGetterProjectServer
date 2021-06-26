@@ -15,9 +15,11 @@ import udodog.goGetterServer.model.dto.request.sharingboard.creatBoardRequest;
 import udodog.goGetterServer.model.dto.response.sharingboard.BoardResponse;
 import udodog.goGetterServer.model.dto.response.sharingboard.SimpleBoardResponse;
 import udodog.goGetterServer.model.entity.SharingBoard;
+import udodog.goGetterServer.model.entity.User;
 import udodog.goGetterServer.repository.SharingBoardLikeRepository;
 import udodog.goGetterServer.repository.SharingBoardReplyRepository;
 import udodog.goGetterServer.repository.SharingBoardRepository;
+import udodog.goGetterServer.repository.UserRepository;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -30,7 +32,7 @@ public class SharingBoardService {
     private final SharingBoardRepository sharingBoardRepository;
     private final SharingBoardLikeRepository sharingBoardLikeRepository;
     private final SharingBoardReplyRepository sharingBoardReplyRepository;
-    private final ModelMapper modelMapper;
+    private final UserRepository userRepository;
 
     public DefaultRes<List<SimpleBoardResponse>> getBoardList(Pageable pageable) {
         Page<SharingBoard> sharingBoardList = sharingBoardRepository.findAll(pageable);
@@ -53,7 +55,12 @@ public class SharingBoardService {
     }
 
     public DefaultRes createSharingBoard(creatBoardRequest request) {
-        SharingBoard sharingBoard = modelMapper.map(request, SharingBoard.class);
+        Optional<User> user = userRepository.findById(request.getUserId());
+        if (user.isEmpty()){
+            return DefaultRes.response(HttpStatus.OK.value(),"글 등록 실패");
+        }
+
+        SharingBoard sharingBoard = new SharingBoard(request, user);
         SharingBoard saveBoard = sharingBoardRepository.save(sharingBoard);
 
         if(sharingBoard.getId().equals(saveBoard.getId())){
