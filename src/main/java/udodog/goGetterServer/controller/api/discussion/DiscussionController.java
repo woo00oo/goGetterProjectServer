@@ -72,16 +72,16 @@ public class DiscussionController {
 
     @PutMapping("/api/user/discussions")
     public ResponseEntity<EntityModel<DefaultRes>> updateBoard(
-            @RequestBody DiscussionEditRequest updatetRequestDto, @PathVariable Long id){
+            @RequestBody DiscussionEditRequest updatetRequestDto, @RequestParam("id") Long id){
         return new ResponseEntity<>(discussionConvertor.toModel(discussionService.updateBoard(updatetRequestDto, id)), HttpStatus.OK);
     }
 
     @ApiOperation(value = "토론게시판 글삭제 API",notes = "글삭제 API입니다.")
     @ApiResponses(value ={
-            @ApiResponse(code=200, message = "1.삭제성공 \\t\\n 2. 삭제실패 \\t\\n 3. 토큰에러")
+            @ApiResponse(code=200, message = "1.삭제성공 \\t\\n 2. 삭제실패 \\t\\n 3. 데이터없음 \\t\\n 4. 토큰에러")
     })
     @DeleteMapping("/api/user/discussions")
-    public ResponseEntity<EntityModel<DefaultRes<DiscussionDetailResponse>>> deleteBoard (@PathVariable Long id){
+    public ResponseEntity<EntityModel<DefaultRes<DiscussionDetailResponse>>> deleteBoard (@RequestParam("id") Long id){
         return new ResponseEntity<>(discussionConvertor.toModel(discussionService.delete(id)), HttpStatus.OK);
     }
 }

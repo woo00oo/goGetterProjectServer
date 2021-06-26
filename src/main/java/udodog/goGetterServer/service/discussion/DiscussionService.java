@@ -28,7 +28,8 @@ public class DiscussionService {
 
     // 전체 목록 조회
     public DefaultRes<List<DiscussionReseponseDto>> getBoardList(Pageable pageable) {// 페이징 변수
-        Page<DiscussionBoard> discussionBoardPage = discussionBoardRepository.findAll(pageable);
+
+        Page<DiscussionBoard> discussionBoardPage = discussionBoardRepository.findAllWithFetchJoin(pageable);
 
         if(discussionBoardPage.getTotalElements() == 0){
             return DefaultRes.response(HttpStatus.OK.value(), "데이터없음");
@@ -69,13 +70,13 @@ public class DiscussionService {
         if(requestDto == null){
             return DefaultRes.response(HttpStatus.OK.value(), "등록실패");
         }else {
-            discussionBoardRepository.save(requestDto.toEntity());
+            discussionBoardRepository.save(requestDto.toEntity(requestDto));
             return DefaultRes.response(HttpStatus.OK.value(), "등록성공");
         }
     }
 
     // 게시글 수정
-    public DefaultRes updateBoard(DiscussionEditRequest update, long id) {
+    public DefaultRes updateBoard(DiscussionEditRequest update, Long id) {
 
         Optional<DiscussionBoard> optionalBoard = discussionBoardRepository.findById(id);
 
@@ -84,9 +85,9 @@ public class DiscussionService {
         }
 
         DiscussionBoard updateBoard = optionalBoard.get().updateBoard(update);
+        DiscussionBoard saveboard = discussionBoardRepository.save(updateBoard);
 
-        if(updateBoard.equals(optionalBoard)){
-            DiscussionBoard save = discussionBoardRepository.save(updateBoard);
+        if(saveboard.getId() == optionalBoard.get().getId()){
             return DefaultRes.response(HttpStatus.OK.value(), "수정성공");
         }else {
             return DefaultRes.response(HttpStatus.OK.value(), "수정실패");
@@ -97,11 +98,16 @@ public class DiscussionService {
     public DefaultRes delete(Long id) {
         Optional<DiscussionBoard> optionalBoard = discussionBoardRepository.findById(id);
 
-        if (!optionalBoard.isEmpty()){
-            discussionBoardRepository.deleteById(id);
-            return DefaultRes.response(HttpStatus.OK.value(), "삭제성공");
-        }else{
+        if (optionalBoard.isEmpty()){
+            return DefaultRes.response(HttpStatus.OK.value(), "데이터없음");
+        }
+
+        if(optionalBoard.get().getId() != id){
             return DefaultRes.response(HttpStatus.OK.value(), "삭제실패");
         }
+
+        discussionBoardRepository.deleteById(id);
+
+        return DefaultRes.response(HttpStatus.OK.value(), "삭제성공");
     }
 }
