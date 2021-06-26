@@ -6,7 +6,6 @@ import javax.validation.constraints.NotEmpty;
 
 
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor
 public class UpdateBoardRequest {
 
