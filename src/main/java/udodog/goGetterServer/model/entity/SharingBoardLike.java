@@ -10,15 +10,13 @@ public class SharingBoardLike {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private User user;
+    private Long userId;
 
-    @ManyToOne(fetch =FetchType.LAZY)
-    private SharingBoard sharingBoard;
+    private Long sharingBoardId;
 
     @Builder
-    public SharingBoardLike(User user, SharingBoard sharingBoard) {
-        this.user = user;
-        this.sharingBoard = sharingBoard;
+    public SharingBoardLike(Long userId, Long sharingBoardId) {
+        this.userId = userId;
+        this.sharingBoardId = sharingBoardId;
     }
 }

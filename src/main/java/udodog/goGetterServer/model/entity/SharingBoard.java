@@ -4,7 +4,7 @@ import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import udodog.goGetterServer.model.dto.request.sharingboard.UpdateBoardRequest;
-import udodog.goGetterServer.model.dto.request.sharingboard.creatBoardRequest;
+import udodog.goGetterServer.model.dto.request.sharingboard.CreateBoardRequest;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -41,7 +41,7 @@ public class SharingBoard {
         this.content = content;
     }
 
-    public SharingBoard(creatBoardRequest request, Optional<User> user) {
+    public SharingBoard(CreateBoardRequest request, Optional<User> user) {
         this.user = user.get();
         this.title = request.getTitle();
         this.content = request.getContent();

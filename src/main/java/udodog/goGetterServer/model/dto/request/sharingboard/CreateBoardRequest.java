@@ -7,7 +7,7 @@ import javax.validation.constraints.NotEmpty;
 
 @Getter
 @NoArgsConstructor
-public class creatBoardRequest {
+public class CreateBoardRequest {
 
     @NotEmpty
     @ApiModelProperty(value = "현재 로그인중인 사용자의 userId")

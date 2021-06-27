@@ -16,7 +16,7 @@ import udodog.goGetterServer.model.converter.sharingboard.SharingConvertor;
 import udodog.goGetterServer.model.converter.sharingboard.SharingListConvertor;
 import udodog.goGetterServer.model.dto.DefaultRes;
 import udodog.goGetterServer.model.dto.request.sharingboard.UpdateBoardRequest;
-import udodog.goGetterServer.model.dto.request.sharingboard.creatBoardRequest;
+import udodog.goGetterServer.model.dto.request.sharingboard.CreateBoardRequest;
 import udodog.goGetterServer.model.dto.response.sharingboard.BoardResponse;
 import udodog.goGetterServer.model.dto.response.sharingboard.SimpleBoardResponse;
 import udodog.goGetterServer.service.sharingboard.SharingBoardService;
@@ -56,7 +56,7 @@ public class SharingBoardController {
             @ApiResponse(code = 200, message = "1.글 등록 성공 \t\n 2.글 등록 실패 \t\n 3.토큰 에러"),
     })
     @PostMapping("/api/user/sharings")
-    public ResponseEntity<DefaultRes> createSharingBoard(@RequestBody creatBoardRequest request){
+    public ResponseEntity<DefaultRes> createSharingBoard(@RequestBody CreateBoardRequest request){
         return new ResponseEntity<>(sharingBoardService.createSharingBoard(request), HttpStatus.OK);
     }
 

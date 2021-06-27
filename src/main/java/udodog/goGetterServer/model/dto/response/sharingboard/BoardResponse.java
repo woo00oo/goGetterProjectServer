@@ -23,7 +23,13 @@ public class BoardResponse {
 
     private LocalDate createdAt;
 
-    public BoardResponse(Optional<SharingBoard> sharingBoard) {
+    // 댓글 수
+    private Integer replyCnt;
+
+    // 좋아요 수
+    private Integer likeCnt;
+
+    public BoardResponse(Optional<SharingBoard> sharingBoard,Integer replyCnt, Integer likeCnt) {
         SharingBoard board = sharingBoard.get();
 
         this.id = board.getId();
@@ -37,6 +43,9 @@ public class BoardResponse {
         this.title = board.getTitle();
         this.content = board.getContent();
         this.createdAt = board.getCreatedAt();
+
+        this.replyCnt = replyCnt;
+        this.likeCnt = likeCnt;
 
     }
 }

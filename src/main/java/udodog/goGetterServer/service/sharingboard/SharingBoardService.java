@@ -2,7 +2,6 @@ package udodog.goGetterServer.service.sharingboard;
 
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
-import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -11,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import udodog.goGetterServer.model.dto.DefaultRes;
 import udodog.goGetterServer.model.dto.Pagination;
 import udodog.goGetterServer.model.dto.request.sharingboard.UpdateBoardRequest;
-import udodog.goGetterServer.model.dto.request.sharingboard.creatBoardRequest;
+import udodog.goGetterServer.model.dto.request.sharingboard.CreateBoardRequest;
 import udodog.goGetterServer.model.dto.response.sharingboard.BoardResponse;
 import udodog.goGetterServer.model.dto.response.sharingboard.SimpleBoardResponse;
 import udodog.goGetterServer.model.entity.SharingBoard;
@@ -47,14 +46,15 @@ public class SharingBoardService {
         public DefaultRes<BoardResponse> getBoardDetail(Long boardId) {
         Optional<SharingBoard> sharingBoard = sharingBoardRepository.findById(boardId);
 
-        return sharingBoard.map(board -> DefaultRes.response(HttpStatus.OK.value(), "조회 성공",new BoardResponse(sharingBoard)))
+        return sharingBoard.map(board -> DefaultRes.response(HttpStatus.OK.value(), "조회 성공",
+                new BoardResponse(sharingBoard,board.getReplyCnt(),sharingBoardLikeRepository.countBySharingBoardId(board.getId()))))
                 .orElseGet(()->{
                     return DefaultRes.response(HttpStatus.OK.
                             value(), "데이터 없음");
                 });
     }
 
-    public DefaultRes createSharingBoard(creatBoardRequest request) {
+    public DefaultRes createSharingBoard(CreateBoardRequest request) {
         Optional<User> user = userRepository.findById(request.getUserId());
         if (user.isEmpty()){
             return DefaultRes.response(HttpStatus.OK.value(),"글 등록 실패");
