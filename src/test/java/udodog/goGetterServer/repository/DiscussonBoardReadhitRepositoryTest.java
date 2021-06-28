@@ -25,10 +25,10 @@ class DiscussonBoardReadhitRepositoryTest {
     private UserRepository userRepository;
 
     @Autowired
-    private DiscussonBoardRepository discussonBoardRepository;
+    private DiscussionBoardRepository discussonBoardRepository;
 
     @Autowired
-    private DiscussonBoardReadhitRepository discussonBoardReadhitRepository;
+    private DiscussionBoardReadhitRepository discussonBoardReadhitRepository;
 
     @Test
     void saveDiscussiontReadhit(){

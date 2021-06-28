@@ -10,7 +10,7 @@ import udodog.goGetterServer.model.entity.DiscussionBoard;
 import java.util.Optional;
 
 @Repository
-public interface DiscussonBoardRepository extends JpaRepository<DiscussionBoard, Long> {
+public interface DiscussionBoardRepository extends JpaRepository<DiscussionBoard, Long> {
 
     @Query(value = "select d from DiscussionBoard d join fetch d.user",
             countQuery = "select count(d) from DiscussionBoard")

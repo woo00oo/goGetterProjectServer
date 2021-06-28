@@ -11,14 +11,16 @@ import udodog.goGetterServer.model.entity.DiscussionBoardReply;
 import java.util.Optional;
 
 
-public interface DiscussonBoardReplyRepository extends JpaRepository<DiscussionBoardReply, Long> {
+public interface DiscussionBoardReplyRepository extends JpaRepository<DiscussionBoardReply, Long> {
 
     @Query(value = "select dr from DiscussionBoardReply dr join fetch dr.discussionBoard d join fetch d.user where d.id= :id",
             countQuery = "select count(dr) from DiscussionBoardReply")
     Page<DiscussionBoardReply> findAllWithFetchJoin(Long id, Pageable pageable);
 
     @Query(value = "select dr from DiscussionBoardReply dr join fetch dr.discussionBoard d where d.id = :discussionId")
-    Optional<DiscussionBoardReply> findById(Long discussionId);
+    Optional<DiscussionBoardReply> findByDiscussionId(Long discussionId);
+
+    Optional<DiscussionBoardReply> findById(Long id);
 
     @Transactional
     @Modifying

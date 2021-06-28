@@ -1,0 +1,86 @@
+package udodog.goGetterServer.controller.api.discussion;
+
+import io.swagger.annotations.*;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import udodog.goGetterServer.model.converter.discussion.DiscussionReplyConvertor;
+import udodog.goGetterServer.model.converter.discussion.DiscussionReplyListConvertor;
+import udodog.goGetterServer.model.dto.DefaultRes;
+import udodog.goGetterServer.model.dto.request.discussion.DiscussionReplyEditRequest;
+import udodog.goGetterServer.model.dto.request.discussion.DiscussionReplyInsertRequest;
+import udodog.goGetterServer.model.dto.response.discussion.DiscussionReplyResponse;
+import udodog.goGetterServer.model.entity.DiscussionBoardReply;
+import udodog.goGetterServer.service.discussion.DiscussionReplyService;
+
+import javax.validation.Valid;
+import java.util.List;
+
+@Api(tags = {"토론 게시판 댓글 관련 API"})
+@RestController
+@RequiredArgsConstructor
+public class DiscussionReplyController {
+
+    private final DiscussionReplyListConvertor replyListConvertor;
+    private final DiscussionReplyConvertor replyConvertor;
+    private final DiscussionReplyService replyService;
+
+    @ApiOperation(value = "토론게시판 댓글 등록 API",notes = "댓글 등록 API 입니다.")
+    @ApiResponses(value ={
+            @ApiResponse(code=200, message = "1. 등록성공 \t\n 2. 등록실패 \t\n 3. 토큰에러")
+    })
+
+    // 글 등록 Controller
+    @PostMapping("/api/user/discussionreplies")
+    public ResponseEntity<EntityModel<DefaultRes<DiscussionReplyResponse>>> createReply(
+            @ApiParam("필수 : 모든사항")
+            @RequestBody DiscussionReplyInsertRequest requestDto){
+        return new ResponseEntity<>(replyConvertor.toModel(replyService.createReply(requestDto)), HttpStatus.OK);
+    }
+
+
+    @ApiOperation(value = "토론게시판 댓글 전체 목록 조회 API",notes = "댓글 전체 목록 조회 API입니다.")
+    @ApiResponses(value ={
+            @ApiResponse(code=200, message = "1. 조회성공 \t\n 2. 데이터없음 \t\n 3. 토큰에러")
+    })
+
+    // 댓글 조회 Controller
+    @GetMapping("/api/bkuser/discussionreplies")
+    public ResponseEntity<EntityModel<DefaultRes<List<DiscussionReplyResponse>>>> getBoardReplyList(
+            @RequestParam("discussionId") Long discussionId,
+            @PageableDefault(sort = "createAt", direction = Sort.Direction.DESC, size = 3) Pageable pageable // 최신 날짜순으로 내림차순, 페이지당 3개씩 출력
+    ){
+        return new ResponseEntity<>(replyListConvertor.toModel(replyService.getBoardReplyList(discussionId, pageable)), HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "토론게시판 댓글 수정 API",notes = "댓글 수정 API입니다.")
+    @ApiResponses(value ={
+            @ApiResponse(code=200, message = "1. 수정성공 \t\n 2. 데이터없음 \t\n 3. 수정실패 \t\n 4. 토큰에러")
+    })
+
+    // 댓글 수정 Controller
+    @PutMapping("/api/user/discussionreplies")
+    public ResponseEntity<EntityModel<DefaultRes<DiscussionReplyEditRequest>>> updateReply(
+            @RequestParam("discussionId") Long discussionId,
+            @Valid@RequestBody DiscussionReplyEditRequest requestDto
+    ){
+        return new ResponseEntity<>(replyConvertor.toModel(replyService.updateReply(requestDto, discussionId)), HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "토론게시판 댓글삭제 API",notes = "댓글삭제 API입니다.")
+    @ApiResponses(value ={
+            @ApiResponse(code=200, message = "1.삭제성공 \\t\\n 2. 삭제실패 \\t\\n 3. 데이터없음 \\t\\n 4. 토큰에러")
+    })
+
+    // 댓글 삭제 Controller
+    @DeleteMapping("/api/user/discussionreplies")
+    public ResponseEntity<EntityModel<DefaultRes<DiscussionBoardReply>>> deleteReply (@RequestParam("id") Long id,
+                                                                                      @RequestParam("userId") Long userId){
+        return new ResponseEntity<>(replyConvertor.toModel(replyService.delete(id, userId)), HttpStatus.OK);
+    }
+}

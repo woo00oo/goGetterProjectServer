@@ -1,7 +1,6 @@
 package udodog.goGetterServer.service.discussion;
 
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -13,8 +12,8 @@ import udodog.goGetterServer.model.dto.request.discussion.DiscussionInsertReques
 import udodog.goGetterServer.model.dto.response.discussion.DiscussionDetailResponse;
 import udodog.goGetterServer.model.dto.response.discussion.DiscussionReseponseDto;
 import udodog.goGetterServer.model.entity.DiscussionBoard;
-import udodog.goGetterServer.repository.DiscussonBoardReplyRepository;
-import udodog.goGetterServer.repository.DiscussonBoardRepository;
+import udodog.goGetterServer.repository.DiscussionBoardReplyRepository;
+import udodog.goGetterServer.repository.DiscussionBoardRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,8 +23,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class DiscussionService {
 
-    private final DiscussonBoardRepository discussionBoardRepository;
-    private final DiscussonBoardReplyRepository replyRepository;
+    private final DiscussionBoardRepository discussionBoardRepository;
+    private final DiscussionBoardReplyRepository replyRepository;
 
     // 전체 목록 조회
     public DefaultRes<List<DiscussionReseponseDto>> getBoardList(Pageable pageable) {// 페이징 변수
