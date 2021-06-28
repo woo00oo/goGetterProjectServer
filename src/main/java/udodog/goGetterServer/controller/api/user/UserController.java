@@ -73,9 +73,4 @@ public class UserController {
         return new ResponseEntity<>(userConverter.toModel(userService.signIn(requestDto)), HttpStatus.OK);
     }
 
-    @GetMapping("/bkusers/hello")
-    public String hello(){
-        return "ok";
-    }
-
 }
