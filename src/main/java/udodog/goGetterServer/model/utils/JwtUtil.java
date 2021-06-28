@@ -16,8 +16,8 @@ public class JwtUtil {
     //리프레시 토큰 유효시간 24시간(ms단위)
     public static Long REFRESH_TOKEN_VALID_TIME = 1440 * 60 * 1000L;
 
-    //엑세스 토큰 유효시간 30분
-    public static Long ACCESS_TOKEN_VALID_TIME =  30 * 60 * 1000L;
+    //엑세스 토큰 유효시간 5분
+    public static Long ACCESS_TOKEN_VALID_TIME =  5 * 60 * 1000L;
 
     public static String ACCESS_TOKEN_NAME = "ACCESS TOKEN";
 
@@ -51,7 +51,7 @@ public class JwtUtil {
         return Jwts.builder()
                 .claim("user_pk", userId) //정보 저장
                 .claim("user_grade", userGrade)
-                .claim("token_name", ACCESS_TOKEN_NAME)
+                .claim("token_name", REFRESH_TOKEN_NAME)
                 .setIssuedAt(now)
                 .setExpiration(new Date(now.getTime() + REFRESH_TOKEN_VALID_TIME))
                 .signWith(key, SignatureAlgorithm.HS256)
