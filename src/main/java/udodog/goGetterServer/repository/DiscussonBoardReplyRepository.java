@@ -3,7 +3,9 @@ package udodog.goGetterServer.repository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.transaction.annotation.Transactional;
 import udodog.goGetterServer.model.entity.DiscussionBoardReply;
 
 import java.util.Optional;
@@ -17,4 +19,9 @@ public interface DiscussonBoardReplyRepository extends JpaRepository<DiscussionB
 
     @Query(value = "select dr from DiscussionBoardReply dr join fetch dr.discussionBoard d where d.id = :discussionId")
     Optional<DiscussionBoardReply> findById(Long discussionId);
+
+    @Transactional
+    @Modifying
+    @Query(value = "delete from DiscussionBoardReply dr where dr.discussionBoard.id = :discussionId")
+    void deleteByDiscussionId(Long discussionId);
 }

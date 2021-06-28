@@ -13,6 +13,7 @@ import udodog.goGetterServer.model.dto.request.discussion.DiscussionInsertReques
 import udodog.goGetterServer.model.dto.response.discussion.DiscussionDetailResponse;
 import udodog.goGetterServer.model.dto.response.discussion.DiscussionReseponseDto;
 import udodog.goGetterServer.model.entity.DiscussionBoard;
+import udodog.goGetterServer.repository.DiscussonBoardReplyRepository;
 import udodog.goGetterServer.repository.DiscussonBoardRepository;
 
 import java.util.List;
@@ -24,7 +25,7 @@ import java.util.stream.Collectors;
 public class DiscussionService {
 
     private final DiscussonBoardRepository discussionBoardRepository;
-    private final ModelMapper mapper;
+    private final DiscussonBoardReplyRepository replyRepository;
 
     // 전체 목록 조회
     public DefaultRes<List<DiscussionReseponseDto>> getBoardList(Pageable pageable) {// 페이징 변수
@@ -115,6 +116,7 @@ public class DiscussionService {
             return DefaultRes.response(HttpStatus.OK.value(), "삭제실패");
         }
 
+        replyRepository.deleteByDiscussionId(optionalBoard.get().getId());
         discussionBoardRepository.deleteById(id);
 
         return DefaultRes.response(HttpStatus.OK.value(), "삭제성공");
