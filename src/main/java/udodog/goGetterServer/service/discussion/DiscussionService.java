@@ -65,6 +65,7 @@ public class DiscussionService {
         return discussionDetailResponse;
     }
 
+    // 게시글 등록
     public DefaultRes insertBoard(DiscussionInsertRequestDto requestDto) {
 
         if(requestDto == null){
@@ -80,8 +81,12 @@ public class DiscussionService {
 
         Optional<DiscussionBoard> optionalBoard = discussionBoardRepository.findById(id);
 
-        if(optionalBoard.isEmpty()){
+        if(optionalBoard.isEmpty()) {
             DefaultRes.response(HttpStatus.OK.value(), "데이터없음");
+        }
+
+        if(!(optionalBoard.get().getUser().getId().equals(update.getUserId()))){
+            return DefaultRes.response(HttpStatus.OK.value(), "수정실패");
         }
 
         DiscussionBoard updateBoard = optionalBoard.get().updateBoard(update);
@@ -95,14 +100,18 @@ public class DiscussionService {
     }
 
     // 게시글 삭제
-    public DefaultRes delete(Long id) {
+    public DefaultRes delete(Long id, Long userId) {
         Optional<DiscussionBoard> optionalBoard = discussionBoardRepository.findById(id);
 
         if (optionalBoard.isEmpty()){
             return DefaultRes.response(HttpStatus.OK.value(), "데이터없음");
         }
 
-        if(optionalBoard.get().getId() != id){
+        if(!(optionalBoard.get().getId().equals(id))){
+            return DefaultRes.response(HttpStatus.OK.value(), "삭제실패");
+        }
+
+        if(!(optionalBoard.get().getUser().getId().equals(userId))){
             return DefaultRes.response(HttpStatus.OK.value(), "삭제실패");
         }
 

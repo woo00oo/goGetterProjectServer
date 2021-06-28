@@ -35,7 +35,8 @@ public class DiscussionController {
             @ApiResponse(code=200, message = "1. 조회성공 \t\n 2. 데이터없음 \t\n 3. 토큰에러")
     })
 
-    @GetMapping("/api/discussions") // 전체 조회 Controller
+    // 전체 조회 Controller
+    @GetMapping("/api/discussions")
     public ResponseEntity<EntityModel<DefaultRes<List<DiscussionReseponseDto>>>> getBoardList(
             @PageableDefault(sort = "createAt", direction = Sort.Direction.DESC, size = 7) Pageable pageable // 최신 날짜순으로 내림차순, 페이지당 7개씩 출력
     ){
@@ -47,7 +48,8 @@ public class DiscussionController {
             @ApiResponse(code=200, message = "1. 상세보기성공 \t\n 2. 데이터없음 \t\n 3. 토큰에러")
     })
 
-    @GetMapping("/api/user/discussions") // 상세보기 Controller
+    // 상세보기 Controller
+    @GetMapping("/api/bkuser/discussions")
     public ResponseEntity<EntityModel<DefaultRes<DiscussionDetailResponse>>> getDetailBoard(@RequestParam("id") Long id){
         return new ResponseEntity<>(discussionConvertor.toModel(discussionService.getDetailBoard(id)), HttpStatus.OK);
     }
@@ -57,6 +59,7 @@ public class DiscussionController {
             @ApiResponse(code=200, message = "1.등록성공 \\t\\n 2.등록실패 \\t\\n 3. 토큰에러")
     })
 
+    // 글등록 Controller
     @PostMapping("/api/user/discussions")
     public ResponseEntity<EntityModel<DefaultRes<DiscussionInsertRequestDto>>> insertBoard(
             @ApiParam(value = "필수 : 모든 항목" )
@@ -70,9 +73,10 @@ public class DiscussionController {
             @ApiResponse(code = 200, message = "1.수정성공 \\t\\n 2.수정실패 \\t\\n 3.데이터없음 \\t\\n 4.토큰에러")
     })
 
+    // 글 업데이트 Controller
     @PutMapping("/api/user/discussions")
     public ResponseEntity<EntityModel<DefaultRes>> updateBoard(
-            @RequestBody DiscussionEditRequest updatetRequestDto, @RequestParam("id") Long id){
+            @Valid@RequestBody DiscussionEditRequest updatetRequestDto, @RequestParam("id") Long id){
         return new ResponseEntity<>(discussionConvertor.toModel(discussionService.updateBoard(updatetRequestDto, id)), HttpStatus.OK);
     }
 
@@ -80,8 +84,10 @@ public class DiscussionController {
     @ApiResponses(value ={
             @ApiResponse(code=200, message = "1.삭제성공 \\t\\n 2. 삭제실패 \\t\\n 3. 데이터없음 \\t\\n 4. 토큰에러")
     })
+
+    // 글 삭제 Controller
     @DeleteMapping("/api/user/discussions")
-    public ResponseEntity<EntityModel<DefaultRes<DiscussionDetailResponse>>> deleteBoard (@RequestParam("id") Long id){
-        return new ResponseEntity<>(discussionConvertor.toModel(discussionService.delete(id)), HttpStatus.OK);
+    public ResponseEntity<EntityModel<DefaultRes<DiscussionDetailResponse>>> deleteBoard (@RequestParam("id") Long id, @RequestParam("userId") Long userId){
+        return new ResponseEntity<>(discussionConvertor.toModel(discussionService.delete(id, userId)), HttpStatus.OK);
     }
 }

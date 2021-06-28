@@ -4,6 +4,7 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.stereotype.Component;
 import udodog.goGetterServer.controller.api.discussion.DiscussionController;
+import udodog.goGetterServer.controller.api.discussion.DiscussionReplyController;
 import udodog.goGetterServer.model.dto.DefaultRes;
 import udodog.goGetterServer.model.dto.response.discussion.DiscussionDetailResponse;
 
@@ -19,6 +20,7 @@ public class DiscussionConvertor implements RepresentationModelAssembler<Default
         return EntityModel.of(entity,
                 linkTo(methodOn(DiscussionController.class).getDetailBoard(null)).withRel("detail"),
                 linkTo(methodOn(DiscussionController.class).updateBoard(null, null)).withRel("update"),
-                linkTo(methodOn(DiscussionController.class).deleteBoard(null)).withRel("delete"));
+                linkTo(methodOn(DiscussionController.class).deleteBoard(null, null)).withRel("delete"),
+                linkTo(methodOn(DiscussionReplyController.class).getBoardReplyList(null, null)).withRel("replyList"));
     }
 }
