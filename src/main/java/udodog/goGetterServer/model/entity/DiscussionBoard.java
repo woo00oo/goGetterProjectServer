@@ -9,6 +9,8 @@ import udodog.goGetterServer.model.dto.request.discussion.DiscussionEditRequest;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.LinkedList;
+import java.util.List;
 
 @Entity
 @Getter

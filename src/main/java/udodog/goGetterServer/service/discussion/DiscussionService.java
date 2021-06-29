@@ -12,8 +12,10 @@ import udodog.goGetterServer.model.dto.request.discussion.DiscussionInsertReques
 import udodog.goGetterServer.model.dto.response.discussion.DiscussionDetailResponse;
 import udodog.goGetterServer.model.dto.response.discussion.DiscussionReseponseDto;
 import udodog.goGetterServer.model.entity.DiscussionBoard;
+import udodog.goGetterServer.model.entity.DiscussionBoardReadhit;
 import udodog.goGetterServer.repository.DiscussionBoardReplyRepository;
 import udodog.goGetterServer.repository.DiscussionBoardRepository;
+import udodog.goGetterServer.repository.DiscussionBoardReadhitRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -25,6 +27,7 @@ public class DiscussionService {
 
     private final DiscussionBoardRepository discussionBoardRepository;
     private final DiscussionBoardReplyRepository replyRepository;
+    private final DiscussionBoardReadhitRepository replyCountRepository;
 
     // 전체 목록 조회
     public DefaultRes<List<DiscussionReseponseDto>> getBoardList(Pageable pageable) {// 페이징 변수
@@ -40,8 +43,8 @@ public class DiscussionService {
 
     private List<DiscussionReseponseDto> data(Page<DiscussionBoard> discussionBoardPage) {
 
-       return discussionBoardPage.stream()
-                .map(DiscussionReseponseDto :: new)
+        return discussionBoardPage.stream()
+                .map(DiscussionReseponseDto::new)
                 .collect(Collectors.toList());
     }
 
@@ -66,18 +69,19 @@ public class DiscussionService {
     }
 
     // 게시글 등록
-    public DefaultRes insertBoard(DiscussionInsertRequestDto requestDto) {
+    public DefaultRes insertBoard(DiscussionInsertRequestDto requestDto) {  // 등록Dto
 
         if(requestDto == null){
             return DefaultRes.response(HttpStatus.OK.value(), "등록실패");
         }else {
-            discussionBoardRepository.save(requestDto.toEntity(requestDto));
+            DiscussionBoard board = discussionBoardRepository.save(requestDto.toEntity(requestDto));
+            replyCountRepository.save(new DiscussionBoardReadhit(board, 0));
             return DefaultRes.response(HttpStatus.OK.value(), "등록성공");
         }
     }
 
     // 게시글 수정
-    public DefaultRes updateBoard(DiscussionEditRequest update, Long id) {
+    public DefaultRes updateBoard(DiscussionEditRequest update, Long id) { // 업데이트Dto, 게시글 번호
 
         Optional<DiscussionBoard> optionalBoard = discussionBoardRepository.findById(id);
 
@@ -100,7 +104,7 @@ public class DiscussionService {
     }
 
     // 게시글 삭제
-    public DefaultRes delete(Long id, Long userId) {
+    public DefaultRes delete(Long id, Long userId) { // 게시글 번호, 유저번호
         Optional<DiscussionBoard> optionalBoard = discussionBoardRepository.findById(id);
 
         if (optionalBoard.isEmpty()){
@@ -119,5 +123,61 @@ public class DiscussionService {
         discussionBoardRepository.deleteById(id);
 
         return DefaultRes.response(HttpStatus.OK.value(), "삭제성공");
+    }
+
+    // 제목 검색
+    public DefaultRes<List<DiscussionReseponseDto>> searchTitle(String title, Pageable pageable) {
+
+        Page<DiscussionBoard> boardPage = discussionBoardRepository.findByTitleContaining(title, pageable);
+
+        if(boardPage.isEmpty()){
+            return DefaultRes.response(HttpStatus.OK.value(), "데이터없음");
+        }
+
+        return DefaultRes.response(HttpStatus.OK.value(), "검색성공", searchTitleResult(boardPage), new Pagination(boardPage));
+    }
+
+    private List<DiscussionReseponseDto> searchTitleResult(Page<DiscussionBoard> boardPage) {
+
+        return boardPage.stream()
+                .map(DiscussionReseponseDto::new)
+                .collect(Collectors.toList());
+    }
+
+    // 내용 검색
+    public DefaultRes<List<DiscussionReseponseDto>> searchContent(String content, Pageable pageable) {
+
+        Page<DiscussionBoard> boardPage = discussionBoardRepository.findByContentContaining(content, pageable);
+
+        if(boardPage.isEmpty()){
+            return DefaultRes.response(HttpStatus.OK.value(), "데이터없음");
+        }
+
+        return DefaultRes.response(HttpStatus.OK.value(), "검색성공", searchContentResult(boardPage), new Pagination(boardPage));
+    }
+
+    private List<DiscussionReseponseDto> searchContentResult(Page<DiscussionBoard> boardPage) {
+
+        return boardPage.stream()
+                .map(DiscussionReseponseDto::new)
+                .collect(Collectors.toList());
+    }
+
+    // 제목 + 내용 검색
+    public DefaultRes<List<DiscussionReseponseDto>> searchAll(String search, Pageable pageable) {
+        Page<DiscussionBoard> boardPage = discussionBoardRepository.findByAllContaining(search, pageable);
+
+        if(boardPage.isEmpty()){
+            return DefaultRes.response(HttpStatus.OK.value(), "데이터없음");
+        }
+
+        return DefaultRes.response(HttpStatus.OK.value(), "검색성공", searchAllResult(boardPage), new Pagination(boardPage));
+    }
+
+    private List<DiscussionReseponseDto> searchAllResult(Page<DiscussionBoard> boardPage) {
+
+        return boardPage.stream()
+                .map(DiscussionReseponseDto::new)
+                .collect(Collectors.toList());
     }
 }

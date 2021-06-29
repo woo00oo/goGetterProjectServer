@@ -26,4 +26,8 @@ public interface DiscussionBoardReplyRepository extends JpaRepository<Discussion
     @Modifying
     @Query(value = "delete from DiscussionBoardReply dr where dr.discussionBoard.id = :discussionId")
     void deleteByDiscussionId(Long discussionId);
+
+    @Query(value = "select count(dr) from DiscussionBoardReply dr where dr.discussionBoard.id = :discussionId")
+    Integer countReply(Long discussionId);
+
 }

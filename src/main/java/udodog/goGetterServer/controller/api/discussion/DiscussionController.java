@@ -90,4 +90,40 @@ public class DiscussionController {
     public ResponseEntity<EntityModel<DefaultRes<DiscussionDetailResponse>>> deleteBoard (@RequestParam("id") Long id, @RequestParam("userId") Long userId){
         return new ResponseEntity<>(discussionConvertor.toModel(discussionService.delete(id, userId)), HttpStatus.OK);
     }
+
+    @ApiOperation(value = "토론게시판 제목 검색 API",notes = "제목 검색 API입니다.")
+    @ApiResponses(value ={
+            @ApiResponse(code=200, message = "1.검색성공 \\t\\n 2. 데이터없음 \\t\\n 3. 토큰에러")
+    })
+
+    // 제목으로 검색
+    @GetMapping("/api/discussions/search-title")
+    public ResponseEntity<EntityModel<DefaultRes<List<DiscussionReseponseDto>>>> searchTitle (@RequestParam("title") String title,
+                                                                            @PageableDefault(sort = "createAt", direction = Sort.Direction.DESC, size = 7) Pageable pageable){
+        return new ResponseEntity<>(discussionListConvertor.toModel(discussionService.searchTitle(title, pageable)), HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "토론게시판 내용 검색 API",notes = "내용 검색 API입니다.")
+    @ApiResponses(value ={
+            @ApiResponse(code=200, message = "1.검색성공 \\t\\n 22. 데이터없음 \\t\\n 3. 토큰에러")
+    })
+
+    // 내용으로 검색
+    @GetMapping("/api/discussions/search-content")
+    public ResponseEntity<EntityModel<DefaultRes<List<DiscussionReseponseDto>>>> searchContent (@RequestParam("content") String content,
+                                                                                              @PageableDefault(sort = "createAt", direction = Sort.Direction.DESC, size = 7) Pageable pageable){
+        return new ResponseEntity<>(discussionListConvertor.toModel(discussionService.searchContent(content, pageable)), HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "토론게시판 제목+내용 검색 API",notes = "제목+내용 검색 API입니다.")
+    @ApiResponses(value ={
+            @ApiResponse(code=200, message = "1.검색성공 \\t\\n 2. 데이터없음 \\t\\n 3. 토큰에러")
+    })
+
+    // 제목 + 내용으로 검색
+    @GetMapping("/api/discussions/search-all")
+    public ResponseEntity<EntityModel<DefaultRes<List<DiscussionReseponseDto>>>> searchAll (@RequestParam("search") String search,
+                                                                                                @PageableDefault(sort = "createAt", direction = Sort.Direction.DESC, size = 7) Pageable pageable){
+        return new ResponseEntity<>(discussionListConvertor.toModel(discussionService.searchAll(search, pageable)), HttpStatus.OK);
+    }
 }

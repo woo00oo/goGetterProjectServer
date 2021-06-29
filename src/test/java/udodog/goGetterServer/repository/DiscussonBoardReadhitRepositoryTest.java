@@ -9,6 +9,7 @@ import org.springframework.context.annotation.FilterType;
 import udodog.goGetterServer.config.JpaAuditingConfig;
 import udodog.goGetterServer.model.entity.DiscussionBoard;
 import udodog.goGetterServer.model.entity.DiscussionBoardReadhit;
+import udodog.goGetterServer.model.entity.DiscussionBoardReply;
 import udodog.goGetterServer.model.entity.User;
 import udodog.goGetterServer.model.enumclass.UserGrade;
 
@@ -28,7 +29,10 @@ class DiscussonBoardReadhitRepositoryTest {
     private DiscussionBoardRepository discussonBoardRepository;
 
     @Autowired
-    private DiscussionBoardReadhitRepository discussonBoardReadhitRepository;
+    private DiscussionBoardReplyRepository discussionBoardReplyRepository;
+
+    @Autowired
+    private DiscussionBoardReadhitRepository discussionReplyCountRepository;
 
     @Test
     void saveDiscussiontReadhit(){
@@ -51,17 +55,25 @@ class DiscussonBoardReadhitRepositoryTest {
                 .content("토론 게시판 테스트 내용 입니다.")
                 .build();
 
-        DiscussionBoard saveDiscussion = discussonBoardRepository.save(discussionBoard);
+        DiscussionBoard saveDiscussionBoard = discussonBoardRepository.save(discussionBoard);
 
-        DiscussionBoardReadhit discussionBoardReadhit = DiscussionBoardReadhit.builder()
-                .discussionBoard(saveDiscussion)
+        DiscussionBoardReply discussionBoardReply = DiscussionBoardReply.builder()
+                .discussionBoard(saveDiscussionBoard)
+                .user(saveUser)
+                .content("토론게시판 댓글 테스트 내용 입니다.")
+                .build();
+
+        DiscussionBoardReply saveDiscussionBoardReply = discussionBoardReplyRepository.save(discussionBoardReply);
+
+        DiscussionBoardReadhit discussionBoardCount = DiscussionBoardReadhit.builder()
+                .discussionBoard(saveDiscussionBoard)
                 .count(1)
                 .build();
 
         //when
-        DiscussionBoardReadhit saveDiscussionReadhit = discussonBoardReadhitRepository.save(discussionBoardReadhit);
+        DiscussionBoardReadhit savediscussionBoardCount = discussionReplyCountRepository.save(discussionBoardCount);
 
         //then
-        assertThat(discussionBoardReadhit).isEqualTo(saveDiscussionReadhit);
+        assertThat(discussionBoardCount).isEqualTo(savediscussionBoardCount);
     }
 }

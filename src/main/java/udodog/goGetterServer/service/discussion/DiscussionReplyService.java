@@ -12,6 +12,7 @@ import udodog.goGetterServer.model.dto.request.discussion.DiscussionReplyInsertR
 import udodog.goGetterServer.model.dto.response.discussion.DiscussionReplyResponse;
 import udodog.goGetterServer.model.entity.DiscussionBoardReply;
 import udodog.goGetterServer.repository.DiscussionBoardReplyRepository;
+import udodog.goGetterServer.repository.DiscussionBoardReadhitRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,6 +23,7 @@ import java.util.stream.Collectors;
 public class DiscussionReplyService {
 
     private final DiscussionBoardReplyRepository replyRepository;
+    private final DiscussionBoardReadhitRepository replyCountRepository;
 
     // 댓글 등록
     public DefaultRes createReply(DiscussionReplyInsertRequest requestDto) {
@@ -29,7 +31,7 @@ public class DiscussionReplyService {
         if(requestDto == null) {
             return DefaultRes.response(HttpStatus.OK.value(), "등록실패");
         }else {
-           replyRepository.save(requestDto.toEntity(requestDto));
+           DiscussionBoardReply saveReply = replyRepository.save(requestDto.toEntity(requestDto));
            return DefaultRes.response(HttpStatus.OK.value(), "등록성공");
         }
     }
