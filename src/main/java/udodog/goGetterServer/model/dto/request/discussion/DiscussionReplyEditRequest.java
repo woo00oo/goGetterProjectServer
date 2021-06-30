@@ -1,18 +1,23 @@
 package udodog.goGetterServer.model.dto.request.discussion;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
 
 @Getter
-@AllArgsConstructor
+@NoArgsConstructor
 public class DiscussionReplyEditRequest {
 
     @NotNull
-    Long userId;
+    private Long userId;
 
     @NotNull
     private String content;
+
+    public DiscussionReplyEditRequest(Long userId, String content) {
+        this.userId = userId;
+        this.content = content;
+    }
 
 }

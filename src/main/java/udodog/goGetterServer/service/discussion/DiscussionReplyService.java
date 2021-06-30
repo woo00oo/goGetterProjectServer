@@ -94,7 +94,7 @@ public class DiscussionReplyService {
             return DefaultRes.response(HttpStatus.OK.value(), "삭제실패");
         }
 
-        replyRepository.deleteById(id);
+        replyRepository.delete(id, userId);
         return DefaultRes.response(HttpStatus.OK.value(), "삭제성공");
     }
 }

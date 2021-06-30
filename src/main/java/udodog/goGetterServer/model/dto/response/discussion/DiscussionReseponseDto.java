@@ -18,7 +18,7 @@ public class DiscussionReseponseDto {
     private LocalDate createAt;
 
     // 조회 수
-    private Integer readHit;
+    private int readHit;
 
     public DiscussionReseponseDto(DiscussionBoard discussionBoard, Optional<DiscussionBoardReadhit> readhit) {
         this.id = discussionBoard.getId();

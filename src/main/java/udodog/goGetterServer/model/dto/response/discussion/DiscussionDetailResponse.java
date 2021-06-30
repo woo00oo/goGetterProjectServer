@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import udodog.goGetterServer.model.entity.DiscussionBoard;
+import udodog.goGetterServer.model.entity.User;
 
 import java.time.LocalDate;
 
@@ -13,7 +14,7 @@ import java.time.LocalDate;
 public class DiscussionDetailResponse {
 
     private Long id;
-    private String userNickname;
+    private User user;
     private String title;
     private String content;
     private String profileUrl;
@@ -21,7 +22,7 @@ public class DiscussionDetailResponse {
 
     public DiscussionDetailResponse(DiscussionBoard discussionBoard){
         this.id = discussionBoard.getId();
-        this.userNickname = discussionBoard.getUser().getNickName();
+        this.user = discussionBoard.getUser();
         this.title = discussionBoard.getTitle();
         this.content = discussionBoard.getContent();
         this.profileUrl = discussionBoard.getUser().getProfileUrl();

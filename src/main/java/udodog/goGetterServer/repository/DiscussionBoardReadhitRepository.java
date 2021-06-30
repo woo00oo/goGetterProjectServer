@@ -14,13 +14,13 @@ public interface DiscussionBoardReadhitRepository extends JpaRepository<Discussi
     @Transactional
     @Modifying
     @Query(value = "update DiscussionBoardReadhit rh set rh.count = :count where rh.discussionBoard.id = :discussionId")
-    void updateCount(@Param("discussionId") Long discussionId, Integer count);
+    void updateCount(@Param("discussionId") Long discussionId, @Param("count") int count);
 
     @Query(value = "select rh from DiscussionBoardReadhit rh where rh.discussionBoard.id = :discussionId")
-    Optional<DiscussionBoardReadhit> findByDiscussionId(Long discussionId);
+    Optional<DiscussionBoardReadhit> findByDiscussionId(@Param("discussionId") Long discussionId);
 
     @Transactional
     @Modifying
     @Query(value = "delete from DiscussionBoardReadhit rh where rh.discussionBoard.id = :discussionId")
-    void deleteByDiscussionId(Long discussionId);
+    void deleteByDiscussionId(@Param("discussionId") Long discussionId);
 }

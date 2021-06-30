@@ -1,10 +1,8 @@
 package udodog.goGetterServer.model.entity;
 
-import io.swagger.models.auth.In;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
@@ -23,10 +21,10 @@ public class DiscussionBoardReadhit {
     @JoinColumn(name = "discussion_id")
     private DiscussionBoard discussionBoard;
 
-    Integer count;
+    int count;
 
     @Builder
-    public DiscussionBoardReadhit(DiscussionBoard discussionBoard, Integer count) {
+    public DiscussionBoardReadhit(DiscussionBoard discussionBoard, int count) {
         this.discussionBoard = discussionBoard;
         this.count = count;
     }

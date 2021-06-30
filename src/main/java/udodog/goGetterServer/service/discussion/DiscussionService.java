@@ -155,7 +155,7 @@ public class DiscussionService {
     private List<DiscussionReseponseDto> searchTitleResult(Page<DiscussionBoard> boardPage) {
 
         return boardPage.stream()
-                .map(board -> new DiscussionReseponseDto(board, readhitRepository.findById(board.getId())))
+                .map(board -> new DiscussionReseponseDto(board, readhitRepository.findByDiscussionId(board.getId())))
                 .collect(Collectors.toList());
     }
 
@@ -174,7 +174,7 @@ public class DiscussionService {
     private List<DiscussionReseponseDto> searchContentResult(Page<DiscussionBoard> boardPage) {
 
         return boardPage.stream()
-                .map(board -> new DiscussionReseponseDto(board, readhitRepository.findById(board.getId())))
+                .map(board -> new DiscussionReseponseDto(board, readhitRepository.findByDiscussionId(board.getId())))
                 .collect(Collectors.toList());
     }
 
@@ -192,7 +192,7 @@ public class DiscussionService {
     private List<DiscussionReseponseDto> searchAllResult(Page<DiscussionBoard> boardPage) {
 
         return boardPage.stream()
-                .map(board -> new DiscussionReseponseDto(board, readhitRepository.findById(board.getId())))
+                .map(board -> new DiscussionReseponseDto(board, readhitRepository.findByDiscussionId(board.getId())))
                 .collect(Collectors.toList());
     }
 }
