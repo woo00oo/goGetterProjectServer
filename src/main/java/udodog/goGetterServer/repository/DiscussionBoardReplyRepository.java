@@ -10,7 +10,6 @@ import udodog.goGetterServer.model.entity.DiscussionBoardReply;
 
 import java.util.Optional;
 
-
 public interface DiscussionBoardReplyRepository extends JpaRepository<DiscussionBoardReply, Long> {
 
     @Query(value = "select dr from DiscussionBoardReply dr join fetch dr.discussionBoard d join fetch d.user where d.id= :id",
@@ -26,8 +25,5 @@ public interface DiscussionBoardReplyRepository extends JpaRepository<Discussion
     @Modifying
     @Query(value = "delete from DiscussionBoardReply dr where dr.discussionBoard.id = :discussionId")
     void deleteByDiscussionId(Long discussionId);
-
-    @Query(value = "select count(dr) from DiscussionBoardReply dr where dr.discussionBoard.id = :discussionId")
-    Integer countReply(Long discussionId);
 
 }

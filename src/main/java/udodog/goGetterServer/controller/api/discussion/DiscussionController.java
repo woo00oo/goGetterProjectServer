@@ -49,7 +49,7 @@ public class DiscussionController {
     })
 
     // 상세보기 Controller
-    @GetMapping("/api/bkuser/discussions")
+    @GetMapping("/api/bkusers/discussions")
     public ResponseEntity<EntityModel<DefaultRes<DiscussionDetailResponse>>> getDetailBoard(@RequestParam("id") Long id){
         return new ResponseEntity<>(discussionConvertor.toModel(discussionService.getDetailBoard(id)), HttpStatus.OK);
     }
@@ -60,7 +60,7 @@ public class DiscussionController {
     })
 
     // 글등록 Controller
-    @PostMapping("/api/user/discussions")
+    @PostMapping("/api/users/discussions")
     public ResponseEntity<EntityModel<DefaultRes<DiscussionInsertRequestDto>>> insertBoard(
             @ApiParam(value = "필수 : 모든 항목" )
             @Valid@RequestBody DiscussionInsertRequestDto requestDto
@@ -74,7 +74,7 @@ public class DiscussionController {
     })
 
     // 글 업데이트 Controller
-    @PutMapping("/api/user/discussions")
+    @PutMapping("/api/users/discussions")
     public ResponseEntity<EntityModel<DefaultRes>> updateBoard(
             @Valid@RequestBody DiscussionEditRequest updatetRequestDto, @RequestParam("id") Long id){
         return new ResponseEntity<>(discussionConvertor.toModel(discussionService.updateBoard(updatetRequestDto, id)), HttpStatus.OK);
@@ -86,7 +86,7 @@ public class DiscussionController {
     })
 
     // 글 삭제 Controller
-    @DeleteMapping("/api/user/discussions")
+    @DeleteMapping("/api/users/discussions")
     public ResponseEntity<EntityModel<DefaultRes<DiscussionDetailResponse>>> deleteBoard (@RequestParam("id") Long id, @RequestParam("userId") Long userId){
         return new ResponseEntity<>(discussionConvertor.toModel(discussionService.delete(id, userId)), HttpStatus.OK);
     }

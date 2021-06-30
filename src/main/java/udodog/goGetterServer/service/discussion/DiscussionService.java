@@ -27,7 +27,8 @@ public class DiscussionService {
 
     private final DiscussionBoardRepository discussionBoardRepository;
     private final DiscussionBoardReplyRepository replyRepository;
-    private final DiscussionBoardReadhitRepository replyCountRepository;
+    private final DiscussionBoardReadhitRepository readhitRepository;
+
 
     // 전체 목록 조회
     public DefaultRes<List<DiscussionReseponseDto>> getBoardList(Pageable pageable) {// 페이징 변수
@@ -44,7 +45,7 @@ public class DiscussionService {
     private List<DiscussionReseponseDto> data(Page<DiscussionBoard> discussionBoardPage) {
 
         return discussionBoardPage.stream()
-                .map(DiscussionReseponseDto::new)
+                .map(board -> new DiscussionReseponseDto(board, readhitRepository.findByDiscussionId(board.getId())))
                 .collect(Collectors.toList());
     }
 
@@ -52,6 +53,13 @@ public class DiscussionService {
     public DefaultRes<DiscussionDetailResponse> getDetailBoard(Long id) {   // 게시판 id
 
         Optional<DiscussionBoard> discussionBoard = discussionBoardRepository.findById(id);
+        Optional<DiscussionBoardReadhit> readhit = readhitRepository.findByDiscussionId(id);
+
+        // 조회수 카운트 증가
+        readhit.get().incrementCount();
+
+        // 상세페이지를 보게 되면 조회 수 증가 값을 update
+        readhitRepository.updateCount(id, readhit.get().getCount());
 
         if(discussionBoard.isEmpty()){
             return DefaultRes.response(HttpStatus.OK.value(), "데이터없음");
@@ -75,7 +83,13 @@ public class DiscussionService {
             return DefaultRes.response(HttpStatus.OK.value(), "등록실패");
         }else {
             DiscussionBoard board = discussionBoardRepository.save(requestDto.toEntity(requestDto));
-            replyCountRepository.save(new DiscussionBoardReadhit(board, 0));
+
+            DiscussionBoardReadhit readhit = DiscussionBoardReadhit.builder()
+                    .discussionBoard(board)
+                    .build();
+
+            readhitRepository.save(readhit);
+
             return DefaultRes.response(HttpStatus.OK.value(), "등록성공");
         }
     }
@@ -140,7 +154,7 @@ public class DiscussionService {
     private List<DiscussionReseponseDto> searchTitleResult(Page<DiscussionBoard> boardPage) {
 
         return boardPage.stream()
-                .map(DiscussionReseponseDto::new)
+                .map(board -> new DiscussionReseponseDto(board, readhitRepository.findById(board.getId())))
                 .collect(Collectors.toList());
     }
 
@@ -159,7 +173,7 @@ public class DiscussionService {
     private List<DiscussionReseponseDto> searchContentResult(Page<DiscussionBoard> boardPage) {
 
         return boardPage.stream()
-                .map(DiscussionReseponseDto::new)
+                .map(board -> new DiscussionReseponseDto(board, readhitRepository.findById(board.getId())))
                 .collect(Collectors.toList());
     }
 
@@ -177,7 +191,7 @@ public class DiscussionService {
     private List<DiscussionReseponseDto> searchAllResult(Page<DiscussionBoard> boardPage) {
 
         return boardPage.stream()
-                .map(DiscussionReseponseDto::new)
+                .map(board -> new DiscussionReseponseDto(board, readhitRepository.findById(board.getId())))
                 .collect(Collectors.toList());
     }
 }

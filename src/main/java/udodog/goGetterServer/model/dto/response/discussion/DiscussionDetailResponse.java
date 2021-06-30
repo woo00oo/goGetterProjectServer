@@ -16,6 +16,7 @@ public class DiscussionDetailResponse {
     private String userNickname;
     private String title;
     private String content;
+    private String profileUrl;
     private LocalDate createAt;
 
     public DiscussionDetailResponse(DiscussionBoard discussionBoard){
@@ -23,6 +24,7 @@ public class DiscussionDetailResponse {
         this.userNickname = discussionBoard.getUser().getNickName();
         this.title = discussionBoard.getTitle();
         this.content = discussionBoard.getContent();
+        this.profileUrl = discussionBoard.getUser().getProfileUrl();
         this.createAt = discussionBoard.getCreateAt();
     }
 }

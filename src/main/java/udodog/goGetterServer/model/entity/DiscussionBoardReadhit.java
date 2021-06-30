@@ -1,14 +1,18 @@
 package udodog.goGetterServer.model.entity;
 
+import io.swagger.models.auth.In;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
 @NoArgsConstructor
+@DynamicInsert
 public class DiscussionBoardReadhit {
 
     @Id
@@ -27,4 +31,12 @@ public class DiscussionBoardReadhit {
         this.count = count;
     }
 
+    public void incrementCount(){
+        this.count++;
+    }
+
+    public DiscussionBoardReadhit createCount(DiscussionBoard board){
+        this.discussionBoard = board;
+        return this;
+    }
 }

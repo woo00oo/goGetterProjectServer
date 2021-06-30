@@ -36,7 +36,7 @@ public class DiscussionReplyController {
     })
 
     // 글 등록 Controller
-    @PostMapping("/api/user/discussionreplies")
+    @PostMapping("/api/users/discussionreplies")
     public ResponseEntity<EntityModel<DefaultRes<DiscussionReplyResponse>>> createReply(
             @ApiParam("필수 : 모든사항")
             @RequestBody DiscussionReplyInsertRequest requestDto){
@@ -50,7 +50,7 @@ public class DiscussionReplyController {
     })
 
     // 댓글 조회 Controller
-    @GetMapping("/api/bkuser/discussionreplies")
+    @GetMapping("/api/bkusers/discussionreplies")
     public ResponseEntity<EntityModel<DefaultRes<List<DiscussionReplyResponse>>>> getBoardReplyList(
             @RequestParam("discussionId") Long discussionId,
             @PageableDefault(sort = "createAt", direction = Sort.Direction.DESC, size = 3) Pageable pageable // 최신 날짜순으로 내림차순, 페이지당 3개씩 출력
@@ -64,7 +64,7 @@ public class DiscussionReplyController {
     })
 
     // 댓글 수정 Controller
-    @PutMapping("/api/user/discussionreplies")
+    @PutMapping("/api/users/discussionreplies")
     public ResponseEntity<EntityModel<DefaultRes<DiscussionReplyEditRequest>>> updateReply(
             @RequestParam("discussionId") Long discussionId,
             @Valid@RequestBody DiscussionReplyEditRequest requestDto
@@ -78,7 +78,7 @@ public class DiscussionReplyController {
     })
 
     // 댓글 삭제 Controller
-    @DeleteMapping("/api/user/discussionreplies")
+    @DeleteMapping("/api/users/discussionreplies")
     public ResponseEntity<EntityModel<DefaultRes<DiscussionBoardReply>>> deleteReply (@RequestParam("id") Long id,
                                                                                       @RequestParam("userId") Long userId){
         return new ResponseEntity<>(replyConvertor.toModel(replyService.delete(id, userId)), HttpStatus.OK);
