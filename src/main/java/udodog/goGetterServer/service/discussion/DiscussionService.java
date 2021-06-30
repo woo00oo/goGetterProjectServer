@@ -133,8 +133,9 @@ public class DiscussionService {
             return DefaultRes.response(HttpStatus.OK.value(), "삭제실패");
         }
 
+        readhitRepository.deleteByDiscussionId(optionalBoard.get().getId());
         replyRepository.deleteByDiscussionId(optionalBoard.get().getId());
-        discussionBoardRepository.deleteById(id);
+        discussionBoardRepository.deleteById(id, userId);
 
         return DefaultRes.response(HttpStatus.OK.value(), "삭제성공");
     }

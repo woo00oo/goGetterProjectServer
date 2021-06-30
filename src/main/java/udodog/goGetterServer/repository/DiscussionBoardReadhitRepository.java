@@ -18,4 +18,9 @@ public interface DiscussionBoardReadhitRepository extends JpaRepository<Discussi
 
     @Query(value = "select rh from DiscussionBoardReadhit rh where rh.discussionBoard.id = :discussionId")
     Optional<DiscussionBoardReadhit> findByDiscussionId(Long discussionId);
+
+    @Transactional
+    @Modifying
+    @Query(value = "delete from DiscussionBoardReadhit rh where rh.discussionBoard.id = :discussionId")
+    void deleteByDiscussionId(Long discussionId);
 }
