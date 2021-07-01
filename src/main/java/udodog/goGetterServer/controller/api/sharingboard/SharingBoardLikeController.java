@@ -5,14 +5,12 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
-import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import udodog.goGetterServer.model.dto.DefaultRes;
 import udodog.goGetterServer.model.dto.request.sharingboard.LikeUserRequest;
-import udodog.goGetterServer.model.dto.response.sharingboard.BoardResponse;
-import udodog.goGetterServer.model.entity.SharingBoardLike;
+
 import udodog.goGetterServer.service.sharingboard.SharingBoardLikeService;
 
 @Api(tags = {"좋아요 기능 API"})

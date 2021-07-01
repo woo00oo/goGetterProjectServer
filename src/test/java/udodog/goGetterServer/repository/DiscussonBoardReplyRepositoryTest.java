@@ -25,10 +25,10 @@ class DiscussonBoardReplyRepositoryTest {
     private UserRepository userRepository;
 
     @Autowired
-    private DiscussonBoardRepository discussonBoardRepository;
+    private DiscussionBoardRepository discussonBoardRepository;
 
     @Autowired
-    private DiscussonBoardReplyRepository discussonBoardReplyRepository;
+    private DiscussionBoardReplyRepository discussonBoardReplyRepository;
 
     @Test
     void saveDicussionReply(){

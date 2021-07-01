@@ -52,8 +52,8 @@ class SharingBoardSharingBoardLikeRepositoryTest {
 
         SharingBoardLike sharingBoardLike = SharingBoardLike.
                     builder().
-                    user(saveUser).
-                    sharingBoard(saveSharingBoard).
+                    userId(saveUser.getId()).
+                    boardId(saveSharingBoard.getId()).
                     build();
 
         //when

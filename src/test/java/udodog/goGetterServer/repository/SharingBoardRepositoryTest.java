@@ -7,6 +7,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
+import org.springframework.test.annotation.Rollback;
 import udodog.goGetterServer.config.JpaAuditingConfig;
 import udodog.goGetterServer.model.entity.SharingBoard;
 import udodog.goGetterServer.model.entity.User;
@@ -25,6 +26,7 @@ class SharingBoardRepositoryTest {
 
     @Test
     @DisplayName("SharingBoard Repository save Test")
+    @Rollback(false)
     void saveSharingBoard(){
 
         //given

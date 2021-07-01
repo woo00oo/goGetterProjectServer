@@ -18,11 +18,13 @@ public class DiscussionBoardReadhit {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "discussion_id")
     private DiscussionBoard discussionBoard;
-    int count;
+
+    Integer count;
 
     @Builder
-    public DiscussionBoardReadhit(DiscussionBoard discussionBoard, int count) {
+    public DiscussionBoardReadhit(DiscussionBoard discussionBoard, Integer count) {
         this.discussionBoard = discussionBoard;
         this.count = count;
     }
+
 }

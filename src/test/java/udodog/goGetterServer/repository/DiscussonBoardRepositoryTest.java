@@ -24,7 +24,7 @@ class DiscussonBoardRepositoryTest {
     private UserRepository userRepository;
 
     @Autowired
-    private DiscussonBoardRepository discussonBoardRepository;
+    private DiscussionBoardRepository discussonBoardRepository;
 
     @Test
     void saveDicussion(){

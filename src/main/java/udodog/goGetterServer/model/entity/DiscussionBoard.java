@@ -5,9 +5,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import udodog.goGetterServer.model.dto.request.discussion.DiscussionEditRequest;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.LinkedList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -34,5 +37,18 @@ public class DiscussionBoard {
         this.user = user;
         this.title = title;
         this.content = content;
+    }
+
+    public DiscussionBoard updateBoard (DiscussionEditRequest request){
+
+        if(this.title != request.getTitle()){
+            this.title = request.getTitle();
+        }
+
+        if (this.content != request.getContent()){
+            this.content = request.getContent();
+        }
+
+        return this;
     }
 }
