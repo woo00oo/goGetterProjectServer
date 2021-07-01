@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import udodog.goGetterServer.model.dto.request.UpdateSharingReplyRequest;
+import udodog.goGetterServer.model.dto.request.sharingboard.CreateSharingReplyRequest;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 
@@ -33,5 +36,17 @@ public class SharingBoardReply {
         this.user = user;
         this.sharingBoard = sharingBoard;
         this.comment = comment;
+    }
+
+    public SharingBoardReply(CreateSharingReplyRequest request, User user, SharingBoard board) {
+        this.comment = request.getComment();
+        this.user = user;
+        this.sharingBoard = board;
+
+    }
+
+    public SharingBoardReply updateBoard(UpdateSharingReplyRequest request) {
+        this.comment = request.getComment();
+        return this;
     }
 }

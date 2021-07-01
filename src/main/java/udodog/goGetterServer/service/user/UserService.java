@@ -27,11 +27,7 @@ import java.util.concurrent.Executor;
 @RequiredArgsConstructor
 public class UserService {
 
-<<<<<<< HEAD
     private static final String FROM_ADDRESS = "ieieie0419@gamil.com"; // 본인 google 메일로 변경
-=======
-    private static final String FROM_ADDRESS = "torvlf1@gamil.com"; // 본인 google 메일로 변경
->>>>>>> 4ec117bd5ff6a6ef45e7e2f5188cb48cb62c8924
     private final JavaMailSender mailSender;
     private final Executor executor;
     private final UserRepository userRepository;

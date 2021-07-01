@@ -29,16 +29,13 @@ public class BoardResponse {
     // 좋아요 수
     private Integer likeCnt;
 
-    public BoardResponse(Optional<SharingBoard> sharingBoard,Integer replyCnt, Integer likeCnt) {
+
+    private List<SharingBoardReply> sharingBoardReplyList;
+
+    public BoardResponse(Optional<SharingBoard> sharingBoard,Integer replyCnt, Integer likeCnt, WriterInfo writerInfo) {
         SharingBoard board = sharingBoard.get();
 
         this.id = board.getId();
-        WriterInfo writerInfo = WriterInfo.
-                builder().
-                nickName(board.getUser().getNickName()).
-                profileUrl(board.getUser().getProfileUrl()).
-                build();
-
         this.writerInfo = writerInfo;
         this.title = board.getTitle();
         this.content = board.getContent();

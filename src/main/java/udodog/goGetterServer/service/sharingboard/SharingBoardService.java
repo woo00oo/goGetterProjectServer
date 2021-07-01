@@ -13,7 +13,9 @@ import udodog.goGetterServer.model.dto.request.sharingboard.UpdateBoardRequest;
 import udodog.goGetterServer.model.dto.request.sharingboard.CreateBoardRequest;
 import udodog.goGetterServer.model.dto.response.sharingboard.BoardResponse;
 import udodog.goGetterServer.model.dto.response.sharingboard.SimpleBoardResponse;
+import udodog.goGetterServer.model.dto.response.sharingboard.WriterInfo;
 import udodog.goGetterServer.model.entity.SharingBoard;
+import udodog.goGetterServer.model.entity.SharingBoardReply;
 import udodog.goGetterServer.model.entity.User;
 import udodog.goGetterServer.repository.SharingBoardLikeRepository;
 import udodog.goGetterServer.repository.SharingBoardReplyRepository;
@@ -46,8 +48,11 @@ public class SharingBoardService {
         public DefaultRes<BoardResponse> getBoardDetail(Long boardId) {
         Optional<SharingBoard> sharingBoard = sharingBoardRepository.findById(boardId);
 
+        User user = sharingBoard.get().getUser();
+        WriterInfo writerInfo = WriterInfo.builder().nickName(user.getNickName()).profileUrl(user.getProfileUrl()).build();
+
         return sharingBoard.map(board -> DefaultRes.response(HttpStatus.OK.value(), "조회 성공",
-                new BoardResponse(sharingBoard,board.getReplyCnt(),sharingBoardLikeRepository.countBySharingBoardId(board.getId()))))
+                new BoardResponse(sharingBoard,board.getReplyCnt(),sharingBoardLikeRepository.countBySharingBoardId(board.getId()),writerInfo)))
                 .orElseGet(()->{
                     return DefaultRes.response(HttpStatus.OK.
                             value(), "데이터 없음");
@@ -56,9 +61,6 @@ public class SharingBoardService {
 
     public DefaultRes createSharingBoard(CreateBoardRequest request) {
         Optional<User> user = userRepository.findById(request.getUserId());
-        if (user.isEmpty()){
-            return DefaultRes.response(HttpStatus.OK.value(),"글 등록 실패");
-        }
 
         SharingBoard sharingBoard = new SharingBoard(request, user);
         SharingBoard saveBoard = sharingBoardRepository.save(sharingBoard);
@@ -126,8 +128,9 @@ public class SharingBoardService {
         for(SharingBoard sharingBoard : sharingBoardList){
             Integer replyCnt = sharingBoard.getReplyCnt();
             Integer likeCnt = sharingBoardLikeRepository.countBySharingBoardId(sharingBoard.getId());
+            WriterInfo writerInfo = WriterInfo.builder().nickName(sharingBoard.getUser().getNickName()).profileUrl(sharingBoard.getUser().getProfileUrl()).build();
 
-            SimpleBoardResponse simpleBoardResponse = new SimpleBoardResponse(sharingBoard, replyCnt, likeCnt);
+            SimpleBoardResponse simpleBoardResponse = new SimpleBoardResponse(sharingBoard, replyCnt, likeCnt, writerInfo);
             simpleBoardResponseList.add(simpleBoardResponse);
         }
         return simpleBoardResponseList;

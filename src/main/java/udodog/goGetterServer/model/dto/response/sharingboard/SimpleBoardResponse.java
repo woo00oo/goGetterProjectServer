@@ -2,7 +2,10 @@ package udodog.goGetterServer.model.dto.response.sharingboard;
 
 import lombok.*;
 import udodog.goGetterServer.model.entity.SharingBoard;
+import udodog.goGetterServer.model.entity.SharingBoardReply;
+
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -22,15 +25,9 @@ public class SimpleBoardResponse {
     // 좋아요 수
     private Integer likeCnt;
 
-    public SimpleBoardResponse(SharingBoard sharingBoard, Integer replyCnt, Integer likeCnt) {
-        WriterInfo writerInfo = WriterInfo.
-                builder().
-                nickName(sharingBoard.getUser().getNickName()).
-                profileUrl(sharingBoard.getUser().getProfileUrl()).
-                build();
 
+    public SimpleBoardResponse(SharingBoard sharingBoard, Integer replyCnt, Integer likeCnt, WriterInfo writerInfo) {
         this.writerInfo = writerInfo;
-
         this.id = sharingBoard.getId();
         this.title = sharingBoard.getTitle();
         this.createdAt = sharingBoard.getCreatedAt();
