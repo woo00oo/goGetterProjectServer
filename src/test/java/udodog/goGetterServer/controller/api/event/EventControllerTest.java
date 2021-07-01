@@ -12,6 +12,7 @@ import udodog.goGetterServer.config.WebMvcConfig;
 import udodog.goGetterServer.model.converter.event.EventConverter;
 import udodog.goGetterServer.service.event.EventService;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -42,6 +43,14 @@ public class EventControllerTest {
                         "  \"start_date\": \"2021-07-15\",\n" +
                         "  \"title\": \"신규 가입 등록 이벤트\"\n" +
                         "}"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void 진행중인_이벤트_전체조회() throws Exception {
+
+        mvc.perform(get("/api/events")
+                .param("page", "1"))
                 .andExpect(status().isOk());
     }
 }
