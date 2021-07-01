@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import udodog.goGetterServer.model.converter.event.EventConverter;
 import udodog.goGetterServer.model.dto.DefaultRes;
 import udodog.goGetterServer.model.dto.request.event.EventCreateRequestDto;
-import udodog.goGetterServer.model.dto.response.event.ProgressEventsResponseDto;
+import udodog.goGetterServer.model.dto.response.event.EventsResponseDto;
 import udodog.goGetterServer.service.event.EventService;
 
 import javax.validation.Valid;
@@ -46,10 +46,20 @@ public class EventController {
             @ApiResponse(code=200, message = "1. 조회성공\n 2. 데이터없음")
     })
     @GetMapping("/events")
-    public ResponseEntity<EntityModel<DefaultRes<Page<ProgressEventsResponseDto>>>> progressEventFindAll(
+    public ResponseEntity<EntityModel<DefaultRes<Page<EventsResponseDto>>>> progressEventFindAll(
             @PageableDefault(sort = "startDate", direction = Sort.Direction.DESC, size = 12) Pageable pageable
     ){
         return new ResponseEntity<>(eventConverter.toModel(eventService.progressEventFindAll(pageable)), HttpStatus.OK);
     }
 
+    @ApiOperation(value = "종료된 이벤트 전체 조회 API",notes = "종료된 이벤트들을 최신 순으로 조회 합니다.")
+    @ApiResponses(value ={
+            @ApiResponse(code=200, message = "1. 조회성공\n 2. 데이터없음")
+    })
+    @GetMapping("/end-events")
+    public ResponseEntity<EntityModel<DefaultRes<Page<EventsResponseDto>>>> endEventFindAll(
+            @PageableDefault(sort = "startDate", direction = Sort.Direction.DESC, size = 12) Pageable pageable
+    ){
+        return new ResponseEntity<>(eventConverter.toModel(eventService.endEventFindAll(pageable)), HttpStatus.OK);
+    }
 }
