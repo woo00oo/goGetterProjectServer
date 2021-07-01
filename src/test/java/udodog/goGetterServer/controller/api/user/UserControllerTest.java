@@ -8,6 +8,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import udodog.goGetterServer.config.WebMvcConfig;
 import udodog.goGetterServer.model.converter.user.UserConverter;
 import udodog.goGetterServer.service.user.UserService;
 
@@ -27,6 +28,9 @@ public class UserControllerTest {
 
     @MockBean
     private UserConverter userConverter;
+
+    @MockBean
+    private WebMvcConfig webMvcConfig;
 
     @Test
     public void 이메일_전송() throws Exception {
