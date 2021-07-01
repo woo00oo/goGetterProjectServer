@@ -10,14 +10,6 @@ import javax.validation.constraints.NotNull;
 public class DiscussionReplyEditRequest {
 
     @NotNull
-    private Long userId;
-
-    @NotNull
-    private String content;
-
-    public DiscussionReplyEditRequest(Long userId, String content) {
-        this.userId = userId;
-        this.content = content;
-    }
+    private String content;    // 댓글 내용
 
 }

@@ -20,6 +20,6 @@ public class DiscussionReplyListConvertor implements RepresentationModelAssemble
     public EntityModel<DefaultRes<List<DiscussionReplyResponse>>> toModel(DefaultRes<List<DiscussionReplyResponse>> entity) {
         return EntityModel.of(entity,
                 linkTo(methodOn(DiscussionReplyController.class).getBoardReplyList(null, null)).withRel("list"),
-                linkTo(methodOn(DiscussionReplyController.class).createReply(null)).withRel("insert"));
+                linkTo(methodOn(DiscussionReplyController.class).createReply(null, null,null)).withRel("insert"));
     }
 }

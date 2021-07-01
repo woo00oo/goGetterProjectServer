@@ -9,14 +9,10 @@ import javax.validation.constraints.NotNull;
 @Getter
 public class DiscussionEditRequest {
 
+    @NotNull
+    private String title;   // 게시글 제목
 
     @NotNull
-    private Long userId;
-
-    @NotNull
-    private String title;
-
-    @NotNull
-    private String content;
+    private String content; // 게시글 내용
 
 }

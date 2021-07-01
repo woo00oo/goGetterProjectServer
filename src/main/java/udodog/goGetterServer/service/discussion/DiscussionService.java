@@ -13,9 +13,11 @@ import udodog.goGetterServer.model.dto.response.discussion.DiscussionDetailRespo
 import udodog.goGetterServer.model.dto.response.discussion.DiscussionReseponseDto;
 import udodog.goGetterServer.model.entity.DiscussionBoard;
 import udodog.goGetterServer.model.entity.DiscussionBoardReadhit;
+import udodog.goGetterServer.model.entity.User;
 import udodog.goGetterServer.repository.DiscussionBoardReadhitRepository;
 import udodog.goGetterServer.repository.DiscussionBoardReplyRepository;
 import udodog.goGetterServer.repository.DiscussionBoardRepository;
+import udodog.goGetterServer.repository.UserRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -28,6 +30,7 @@ public class DiscussionService {
     private final DiscussionBoardRepository discussionBoardRepository;
     private final DiscussionBoardReplyRepository replyRepository;
     private final DiscussionBoardReadhitRepository readhitRepository;
+    private final UserRepository userRepository;
 
 
     // 전체 목록 조회
@@ -77,12 +80,13 @@ public class DiscussionService {
     }
 
     // 게시글 등록
-    public DefaultRes insertBoard(DiscussionInsertRequestDto requestDto) {  // 등록Dto
+    public DefaultRes insertBoard(DiscussionInsertRequestDto requestDto, Long userId) {  // 등록Dto, 유저 번호
 
         if(requestDto == null){
             return DefaultRes.response(HttpStatus.OK.value(), "등록실패");
         }else {
-            DiscussionBoard board = discussionBoardRepository.save(requestDto.toEntity(requestDto));
+            Optional<User> user = userRepository.findById(userId);
+            DiscussionBoard board = discussionBoardRepository.save(requestDto.toEntity(requestDto, user));
 
             DiscussionBoardReadhit readhit = DiscussionBoardReadhit.builder()
                     .discussionBoard(board)
@@ -95,7 +99,7 @@ public class DiscussionService {
     }
 
     // 게시글 수정
-    public DefaultRes updateBoard(DiscussionEditRequest update, Long id) { // 업데이트Dto, 게시글 번호
+    public DefaultRes updateBoard(DiscussionEditRequest update, Long id, Long userId) { // 업데이트Dto, 게시글 번호, 유저 번호
 
         Optional<DiscussionBoard> optionalBoard = discussionBoardRepository.findById(id);
 
@@ -103,7 +107,7 @@ public class DiscussionService {
             DefaultRes.response(HttpStatus.OK.value(), "데이터없음");
         }
 
-        return optionalBoard.filter(board -> board.getUser().getId().equals(update.getUserId()))
+        return optionalBoard.filter(board -> board.getUser().getId().equals(userId))
                 .filter(board -> board.getId().equals(id))
                 .map(board -> {
 

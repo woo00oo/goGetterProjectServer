@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import udodog.goGetterServer.model.entity.DiscussionBoard;
-import udodog.goGetterServer.model.entity.User;
 
 import java.time.LocalDate;
 
@@ -13,16 +12,17 @@ import java.time.LocalDate;
 @ToString
 public class DiscussionDetailResponse {
 
-    private Long id;
-    private User user;
-    private String title;
-    private String content;
-    private String profileUrl;
-    private LocalDate createAt;
+
+    private Long id;                 // 게시판 아이디
+    private String userNickName;     // 유저 닉네임
+    private String title;            // 게시판 제목
+    private String content;          // 게시판 내용
+    private String profileUrl;       // 유저 프로필
+    private LocalDate createAt;      // 게시판 등록 날짜
 
     public DiscussionDetailResponse(DiscussionBoard discussionBoard){
         this.id = discussionBoard.getId();
-        this.user = discussionBoard.getUser();
+        this.userNickName = discussionBoard.getUser().getNickName();
         this.title = discussionBoard.getTitle();
         this.content = discussionBoard.getContent();
         this.profileUrl = discussionBoard.getUser().getProfileUrl();

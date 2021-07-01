@@ -39,8 +39,10 @@ public class DiscussionReplyController {
     @PostMapping("/api/users/discussionreplies")
     public ResponseEntity<EntityModel<DefaultRes<DiscussionReplyResponse>>> createReply(
             @ApiParam("필수 : 모든사항")
-            @RequestBody DiscussionReplyInsertRequest requestDto){
-        return new ResponseEntity<>(replyConvertor.toModel(replyService.createReply(requestDto)), HttpStatus.OK);
+            @RequestBody DiscussionReplyInsertRequest requestDto,
+            @RequestParam("discussionId") Long discussionId,
+            @RequestParam("userId") Long userId){
+        return new ResponseEntity<>(replyConvertor.toModel(replyService.createReply(requestDto, discussionId, userId)), HttpStatus.OK);
     }
 
 
@@ -67,9 +69,10 @@ public class DiscussionReplyController {
     @PutMapping("/api/users/discussionreplies")
     public ResponseEntity<EntityModel<DefaultRes<DiscussionReplyEditRequest>>> updateReply(
             @RequestParam("discussionId") Long discussionId,
+            @RequestParam("userId") Long userId,
             @Valid@RequestBody DiscussionReplyEditRequest requestDto
     ){
-        return new ResponseEntity<>(replyConvertor.toModel(replyService.updateReply(requestDto, discussionId)), HttpStatus.OK);
+        return new ResponseEntity<>(replyConvertor.toModel(replyService.updateReply(requestDto, discussionId, userId)), HttpStatus.OK);
     }
 
     @ApiOperation(value = "토론게시판 댓글삭제 API",notes = "댓글삭제 API입니다.")

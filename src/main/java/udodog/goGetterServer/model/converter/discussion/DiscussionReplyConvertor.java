@@ -17,8 +17,8 @@ public class DiscussionReplyConvertor implements RepresentationModelAssembler<De
     @Override
     public EntityModel<DefaultRes<DiscussionReplyResponse>> toModel(DefaultRes<DiscussionReplyResponse> entity) {
         return EntityModel.of(entity,
-                linkTo(methodOn(DiscussionReplyController.class).createReply(null)).withRel("replyInsert"),
-                linkTo(methodOn(DiscussionReplyController.class).updateReply(null,null)).withRel("replyUpdate"),
+                linkTo(methodOn(DiscussionReplyController.class).createReply(null, null, null)).withRel("replyInsert"),
+                linkTo(methodOn(DiscussionReplyController.class).updateReply(null,null,null)).withRel("replyUpdate"),
                 linkTo(methodOn(DiscussionReplyController.class).deleteReply(null, null)).withRel("replyDelete"));
     }
 }
