@@ -12,7 +12,6 @@ import udodog.goGetterServer.model.dto.request.discussion.DiscussionReplyInsertR
 import udodog.goGetterServer.model.dto.response.discussion.DiscussionReplyResponse;
 import udodog.goGetterServer.model.entity.DiscussionBoardReply;
 import udodog.goGetterServer.repository.DiscussionBoardReplyRepository;
-import udodog.goGetterServer.repository.DiscussionBoardReadhitRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,7 +22,6 @@ import java.util.stream.Collectors;
 public class DiscussionReplyService {
 
     private final DiscussionBoardReplyRepository replyRepository;
-    private final DiscussionBoardReadhitRepository replyCountRepository;
 
     // 댓글 등록
     public DefaultRes createReply(DiscussionReplyInsertRequest requestDto) {
@@ -31,7 +29,7 @@ public class DiscussionReplyService {
         if(requestDto == null) {
             return DefaultRes.response(HttpStatus.OK.value(), "등록실패");
         }else {
-           DiscussionBoardReply saveReply = replyRepository.save(requestDto.toEntity(requestDto));
+           replyRepository.save(requestDto.toEntity(requestDto));
            return DefaultRes.response(HttpStatus.OK.value(), "등록성공");
         }
     }
@@ -64,18 +62,15 @@ public class DiscussionReplyService {
             return DefaultRes.response(HttpStatus.OK.value(), "데이터없음");
         }
 
-        if(!(boardReply.get().getUser().getId().equals(requestDto.getUserId()))){
-            return DefaultRes.response(HttpStatus.OK.value(), "수정실패");
-        }
+        return boardReply.filter(reply -> reply.getDiscussionBoard().getId().equals(discussionId))
+                .filter(reply -> reply.getUser().getId().equals(requestDto.getUserId()))
+                .map(reply -> {
+                        DiscussionBoardReply replyBoard = reply.updateReply(requestDto);
+                        replyRepository.save(replyBoard);
 
-        DiscussionBoardReply replyBoard = boardReply.get().updateReply(requestDto);
-        DiscussionBoardReply saveReply  = replyRepository.save(replyBoard);
-
-        if(boardReply.get().getDiscussionBoard().getId().equals(saveReply.getDiscussionBoard().getId())){
-            return DefaultRes.response(HttpStatus.OK.value(), "수정성공");
-        }else {
-            return DefaultRes.response(HttpStatus.OK.value(), "수정실패");
-        }
+                        return DefaultRes.response(HttpStatus.OK.value(), "수정성공");
+                })
+                .orElseGet(() -> DefaultRes.response(HttpStatus.OK.value(), "수정실패"));
     }
 
     // 댓글 삭제
@@ -86,15 +81,11 @@ public class DiscussionReplyService {
             return DefaultRes.response(HttpStatus.OK.value(), "데이터없음");
         }
 
-        if(!(deleteReply.get().getUser().getId().equals(userId))){
-            return DefaultRes.response(HttpStatus.OK.value(), "삭제실패");
-        }
-
-        if(!(deleteReply.get().getId().equals(id))){
-            return DefaultRes.response(HttpStatus.OK.value(), "삭제실패");
-        }
-
-        replyRepository.delete(id, userId);
-        return DefaultRes.response(HttpStatus.OK.value(), "삭제성공");
+        return deleteReply.filter(replyboard -> replyboard.getId().equals(id))
+                .filter(replyBoard -> replyBoard.getUser().getId().equals(userId))
+                .map(replyBoard -> {
+                    replyRepository.delete(id, userId);
+                    return DefaultRes.response(HttpStatus.OK.value(), "삭제성공");
+                }).orElseGet(() -> DefaultRes.response(HttpStatus.OK.value(), "삭제실패"));
     }
 }

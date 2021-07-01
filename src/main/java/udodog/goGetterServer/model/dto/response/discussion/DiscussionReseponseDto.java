@@ -1,7 +1,7 @@
 package udodog.goGetterServer.model.dto.response.discussion;
 
-import com.fasterxml.jackson.annotation.OptBoolean;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import udodog.goGetterServer.model.entity.DiscussionBoard;
 import udodog.goGetterServer.model.entity.DiscussionBoardReadhit;
 

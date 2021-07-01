@@ -2,9 +2,7 @@ package udodog.goGetterServer.model.dto.response.discussion;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import udodog.goGetterServer.model.entity.DiscussionBoard;
 import udodog.goGetterServer.model.entity.DiscussionBoardReply;
-import udodog.goGetterServer.model.entity.User;
 
 import java.time.LocalDate;
 

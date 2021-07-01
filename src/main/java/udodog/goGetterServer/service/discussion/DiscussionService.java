@@ -13,9 +13,9 @@ import udodog.goGetterServer.model.dto.response.discussion.DiscussionDetailRespo
 import udodog.goGetterServer.model.dto.response.discussion.DiscussionReseponseDto;
 import udodog.goGetterServer.model.entity.DiscussionBoard;
 import udodog.goGetterServer.model.entity.DiscussionBoardReadhit;
+import udodog.goGetterServer.repository.DiscussionBoardReadhitRepository;
 import udodog.goGetterServer.repository.DiscussionBoardReplyRepository;
 import udodog.goGetterServer.repository.DiscussionBoardRepository;
-import udodog.goGetterServer.repository.DiscussionBoardReadhitRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -103,18 +103,15 @@ public class DiscussionService {
             DefaultRes.response(HttpStatus.OK.value(), "데이터없음");
         }
 
-        if(!(optionalBoard.get().getUser().getId().equals(update.getUserId()))){
-            return DefaultRes.response(HttpStatus.OK.value(), "수정실패");
-        }
+        return optionalBoard.filter(board -> board.getUser().getId().equals(update.getUserId()))
+                .filter(board -> board.getId().equals(id))
+                .map(board -> {
 
-        DiscussionBoard updateBoard = optionalBoard.get().updateBoard(update);
-        DiscussionBoard saveboard = discussionBoardRepository.save(updateBoard);
+                    DiscussionBoard updateBoard = board.updateBoard(update);
+                    discussionBoardRepository.save(updateBoard);
 
-        if(saveboard.getId() == optionalBoard.get().getId()){
-            return DefaultRes.response(HttpStatus.OK.value(), "수정성공");
-        }else {
-            return DefaultRes.response(HttpStatus.OK.value(), "수정실패");
-        }
+                    return DefaultRes.response(HttpStatus.OK.value(), "수정성공");
+                }).orElseGet(() -> DefaultRes.response(HttpStatus.OK.value(), "수정실패"));
     }
 
     // 게시글 삭제
@@ -125,19 +122,17 @@ public class DiscussionService {
             return DefaultRes.response(HttpStatus.OK.value(), "데이터없음");
         }
 
-        if(!(optionalBoard.get().getId().equals(id))){
-            return DefaultRes.response(HttpStatus.OK.value(), "삭제실패");
-        }
+        return optionalBoard.filter(board -> board.getId().equals(id))
+                .filter(board -> board.getUser().getId().equals(userId))
+                .map(board -> {
+                    readhitRepository.deleteByDiscussionId(board.getId());
+                    replyRepository.deleteByDiscussionId(board.getId());
+                    discussionBoardRepository.deleteById(board.getId(), board.getUser().getId());
 
-        if(!(optionalBoard.get().getUser().getId().equals(userId))){
-            return DefaultRes.response(HttpStatus.OK.value(), "삭제실패");
-        }
+                    return DefaultRes.response(HttpStatus.OK.value(), "삭제성공");
+                })
+                .orElseGet(()-> DefaultRes.response(HttpStatus.OK.value(), "삭제실패"));
 
-        readhitRepository.deleteByDiscussionId(optionalBoard.get().getId());
-        replyRepository.deleteByDiscussionId(optionalBoard.get().getId());
-        discussionBoardRepository.deleteById(id, userId);
-
-        return DefaultRes.response(HttpStatus.OK.value(), "삭제성공");
     }
 
     // 제목 검색
