@@ -128,7 +128,7 @@ public class UserService {
                 String refreshToken = JwtUtil.createRefreshToken(user.getId(), user.getGrade());
                 user.setRefreshToken(refreshToken);
 
-                return DefaultRes.response(HttpStatus.OK.value(),"성공", new UserSignInResponseDto(accessToken,refreshToken));
+                return DefaultRes.response(HttpStatus.OK.value(),"성공", new UserSignInResponseDto(accessToken,refreshToken, user.getId(), user.getGrade()));
 
             }).orElseGet(()-> DefaultRes.response(HttpStatus.OK.value(), "비밀번호불일치"));
 
