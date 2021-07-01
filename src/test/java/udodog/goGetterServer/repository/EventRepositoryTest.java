@@ -30,8 +30,8 @@ class EventRepositoryTest {
         Event event = Event.builder()
                 .title("서비스 오픈 기념")
                 .content("안녕하세요")
-                .start_date(LocalDate.of(2021,06,16))
-                .end_date(LocalDate.of(2021,07,16))
+                .startDate(LocalDate.of(2021,06,16))
+                .endDate(LocalDate.of(2021,07,16))
                 .build();
 
         //when
