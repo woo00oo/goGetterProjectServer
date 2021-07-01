@@ -23,18 +23,18 @@ public class Event {
 
     private String content;
 
-    private LocalDate start_date;
+    private LocalDate startDate;
 
-    private LocalDate end_date;
+    private LocalDate endDate;
 
     private String imgUrl;
 
     @Builder
-    public Event(String title, String content, LocalDate start_date, LocalDate end_date, String imgUrl) {
+    public Event(String title, String content, LocalDate startDate, LocalDate endDate, String imgUrl) {
         this.title = title;
         this.content = content;
-        this.start_date = start_date;
-        this.end_date = end_date;
+        this.startDate = startDate;
+        this.endDate = endDate;
         this.imgUrl = imgUrl;
     }
 }
