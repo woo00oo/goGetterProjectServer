@@ -10,9 +10,9 @@ import javax.validation.constraints.NotNull;
 public class DiscussionEditRequest {
 
     @NotNull
-    private String title;   // 게시글 제목
+    private String title;
 
     @NotNull
-    private String content; // 게시글 내용
+    private String content;
 
 }

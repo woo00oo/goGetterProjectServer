@@ -14,8 +14,9 @@ import udodog.goGetterServer.model.entity.DiscussionBoard;
 import udodog.goGetterServer.model.entity.DiscussionBoardReply;
 import udodog.goGetterServer.model.entity.User;
 import udodog.goGetterServer.repository.DiscussionBoardReplyRepository;
-import udodog.goGetterServer.repository.DiscussionBoardRepository;
 import udodog.goGetterServer.repository.UserRepository;
+import udodog.goGetterServer.repository.querydsl.DiscussionBoardQueryRepository;
+import udodog.goGetterServer.repository.querydsl.DiscussionBoardReplyQueryRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -25,21 +26,21 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class DiscussionReplyService {
 
+    private final DiscussionBoardQueryRepository queryRepository;
     private final DiscussionBoardReplyRepository replyRepository;
-    private final DiscussionBoardRepository boardRepository;
+    private final DiscussionBoardReplyQueryRepository replyQueryRepository;
     private final UserRepository userRepository;
 
     // 댓글 등록
     public DefaultRes createReply(DiscussionReplyInsertRequest requestDto, Long discussionId, Long userId) {
 
+        Optional<DiscussionBoard> board = queryRepository.findById(discussionId);
+        Optional<User> user = userRepository.findById(userId);
+
         if(requestDto == null) {
             return DefaultRes.response(HttpStatus.OK.value(), "등록실패");
         }else {
-
-            Optional<DiscussionBoard> board = boardRepository.findById(discussionId);
-            Optional<User> user = userRepository.findById(userId);
-
-            replyRepository.save(requestDto.toEntity(requestDto, board, user));
+            replyRepository.save(requestDto.toEntity(board, user, requestDto));
             return DefaultRes.response(HttpStatus.OK.value(), "등록성공");
         }
     }
@@ -47,7 +48,7 @@ public class DiscussionReplyService {
     // 댓글 조회
     public DefaultRes<List<DiscussionReplyResponse>> getBoardReplyList(Long discussionId, Pageable pageable) {
 
-        Page<DiscussionBoardReply> replyResponsesPage = replyRepository.findAllWithFetchJoin(discussionId, pageable);
+        Page<DiscussionReplyResponse> replyResponsesPage = replyQueryRepository.findAllWithFetchJoin(discussionId, pageable);
 
         if (replyResponsesPage.getTotalElements() == 0){
             return DefaultRes.response(HttpStatus.OK.value(), "데이터없음");
@@ -56,7 +57,7 @@ public class DiscussionReplyService {
         }
     }
 
-    private List<DiscussionReplyResponse> replyData(Page<DiscussionBoardReply> replyResponsesPage) {
+    private List<DiscussionReplyResponse> replyData(Page<DiscussionReplyResponse> replyResponsesPage) {
         return replyResponsesPage.stream()
                 .map(DiscussionReplyResponse::new)
                 .collect(Collectors.toList());
@@ -64,37 +65,38 @@ public class DiscussionReplyService {
 
 
     // 댓글 수정
-    public DefaultRes updateReply(DiscussionReplyEditRequest requestDto, Long discussionId, Long userId) {
+    public DefaultRes updateReply(DiscussionReplyEditRequest requestDto, Long replyId, Long userId) {
 
-        Optional<DiscussionBoardReply> boardReply = replyRepository.findByDiscussionId(discussionId);
+        Optional<DiscussionBoardReply> boardReply = replyQueryRepository.findById(replyId);
 
         if (boardReply.isEmpty()){
             return DefaultRes.response(HttpStatus.OK.value(), "데이터없음");
         }
+        return boardReply.filter(board -> board.getId().equals(replyId))
+                .filter(board -> board.getUser().getId().equals(userId))
+                .map(board -> {
 
-        return boardReply.filter(reply -> reply.getDiscussionBoard().getId().equals(discussionId))
-                .filter(reply -> reply.getUser().getId().equals(userId))
-                .map(reply -> {
-                        DiscussionBoardReply replyBoard = reply.updateReply(requestDto);
-                        replyRepository.save(replyBoard);
+                    replyQueryRepository.updateBoard(requestDto, board.getId(), board.getUser().getId());
 
-                        return DefaultRes.response(HttpStatus.OK.value(), "수정성공");
-                })
-                .orElseGet(() -> DefaultRes.response(HttpStatus.OK.value(), "수정실패"));
+                    return DefaultRes.response(HttpStatus.OK.value(), "수정성공");
+                }).orElseGet(() -> DefaultRes.response(HttpStatus.OK.value(), "수정실패"));
+
     }
 
     // 댓글 삭제
-    public DefaultRes delete(Long id, Long userId) {
-        Optional<DiscussionBoardReply> deleteReply = replyRepository.findById(id);
+    public DefaultRes delete(Long replyId, Long userId) {
+        Optional<DiscussionBoardReply> deleteReply = replyQueryRepository.findById(replyId);
 
         if (deleteReply.isEmpty()){
             return DefaultRes.response(HttpStatus.OK.value(), "데이터없음");
         }
 
-        return deleteReply.filter(replyboard -> replyboard.getId().equals(id))
-                .filter(replyBoard -> replyBoard.getUser().getId().equals(userId))
-                .map(replyBoard -> {
-                    replyRepository.delete(id, userId);
+        return deleteReply.filter(board -> board.getId().equals(replyId))
+                .filter(board -> board.getUser().getId().equals(userId))
+                .map(board -> {
+
+                    replyQueryRepository.deleteById(board.getId(), board.getUser().getId());
+
                     return DefaultRes.response(HttpStatus.OK.value(), "삭제성공");
                 }).orElseGet(() -> DefaultRes.response(HttpStatus.OK.value(), "삭제실패"));
     }

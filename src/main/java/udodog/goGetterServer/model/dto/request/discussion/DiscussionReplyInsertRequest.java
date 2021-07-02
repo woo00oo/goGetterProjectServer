@@ -14,13 +14,14 @@ import java.util.Optional;
 public class DiscussionReplyInsertRequest {
 
     @NotNull
-    private String content;     // 댓글 내용
+    private String content;
 
-    public DiscussionBoardReply toEntity(DiscussionReplyInsertRequest requestDto, Optional<DiscussionBoard> board, Optional<User> user) {
+    public DiscussionBoardReply toEntity(Optional<DiscussionBoard> board, Optional<User> user, DiscussionReplyInsertRequest requestDto){
         return DiscussionBoardReply.builder()
                 .discussionBoard(board.get())
                 .user(user.get())
                 .content(requestDto.content)
                 .build();
     }
+
 }

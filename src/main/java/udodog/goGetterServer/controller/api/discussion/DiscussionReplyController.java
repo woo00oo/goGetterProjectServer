@@ -36,7 +36,7 @@ public class DiscussionReplyController {
     })
 
     // 글 등록 Controller
-    @PostMapping("/api/users/discussionreplies")
+    @PostMapping("/api/user/discussionreplies")
     public ResponseEntity<EntityModel<DefaultRes<DiscussionReplyResponse>>> createReply(
             @ApiParam("필수 : 모든사항")
             @RequestBody DiscussionReplyInsertRequest requestDto,
@@ -52,7 +52,7 @@ public class DiscussionReplyController {
     })
 
     // 댓글 조회 Controller
-    @GetMapping("/api/bkusers/discussionreplies")
+    @GetMapping("/api/bkuser/discussionreplies")
     public ResponseEntity<EntityModel<DefaultRes<List<DiscussionReplyResponse>>>> getBoardReplyList(
             @RequestParam("discussionId") Long discussionId,
             @PageableDefault(sort = "createAt", direction = Sort.Direction.DESC, size = 3) Pageable pageable // 최신 날짜순으로 내림차순, 페이지당 3개씩 출력
@@ -66,13 +66,13 @@ public class DiscussionReplyController {
     })
 
     // 댓글 수정 Controller
-    @PutMapping("/api/users/discussionreplies")
+    @PutMapping("/api/user/discussionreplies")
     public ResponseEntity<EntityModel<DefaultRes<DiscussionReplyEditRequest>>> updateReply(
-            @RequestParam("discussionId") Long discussionId,
+            @RequestParam("replyId") Long replyId,
             @RequestParam("userId") Long userId,
             @Valid@RequestBody DiscussionReplyEditRequest requestDto
     ){
-        return new ResponseEntity<>(replyConvertor.toModel(replyService.updateReply(requestDto, discussionId, userId)), HttpStatus.OK);
+        return new ResponseEntity<>(replyConvertor.toModel(replyService.updateReply(requestDto, replyId, userId)), HttpStatus.OK);
     }
 
     @ApiOperation(value = "토론게시판 댓글삭제 API",notes = "댓글삭제 API입니다.")
@@ -81,9 +81,9 @@ public class DiscussionReplyController {
     })
 
     // 댓글 삭제 Controller
-    @DeleteMapping("/api/users/discussionreplies")
-    public ResponseEntity<EntityModel<DefaultRes<DiscussionBoardReply>>> deleteReply (@RequestParam("id") Long id,
+    @DeleteMapping("/api/user/discussionreplies")
+    public ResponseEntity<EntityModel<DefaultRes<DiscussionBoardReply>>> deleteReply (@RequestParam("replyId") Long replyId,
                                                                                       @RequestParam("userId") Long userId){
-        return new ResponseEntity<>(replyConvertor.toModel(replyService.delete(id, userId)), HttpStatus.OK);
+        return new ResponseEntity<>(replyConvertor.toModel(replyService.delete(replyId, userId)), HttpStatus.OK);
     }
 }
