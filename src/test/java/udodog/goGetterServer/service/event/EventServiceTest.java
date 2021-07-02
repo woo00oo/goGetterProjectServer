@@ -13,6 +13,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.test.context.junit4.SpringRunner;
 import udodog.goGetterServer.model.dto.DefaultRes;
 import udodog.goGetterServer.model.dto.request.event.EventCreateRequestDto;
+import udodog.goGetterServer.model.dto.response.event.DetailEventResponseDto;
 import udodog.goGetterServer.model.dto.response.event.EventsResponseDto;
 import udodog.goGetterServer.model.entity.Event;
 import udodog.goGetterServer.repository.EventRepository;
@@ -21,6 +22,7 @@ import udodog.goGetterServer.repository.querydsl.EventQueryRepository;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -48,8 +50,9 @@ public class EventServiceTest {
         LocalDate startData = LocalDate.of(2021,7,1);
         LocalDate endDate = LocalDate.of(2021,7,15);
         String imgUrl = null;
+        Long couponBoxId = null;
 
-        EventCreateRequestDto eventCreateRequestDto = new EventCreateRequestDto(title, content, startData, endDate, imgUrl);
+        EventCreateRequestDto eventCreateRequestDto = new EventCreateRequestDto(title, content, startData, endDate, imgUrl, couponBoxId);
 
         Event mockEvent = eventCreateRequestDto.toEntity();
 
@@ -101,5 +104,29 @@ public class EventServiceTest {
         assertThat(result.getData().getTotalElements()).isEqualTo(2);
     }
 
+    @Test
+    public void 진행중인_이벤트_상세조회(){
 
+        //given
+
+        Long id = 1L;
+        String title = "신규 회원 등록 이벤트";
+        String content = "20% 할인 쿠폰 지급";
+        LocalDate startData = LocalDate.of(2021,7,1);
+        LocalDate endDate = LocalDate.of(2021,7,15);
+        String imgUrl = null;
+        Long couponBoxId = 5L;
+
+        Event event = new Event(id, title, content, startData, endDate, imgUrl, couponBoxId);
+        given(eventRepository.findById(id)).willReturn(Optional.of(event));
+
+        //when
+        DefaultRes<DetailEventResponseDto> result = eventService.eventDetailFind(id);
+
+        //then
+        assertThat(result.getMessage()).isEqualTo("조회성공");
+        assertThat(result.getData().getId()).isEqualTo(id);
+        assertThat(result.getData().getTitle()).isEqualTo(title);
+        assertThat(result.getData().getCouponBoxId()).isEqualTo(5L);
+    }
 }
