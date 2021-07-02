@@ -7,9 +7,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import udodog.goGetterServer.model.dto.DefaultRes;
 import udodog.goGetterServer.model.dto.request.event.EventCreateRequestDto;
+import udodog.goGetterServer.model.dto.response.event.DetailEventResponseDto;
 import udodog.goGetterServer.model.dto.response.event.EventsResponseDto;
+import udodog.goGetterServer.model.entity.Event;
 import udodog.goGetterServer.repository.EventRepository;
 import udodog.goGetterServer.repository.querydsl.EventQueryRepository;
+
+import java.util.Optional;
 
 
 @Service
@@ -43,5 +47,15 @@ public class EventService {
             return DefaultRes.response(HttpStatus.OK.value(), "데이터없음");
         }
         return DefaultRes.response(HttpStatus.OK.value(), "조회성공", result);
+    }
+
+    public DefaultRes<DetailEventResponseDto> eventDetailFind(Long eventId){
+
+        Optional<Event> optionalEvent = eventRepository.findById(eventId);
+
+        return optionalEvent
+                .map(event -> DefaultRes.response(HttpStatus.OK.value(), "조회성공", new DetailEventResponseDto(event)))
+                .orElseGet(() -> DefaultRes.response(HttpStatus.OK.value(), "데이터없음"));
+
     }
 }
