@@ -1,18 +1,15 @@
 package udodog.goGetterServer.model.dto.request.discussion;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
 
 @Getter
-@AllArgsConstructor
+@NoArgsConstructor
 public class DiscussionReplyEditRequest {
 
     @NotNull
-    Long userId;
-
-    @NotNull
-    private String content;
+    private String content;     // 댓글 내용
 
 }
