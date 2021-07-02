@@ -5,7 +5,6 @@ import com.querydsl.jpa.impl.JPADeleteClause;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.querydsl.jpa.impl.JPAUpdateClause;
 import lombok.RequiredArgsConstructor;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -31,7 +30,7 @@ public class DiscussionBoardQueryRepository {
 
 
     // 게시판 전체 조회
-    public Page<DiscussionReseponseDto> findAllWithFetchJoin(@NotNull Pageable pageable) {
+    public Page<DiscussionReseponseDto> findAllWithFetchJoin(Pageable pageable) {
 
         List<DiscussionReseponseDto> boardList =
                 queryFactory
@@ -67,7 +66,7 @@ public class DiscussionBoardQueryRepository {
 
     @Transactional
     // 게시판 수정
-    public void updateBoard(@NotNull DiscussionEditRequest update, Long id, Long userId) {
+    public void updateBoard(DiscussionEditRequest update, Long id, Long userId) {
 
         JPAUpdateClause updateClause = new JPAUpdateClause(em, discussionBoard);
 
@@ -90,7 +89,7 @@ public class DiscussionBoardQueryRepository {
     }
 
     // 제목으로 검색
-    public Page<DiscussionReseponseDto> findByTitleContaining(String title, @NotNull Pageable pageable) {
+    public Page<DiscussionReseponseDto> findByTitleContaining(String title, Pageable pageable) {
 
         List<DiscussionReseponseDto> boardList =
                 queryFactory
@@ -112,7 +111,7 @@ public class DiscussionBoardQueryRepository {
     }
 
     // 내용으로 검색
-    public Page<DiscussionReseponseDto> findByContentContaining(String content, @NotNull Pageable pageable) {
+    public Page<DiscussionReseponseDto> findByContentContaining(String content, Pageable pageable) {
 
         List<DiscussionReseponseDto> boardList =
                 queryFactory
@@ -134,7 +133,7 @@ public class DiscussionBoardQueryRepository {
     }
 
     // 제목 + 내용으로 검색
-    public Page<DiscussionReseponseDto> findByAllContaining(String search, @NotNull Pageable pageable) {
+    public Page<DiscussionReseponseDto> findByAllContaining(String search, Pageable pageable) {
 
         List<DiscussionReseponseDto> boardList =
                 queryFactory

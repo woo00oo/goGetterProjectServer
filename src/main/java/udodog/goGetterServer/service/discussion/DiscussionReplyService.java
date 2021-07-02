@@ -39,10 +39,13 @@ public class DiscussionReplyService {
 
         if(requestDto == null) {
             return DefaultRes.response(HttpStatus.OK.value(), "등록실패");
-        }else {
-            replyRepository.save(requestDto.toEntity(board, user, requestDto));
-            return DefaultRes.response(HttpStatus.OK.value(), "등록성공");
         }
+
+        if (board.get().getId().equals(discussionId) && user.get().getId().equals(userId)){
+            replyRepository.save(requestDto.toEntity(board, user, requestDto));
+        }
+
+        return DefaultRes.response(HttpStatus.OK.value(), "등록성공");
     }
 
     // 댓글 조회
