@@ -13,7 +13,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.test.context.junit4.SpringRunner;
 import udodog.goGetterServer.model.dto.DefaultRes;
 import udodog.goGetterServer.model.dto.request.event.EventCreateRequestDto;
-import udodog.goGetterServer.model.dto.response.event.ProgressEventsResponseDto;
+import udodog.goGetterServer.model.dto.response.event.EventsResponseDto;
 import udodog.goGetterServer.model.entity.Event;
 import udodog.goGetterServer.repository.EventRepository;
 import udodog.goGetterServer.repository.querydsl.EventQueryRepository;
@@ -67,7 +67,7 @@ public class EventServiceTest {
 
         //given
 
-        List<ProgressEventsResponseDto> eventList = new ArrayList<>();
+        List<EventsResponseDto> eventList = new ArrayList<>();
 
         Long id = 1L;
         String title = "신규 회원 등록 이벤트";
@@ -83,18 +83,18 @@ public class EventServiceTest {
         LocalDate endDate2 = LocalDate.of(2021,7,20);
         String imgUrl2 = null;
 
-        ProgressEventsResponseDto event1 = new ProgressEventsResponseDto(id, title, startData, endDate);
-        ProgressEventsResponseDto event2 = new ProgressEventsResponseDto(id2, title, startData, endDate);
+        EventsResponseDto event1 = new EventsResponseDto(id, title, startData, endDate);
+        EventsResponseDto event2 = new EventsResponseDto(id2, title, startData, endDate);
 
         eventList.add(event1);
         eventList.add(event2);
 
         //when
         PageRequest pageRequest = PageRequest.of(0, 12, Sort.by("startDate").descending());
-        Page<ProgressEventsResponseDto> eventPage = new PageImpl<>(eventList, pageRequest, 2);
+        Page<EventsResponseDto> eventPage = new PageImpl<>(eventList, pageRequest, 2);
         given(eventQueryRepository.progressEventFindAll(pageRequest)).willReturn(eventPage);
 
-        DefaultRes<Page<ProgressEventsResponseDto>> result = eventService.progressEventFindAll(pageRequest);
+        DefaultRes<Page<EventsResponseDto>> result = eventService.progressEventFindAll(pageRequest);
 
         //then
         assertThat(result.getMessage()).isEqualTo("조회성공");

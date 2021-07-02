@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import udodog.goGetterServer.model.dto.DefaultRes;
 import udodog.goGetterServer.model.dto.request.event.EventCreateRequestDto;
-import udodog.goGetterServer.model.dto.response.event.ProgressEventsResponseDto;
+import udodog.goGetterServer.model.dto.response.event.EventsResponseDto;
 import udodog.goGetterServer.repository.EventRepository;
 import udodog.goGetterServer.repository.querydsl.EventQueryRepository;
 
@@ -25,9 +25,19 @@ public class EventService {
         return DefaultRes.response(HttpStatus.OK.value(), "등록성공");
     }
 
-    public DefaultRes<Page<ProgressEventsResponseDto>> progressEventFindAll(Pageable pageable){
+    public DefaultRes<Page<EventsResponseDto>> progressEventFindAll(Pageable pageable){
 
-        Page<ProgressEventsResponseDto> result = eventQueryRepository.progressEventFindAll(pageable);
+        Page<EventsResponseDto> result = eventQueryRepository.progressEventFindAll(pageable);
+
+        if(result.getTotalElements() == 0){
+            return DefaultRes.response(HttpStatus.OK.value(), "데이터없음");
+        }
+        return DefaultRes.response(HttpStatus.OK.value(), "조회성공", result);
+    }
+
+    public DefaultRes<Page<EventsResponseDto>> endEventFindAll(Pageable pageable){
+
+        Page<EventsResponseDto> result = eventQueryRepository.endEventFindAll(pageable);
 
         if(result.getTotalElements() == 0){
             return DefaultRes.response(HttpStatus.OK.value(), "데이터없음");
