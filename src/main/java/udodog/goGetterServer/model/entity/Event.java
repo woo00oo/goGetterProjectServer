@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import udodog.goGetterServer.model.dto.request.event.EventUpdateRequestDto;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -41,5 +42,12 @@ public class Event {
         this.endDate = endDate;
         this.imgUrl = imgUrl;
         this.couponBoxId = couponBoxId;
+    }
+
+    public void update(EventUpdateRequestDto request){
+        this.title = request.getTitle();
+        this.content = request.getContent();
+        this.imgUrl = request.getImgUrl();
+        this.couponBoxId = request.getCouponBoxId();
     }
 }

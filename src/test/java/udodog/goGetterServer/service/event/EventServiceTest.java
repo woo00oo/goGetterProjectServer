@@ -2,6 +2,7 @@ package udodog.goGetterServer.service.event;
 
 
 import lombok.extern.slf4j.Slf4j;
+import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -13,6 +14,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.test.context.junit4.SpringRunner;
 import udodog.goGetterServer.model.dto.DefaultRes;
 import udodog.goGetterServer.model.dto.request.event.EventCreateRequestDto;
+import udodog.goGetterServer.model.dto.request.event.EventUpdateRequestDto;
 import udodog.goGetterServer.model.dto.response.event.DetailEventResponseDto;
 import udodog.goGetterServer.model.dto.response.event.EventsResponseDto;
 import udodog.goGetterServer.model.entity.Event;
@@ -128,5 +130,38 @@ public class EventServiceTest {
         assertThat(result.getData().getId()).isEqualTo(id);
         assertThat(result.getData().getTitle()).isEqualTo(title);
         assertThat(result.getData().getCouponBoxId()).isEqualTo(5L);
+    }
+
+    @Test
+    public void 이벤트_업데이트(){
+        //given
+        Long id = 1L;
+        String title = "신규 회원 등록 이벤트";
+        String content = "20% 할인 쿠폰 지급";
+        LocalDate startData = LocalDate.of(2021,7,10);
+        LocalDate endDate = LocalDate.of(2021,7,15);
+        String imgUrl = "test.jpg";
+        Long couponBoxId = 10L;
+        Event event = new Event(id, title, content, startData, endDate, imgUrl, couponBoxId);
+
+        given(eventRepository.save(any())).willReturn(event);
+
+        String updateTitle = "신규 회원 파격 이벤트";
+        String updateContent = "5만원 쿠폰 지급";
+        EventUpdateRequestDto request = new EventUpdateRequestDto(updateTitle, updateContent, imgUrl, couponBoxId);
+
+        given(eventRepository.findById(1L)).willReturn(Optional.of(event));
+
+        //when
+        DefaultRes defaultRes1 = eventService.eventUpdate(1L, request);
+
+        DefaultRes defaultRes2 = eventService.eventUpdate(2L, request);
+
+        //then
+        Assertions.assertThat(defaultRes1.getStatusCode()).isEqualTo(303); // 업데이트 성공시 303 리다이렉트
+        Assertions.assertThat(defaultRes2.getStatusCode()).isEqualTo(200); // 업데이트 실패시 200 데이터없음
+
+
+
     }
 }

@@ -5,8 +5,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import udodog.goGetterServer.model.dto.DefaultRes;
 import udodog.goGetterServer.model.dto.request.event.EventCreateRequestDto;
+import udodog.goGetterServer.model.dto.request.event.EventUpdateRequestDto;
 import udodog.goGetterServer.model.dto.response.event.DetailEventResponseDto;
 import udodog.goGetterServer.model.dto.response.event.EventsResponseDto;
 import udodog.goGetterServer.model.entity.Event;
@@ -58,4 +60,16 @@ public class EventService {
                 .orElseGet(() -> DefaultRes.response(HttpStatus.OK.value(), "데이터없음"));
 
     }
+
+    @Transactional
+    public DefaultRes eventUpdate(Long eventId, EventUpdateRequestDto request){
+
+        Optional<Event> optionalEvent = eventRepository.findById(eventId);
+
+        return optionalEvent.map(event ->{
+            event.update(request);
+            return DefaultRes.response(HttpStatus.SEE_OTHER.value(), "업데이트성공");
+        }).orElseGet(()-> DefaultRes.response(HttpStatus.OK.value(), "데이터없음"));
+    }
+
 }
