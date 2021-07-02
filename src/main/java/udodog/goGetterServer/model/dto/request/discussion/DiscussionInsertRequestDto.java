@@ -14,10 +14,10 @@ import java.util.Optional;
 public class DiscussionInsertRequestDto {
 
     @NotNull
-    private String title;
+    private String title;       // 게시판 제목
 
     @NotNull
-    private String content;
+    private String content;     // 게시판 내용
 
     @Builder
     public DiscussionBoard toEntity(DiscussionInsertRequestDto create, Optional<User> user){

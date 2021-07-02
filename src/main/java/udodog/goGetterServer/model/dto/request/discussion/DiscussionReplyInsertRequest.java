@@ -14,7 +14,7 @@ import java.util.Optional;
 public class DiscussionReplyInsertRequest {
 
     @NotNull
-    private String content;
+    private String content; // 댓글 내용
 
     public DiscussionBoardReply toEntity(Optional<DiscussionBoard> board, Optional<User> user, DiscussionReplyInsertRequest requestDto){
         return DiscussionBoardReply.builder()

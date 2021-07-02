@@ -5,6 +5,7 @@ import com.querydsl.jpa.impl.JPADeleteClause;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.querydsl.jpa.impl.JPAUpdateClause;
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -30,7 +31,7 @@ public class DiscussionBoardQueryRepository {
 
 
     // 게시판 전체 조회
-    public Page<DiscussionReseponseDto> findAllWithFetchJoin(Pageable pageable) {
+    public Page<DiscussionReseponseDto> findAllWithFetchJoin(@NotNull Pageable pageable) {
 
         List<DiscussionReseponseDto> boardList =
                 queryFactory
@@ -41,7 +42,6 @@ public class DiscussionBoardQueryRepository {
                                 discussionBoard.createAt))
                         .from(discussionBoard)
                         .innerJoin(discussionBoard.user, user)
-                        .orderBy(discussionBoard.id.desc())
                         .fetch();
 
         int start = (int)pageable.getOffset();
@@ -59,7 +59,6 @@ public class DiscussionBoardQueryRepository {
                         .selectFrom(discussionBoard)
                         .innerJoin(discussionBoard.user, user)
                         .fetchJoin()
-                        .where(discussionBoard.id.eq(id))
                         .fetchOne();
 
         return Optional.ofNullable(board);
@@ -68,7 +67,7 @@ public class DiscussionBoardQueryRepository {
 
     @Transactional
     // 게시판 수정
-    public void updateBoard(DiscussionEditRequest update, Long id, Long userId) {
+    public void updateBoard(@NotNull DiscussionEditRequest update, Long id, Long userId) {
 
         JPAUpdateClause updateClause = new JPAUpdateClause(em, discussionBoard);
 
@@ -91,7 +90,7 @@ public class DiscussionBoardQueryRepository {
     }
 
     // 제목으로 검색
-    public Page<DiscussionReseponseDto> findByTitleContaining(String title, Pageable pageable) {
+    public Page<DiscussionReseponseDto> findByTitleContaining(String title, @NotNull Pageable pageable) {
 
         List<DiscussionReseponseDto> boardList =
                 queryFactory
@@ -103,7 +102,6 @@ public class DiscussionBoardQueryRepository {
                         .from(discussionBoard)
                         .innerJoin(discussionBoard.user, user)
                         .where(discussionBoard.title.contains(title))
-                        .orderBy(discussionBoard.id.desc())
                         .fetch();
 
         int start = (int)pageable.getOffset();
@@ -114,7 +112,7 @@ public class DiscussionBoardQueryRepository {
     }
 
     // 내용으로 검색
-    public Page<DiscussionReseponseDto> findByContentContaining(String content, Pageable pageable) {
+    public Page<DiscussionReseponseDto> findByContentContaining(String content, @NotNull Pageable pageable) {
 
         List<DiscussionReseponseDto> boardList =
                 queryFactory
@@ -126,7 +124,6 @@ public class DiscussionBoardQueryRepository {
                         .from(discussionBoard)
                         .innerJoin(discussionBoard.user, user)
                         .where(discussionBoard.content.contains(content))
-                        .orderBy(discussionBoard.id.desc())
                         .fetch();
 
         int start = (int)pageable.getOffset();
@@ -137,7 +134,7 @@ public class DiscussionBoardQueryRepository {
     }
 
     // 제목 + 내용으로 검색
-    public Page<DiscussionReseponseDto> findByAllContaining(String search, Pageable pageable) {
+    public Page<DiscussionReseponseDto> findByAllContaining(String search, @NotNull Pageable pageable) {
 
         List<DiscussionReseponseDto> boardList =
                 queryFactory
@@ -148,8 +145,7 @@ public class DiscussionBoardQueryRepository {
                                 discussionBoard.createAt))
                         .from(discussionBoard)
                         .innerJoin(discussionBoard.user, user)
-                        .where(discussionBoard.title.contains(search), discussionBoard.content.contains(search))
-                        .orderBy(discussionBoard.id.desc())
+                        .where(discussionBoard.title.contains(search).or(discussionBoard.content.contains(search)))
                         .fetch();
 
         int start = (int)pageable.getOffset();

@@ -10,6 +10,6 @@ import javax.validation.constraints.NotNull;
 public class DiscussionReplyEditRequest {
 
     @NotNull
-    private String content;
+    private String content;     // 댓글 내용
 
 }

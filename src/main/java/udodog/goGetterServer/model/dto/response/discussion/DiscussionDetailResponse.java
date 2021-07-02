@@ -13,12 +13,12 @@ import java.time.LocalDate;
 public class DiscussionDetailResponse {
 
 
-    private Long id;                 // 게시판 아이디
+    private Long id;                 // 게시판 번호
     private String userNickName;     // 유저 닉네임
     private String title;            // 게시판 제목
     private String content;          // 게시판 내용
     private String profileUrl;       // 유저 프로필
-    private LocalDate createAt;      // 게시판 등록 날짜
+    private LocalDate createAt;      // 게시판 등록일
 
     public DiscussionDetailResponse(DiscussionBoard discussionBoard){
         this.id = discussionBoard.getId();

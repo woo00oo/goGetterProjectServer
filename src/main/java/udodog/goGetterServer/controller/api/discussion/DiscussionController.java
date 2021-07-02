@@ -38,7 +38,7 @@ public class DiscussionController {
     // 전체 조회 Controller
     @GetMapping("/api/discussions")
     public ResponseEntity<EntityModel<DefaultRes<List<DiscussionReseponseDto>>>> getBoardList(
-            @PageableDefault(sort = "createAt", direction = Sort.Direction.DESC, size = 7) Pageable pageable // 최신 날짜순으로 내림차순, 페이지당 7개씩 출력
+            @PageableDefault(sort = "id", direction = Sort.Direction.DESC, size = 7) Pageable pageable // 최신 날짜순으로 내림차순, 페이지당 7개씩 출력
     ){
         return new ResponseEntity<>(discussionListConvertor.toModel(discussionService.getBoardList(pageable)), HttpStatus.OK);
     }
@@ -100,7 +100,7 @@ public class DiscussionController {
     // 제목으로 검색
     @GetMapping("/api/discussions/search-title")
     public ResponseEntity<EntityModel<DefaultRes<List<DiscussionReseponseDto>>>> searchTitle (@RequestParam("title") String title,
-                                                                                              @PageableDefault(sort = "createAt", direction = Sort.Direction.DESC, size = 7) Pageable pageable){
+                                                                                              @PageableDefault(sort = "id", direction = Sort.Direction.DESC, size = 7) Pageable pageable){
         return new ResponseEntity<>(discussionListConvertor.toModel(discussionService.searchTitle(title, pageable)), HttpStatus.OK);
     }
 
@@ -112,7 +112,7 @@ public class DiscussionController {
     // 내용으로 검색
     @GetMapping("/api/discussions/search-content")
     public ResponseEntity<EntityModel<DefaultRes<List<DiscussionReseponseDto>>>> searchContent (@RequestParam("content") String content,
-                                                                                                @PageableDefault(sort = "createAt", direction = Sort.Direction.DESC, size = 7) Pageable pageable){
+                                                                                                @PageableDefault(sort = "id", direction = Sort.Direction.DESC, size = 7) Pageable pageable){
         return new ResponseEntity<>(discussionListConvertor.toModel(discussionService.searchContent(content, pageable)), HttpStatus.OK);
     }
 
@@ -124,7 +124,7 @@ public class DiscussionController {
     // 제목 + 내용으로 검색
     @GetMapping("/api/discussions/search-all")
     public ResponseEntity<EntityModel<DefaultRes<List<DiscussionReseponseDto>>>> searchAll (@RequestParam("search") String search,
-                                                                                            @PageableDefault(sort = "createAt", direction = Sort.Direction.DESC, size = 7) Pageable pageable){
+                                                                                            @PageableDefault(sort = "id", direction = Sort.Direction.DESC, size = 7) Pageable pageable){
         return new ResponseEntity<>(discussionListConvertor.toModel(discussionService.searchAll(search, pageable)), HttpStatus.OK);
     }
 }

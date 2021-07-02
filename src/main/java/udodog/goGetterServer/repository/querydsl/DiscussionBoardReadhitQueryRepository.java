@@ -20,6 +20,7 @@ public class DiscussionBoardReadhitQueryRepository {
     private final JPAQueryFactory queryFactory;
     private final EntityManager em;
 
+    // 게시판 번호로 조회수 찾기
     public Optional<DiscussionBoardReadhit> findByDiscussionId(Long discussionId){
 
         DiscussionBoardReadhit readhit =
@@ -32,7 +33,7 @@ public class DiscussionBoardReadhitQueryRepository {
     }
 
     @Transactional
-    public void updateCount(Long discussionId, Integer count){
+    public void updateCount(Long discussionId, Integer count){  // 게시판 번호에 맞게 조회수 증가
         JPAUpdateClause updateClause = new JPAUpdateClause(em, discussionBoardReadhit);
 
         updateClause
@@ -42,7 +43,7 @@ public class DiscussionBoardReadhitQueryRepository {
     }
 
     @Transactional
-    public void deleteByDiscussionId(Long discussionId) {
+    public void deleteByDiscussionId(Long discussionId) { // 게시판 삭제 될 시 조회수 삭제
 
         JPADeleteClause deleteClause = new JPADeleteClause(em, discussionBoardReadhit);
 

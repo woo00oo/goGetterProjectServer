@@ -28,6 +28,7 @@ public class DiscussionBoardReplyQueryRepository {
     private final JPAQueryFactory queryFactory;
     private final EntityManager em;
 
+    // 댓글 조회
     public Page<DiscussionReplyResponse> findAllWithFetchJoin(Long discussionId, Pageable pageable) {
 
         List<DiscussionReplyResponse> boardReplyList =
@@ -48,6 +49,7 @@ public class DiscussionBoardReplyQueryRepository {
         return new PageImpl<>(boardReplyList.subList(start, end), pageable, boardReplyList.size());
     }
 
+    // 댓글 번호로 검색
     public Optional<DiscussionBoardReply> findById(Long replyId) {
 
         DiscussionBoardReply replyBoard =
@@ -62,7 +64,7 @@ public class DiscussionBoardReplyQueryRepository {
     }
 
     @Transactional
-    public void updateBoard(DiscussionReplyEditRequest requestDto, Long replyId, Long userId) {
+    public void updateBoard(DiscussionReplyEditRequest requestDto, Long replyId, Long userId) { // 댓글 번호, 유저 번호가 같을 시 댓글 수정
 
         JPAUpdateClause updateClause = new JPAUpdateClause(em, discussionBoardReply);
 
@@ -73,7 +75,7 @@ public class DiscussionBoardReplyQueryRepository {
     }
 
     @Transactional
-    public void deleteById(Long replyId, Long userId) {
+    public void deleteById(Long replyId, Long userId) { // 댓글 번호, 유저 번호가 맞으면 댓글 삭제
 
         JPADeleteClause deleteClause = new JPADeleteClause(em, discussionBoardReply);
 
@@ -83,7 +85,7 @@ public class DiscussionBoardReplyQueryRepository {
     }
 
     @Transactional
-    public void deleteByDiscussionId(Long discussionId) {
+    public void deleteByDiscussionId(Long discussionId) {   // 게시판 삭제 될 시 댓글도 같이 삭제
         JPADeleteClause deleteClause = new JPADeleteClause(em, discussionBoardReply);
 
         deleteClause

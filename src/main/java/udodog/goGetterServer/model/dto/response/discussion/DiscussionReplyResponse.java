@@ -9,13 +9,10 @@ import java.time.LocalDate;
 @Getter
 public class DiscussionReplyResponse {
 
-    private Long id;
-
-    private String userNickName;
-
-    private String content;
-
-    private LocalDate createAt;
+    private Long id;                // 댓글 번호
+    private String userNickName;    // 유저 닉네임
+    private String content;         // 댓글 내용
+    private LocalDate createAt;     // 댓글 작성일
 
     public DiscussionReplyResponse(DiscussionReplyResponse boardReply){
 

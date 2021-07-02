@@ -13,12 +13,12 @@ import java.util.Optional;
 @Getter
 public class DiscussionReseponseDto {
 
-    private Long id;
-    private String userNickname;
-    private String title;
-    private LocalDate createAt;
+    private Long id;                // 게시판 번호
+    private String userNickname;    // 유저 닉네임
+    private String title;           // 게시판 제목
+    private LocalDate createAt;     // 게시판 등록일
 
-    private Integer readHit;
+    private Integer readHit;        // 조회수
 
 
     public DiscussionReseponseDto(DiscussionReseponseDto reseponseDto, Optional<DiscussionBoardReadhit> readhit) {
