@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import udodog.goGetterServer.model.converter.event.EventConverter;
 import udodog.goGetterServer.model.dto.DefaultRes;
 import udodog.goGetterServer.model.dto.request.event.EventCreateRequestDto;
+import udodog.goGetterServer.model.dto.response.event.DetailEventResponseDto;
 import udodog.goGetterServer.model.dto.response.event.EventsResponseDto;
 import udodog.goGetterServer.service.event.EventService;
 
@@ -61,5 +62,16 @@ public class EventController {
             @PageableDefault(sort = "startDate", direction = Sort.Direction.DESC, size = 12) Pageable pageable
     ){
         return new ResponseEntity<>(eventConverter.toModel(eventService.endEventFindAll(pageable)), HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "진행중인 이벤트 상세 조회 API",notes = "진행중인 이벤트를 상세 조회 합니다.")
+    @ApiResponses(value ={
+            @ApiResponse(code=200, message = "1. 조회성공\n 2. 데이터없음")
+    })
+    @GetMapping("/events/{eventId}")
+    public ResponseEntity<DefaultRes<DetailEventResponseDto>> eventDetailFind(
+            @PathVariable("eventId") Long eventId
+    ){
+        return new ResponseEntity<>(eventService.eventDetailFind(eventId), HttpStatus.OK);
     }
 }
