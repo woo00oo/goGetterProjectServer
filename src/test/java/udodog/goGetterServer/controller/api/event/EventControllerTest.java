@@ -39,8 +39,8 @@ public class EventControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\n" +
                         "  \"content\": \"20 % 할인 쿠폰 지급\",\n" +
-                        "  \"end_date\": \"2021-07-01\",\n" +
-                        "  \"start_date\": \"2021-07-15\",\n" +
+                        "  \"end_date\": \"2021-10-15\",\n" +
+                        "  \"start_date\": \"2021-10-20\",\n" +
                         "  \"title\": \"신규 가입 등록 이벤트\"\n" +
                         "}"))
                 .andExpect(status().isOk());
@@ -51,6 +51,14 @@ public class EventControllerTest {
 
         mvc.perform(get("/api/events")
                 .param("page", "1"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void 진행중인_이벤트_상세조회() throws Exception {
+
+        Long eventId = 9L;
+        mvc.perform(get("/api/events/{eventId}", eventId))
                 .andExpect(status().isOk());
     }
 }
