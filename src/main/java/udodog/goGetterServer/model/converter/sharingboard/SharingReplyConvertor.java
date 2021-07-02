@@ -22,6 +22,6 @@ public class SharingReplyConvertor implements RepresentationModelAssembler<Defau
                 linkTo(methodOn(SharingReplyController.class).getReplyList(null,null)).withSelfRel(),
                 linkTo(methodOn(SharingReplyController.class).createReply(null,null)).withRel("create"),
                 linkTo(methodOn(SharingReplyController.class).updateReply(null,null)).withRel("update"),
-                linkTo(methodOn(SharingReplyController.class).deleteReply(null,null)).withRel("update"));
+                linkTo(methodOn(SharingReplyController.class).deleteReply(null,null)).withRel("delete"));
     }
 }
