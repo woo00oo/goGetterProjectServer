@@ -5,15 +5,19 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import udodog.goGetterServer.config.WebMvcConfig;
 import udodog.goGetterServer.model.converter.event.EventConverter;
+import udodog.goGetterServer.model.dto.DefaultRes;
+import udodog.goGetterServer.model.dto.request.event.EventUpdateRequestDto;
 import udodog.goGetterServer.service.event.EventService;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
@@ -60,5 +64,31 @@ public class EventControllerTest {
         Long eventId = 9L;
         mvc.perform(get("/api/events/{eventId}", eventId))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    public void 이벤트_업데이트() throws Exception {
+
+        Long eventId = 9L;
+        String title = "신규 회원 파격 이벤트";
+        String content = "5만원 쿠폰 지급";
+        String imgUrl = "test.jpg";
+        Long couponBoxId = 10L;
+        EventUpdateRequestDto request = new EventUpdateRequestDto(title, content, imgUrl, couponBoxId);
+
+        DefaultRes response = DefaultRes.response(HttpStatus.OK.value(), "데이터없음");
+
+        given(eventService.eventUpdate(any(),any())).willReturn(response);
+
+        mvc.perform(patch("/api/admin/events/{eventId}", eventId)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\n" +
+                        "  \"title\": \"신규 회원 파격 이벤트\",   \n" +
+                        "  \"content\": \"5만원 쿠폰 지급\",\n" +
+                        "  \"img_url\" : \"test.jpg\",\n" +
+                        "  \"coupon_box_id\" : \"10\"\n" +
+                        "}"))
+                .andExpect(status().isOk());
+
     }
 }
