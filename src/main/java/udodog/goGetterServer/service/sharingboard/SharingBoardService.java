@@ -52,7 +52,7 @@ public class SharingBoardService {
         WriterInfo writerInfo = WriterInfo.builder().nickName(user.getNickName()).profileUrl(user.getProfileUrl()).build();
 
         return sharingBoard.map(board -> DefaultRes.response(HttpStatus.OK.value(), "조회 성공",
-                new BoardResponse(sharingBoard,board.getReplyCnt(),sharingBoardLikeRepository.countBySharingBoardId(board.getId()),writerInfo)))
+                new BoardResponse(sharingBoard,board.getReplyCnt(),board.getLikeCnt()/*sharingBoardLikeRepository.countBySharingBoardId(board.getId())*/,writerInfo)))
                 .orElseGet(()->{
                     return DefaultRes.response(HttpStatus.OK.
                             value(), "데이터 없음");
@@ -127,7 +127,8 @@ public class SharingBoardService {
 
         for(SharingBoard sharingBoard : sharingBoardList){
             Integer replyCnt = sharingBoard.getReplyCnt();
-            Integer likeCnt = sharingBoardLikeRepository.countBySharingBoardId(sharingBoard.getId());
+            Integer likeCnt = sharingBoard.getLikeCnt();
+                    //sharingBoardLikeRepository.countBySharingBoardId(sharingBoard.getId());
             WriterInfo writerInfo = WriterInfo.builder().nickName(sharingBoard.getUser().getNickName()).profileUrl(sharingBoard.getUser().getProfileUrl()).build();
 
             SimpleBoardResponse simpleBoardResponse = new SimpleBoardResponse(sharingBoard, replyCnt, likeCnt, writerInfo);

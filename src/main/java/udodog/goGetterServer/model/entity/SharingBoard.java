@@ -30,6 +30,9 @@ public class SharingBoard {
     @CreatedDate
     private LocalDate createdAt;
 
+    // Weekly Best 기능을 위해 추가
+    private Integer likeCnt;
+
     @OneToMany(mappedBy = "sharingBoard" )
     private List<SharingBoardReply> sharingBoardReplyList = new LinkedList<>();
 
@@ -45,6 +48,7 @@ public class SharingBoard {
         this.user = user.get();
         this.title = request.getTitle();
         this.content = request.getContent();
+        this.likeCnt = 0;
     }
 
     public Integer getReplyCnt(){
@@ -57,5 +61,13 @@ public class SharingBoard {
         this.content = request.getContent();
 
         return this;
+    }
+
+    public void minusLikeCnt() {
+        this.likeCnt -=  1;
+    }
+
+    public void plusLikeCnt() {
+        this.likeCnt +=  1;
     }
 }
