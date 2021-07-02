@@ -32,10 +32,10 @@ public class SwaggerConfig {
                 .version("1.0")
                 .description(
                         "<h2> API 변경사항이 있으면 즉시 팀원들에게 보고하기! </h2> \t\n\t\n" +
-                        "/api -> 블랙회원, 일반회원, 관리자 사용 가능 API \t\n\t\n" +
-                        "/userapi -> 일반회원, 관리자 사용 가능 API \t\n\t\n" +
-                        "/admapi -> 관리자 \t\n\t\n" +
-                        "해당 URI로 시작하는 API들은 헤더에 토큰을 포함해서 요청."
+                                "/api -> 비회원, 블랙회원, 일반회원, 관리자\n" +
+                                "/api/bkusers -> 블랙회원, 일반회원, 관리자\n" +
+                                "/api/users -> 일반회원, 관리자\n" +
+                                "/api/admin -> 관리자"
 
                 )
                 .build();

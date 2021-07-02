@@ -7,6 +7,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.test.web.servlet.MockMvc;
+import udodog.goGetterServer.config.WebMvcConfig;
 import udodog.goGetterServer.model.converter.EntityToModelConvertor;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -24,6 +25,9 @@ class SampleControllerTest {
 
     @MockBean
     private ModelMapper modelMapper;
+
+    @MockBean
+    private WebMvcConfig webMvcConfig;
 
     @Test
     public void 디폴트_응답_테스트() throws Exception {
