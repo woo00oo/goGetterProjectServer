@@ -18,16 +18,14 @@ public class BookReport {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @ManyToOne(targetEntity = Book.class, fetch = FetchType.LAZY)
-    @JoinColumn(name = "book_id")
-    private Book book;
-
+    
     @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
     private String title;
+    
+    private String bookName;
 
     private String content;
 
@@ -35,10 +33,10 @@ public class BookReport {
     private LocalDateTime createdAt;
 
     @Builder
-    public BookReport(Book book, User user, String title, String content) {
-        this.book = book;
+    public BookReport(User user, String title, String bookName, String content) {
         this.user = user;
         this.title = title;
+        this.bookName = bookName;
         this.content = content;
-    }
-}
+    } // 생성자 끝
+} // Class 끝
