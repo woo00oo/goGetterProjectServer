@@ -72,4 +72,15 @@ public class EventService {
         }).orElseGet(()-> DefaultRes.response(HttpStatus.OK.value(), "데이터없음"));
     }
 
+    @Transactional
+    public DefaultRes eventDelete(Long eventId){
+
+        Optional<Event> optionalEvent = eventRepository.findById(eventId);
+        return optionalEvent.map(event -> {
+            eventRepository.delete(event);
+            return DefaultRes.response(HttpStatus.OK.value(), "삭제성공");
+        }).orElseGet(()-> DefaultRes.response(HttpStatus.OK.value(), "데이터없음"));
+
+    }
+
 }
