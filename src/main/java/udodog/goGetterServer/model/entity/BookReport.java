@@ -17,7 +17,7 @@ public class BookReport {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long bookReportId;
+    private Long id;
     
     @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
