@@ -39,4 +39,4 @@ public class BookReport {
         this.bookName = bookName;
         this.content = content;
     } // 생성자 끝
-} // Class 끝
+} // Class끝
