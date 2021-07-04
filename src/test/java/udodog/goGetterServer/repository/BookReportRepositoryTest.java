@@ -54,6 +54,6 @@ class BookReportRepositoryTest {
         assertThat(bookReport).isEqualTo(saveBookReport);
 
 
-    }
+    } //독서기록_저장() 끝
 
 } // Class 끝
