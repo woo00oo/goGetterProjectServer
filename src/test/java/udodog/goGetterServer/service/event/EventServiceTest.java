@@ -164,4 +164,24 @@ public class EventServiceTest {
 
 
     }
+
+    @Test
+    public void 이벤트_삭제(){
+        //given
+        Long id = 1L;
+        String title = "신규 회원 등록 이벤트";
+        String content = "20% 할인 쿠폰 지급";
+        LocalDate startData = LocalDate.of(2021,7,10);
+        LocalDate endDate = LocalDate.of(2021,7,15);
+        String imgUrl = "test.jpg";
+        Long couponBoxId = 10L;
+        Event event = new Event(id, title, content, startData, endDate, imgUrl, couponBoxId);
+
+        //when
+        given(eventRepository.findById(id)).willReturn(Optional.of(event));
+        DefaultRes result = eventService.eventDelete(1L);
+
+        //then
+        Assertions.assertThat(result.getMessage()).isEqualTo("삭제성공");
+    }
 }
