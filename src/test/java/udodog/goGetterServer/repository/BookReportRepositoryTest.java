@@ -56,4 +56,4 @@ class BookReportRepositoryTest {
 
     }
 
-}
+} // Class 끝

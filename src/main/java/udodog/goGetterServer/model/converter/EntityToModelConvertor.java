@@ -19,7 +19,7 @@ public class EntityToModelConvertor implements RepresentationModelAssembler<Defa
         return EntityModel.of(defaultRes,
                 linkTo(methodOn(SampleController.class).getBook()).withSelfRel(),
                 linkTo(methodOn(SampleController.class).getBook()).withRel("delete"));
-    }
+    } //toModel() 끝 
 
 
 
