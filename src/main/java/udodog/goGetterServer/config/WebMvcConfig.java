@@ -14,14 +14,14 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
 
-        registry.addInterceptor(bkUserApiInterceptor())
-                .addPathPatterns("/api/bkusers/**");
-
-        registry.addInterceptor(userApiInterceptor())
-                .addPathPatterns("/api/users/**");
-
-        registry.addInterceptor(admApiInterceptor())
-                .addPathPatterns("/api/admin/**");
+//        registry.addInterceptor(bkUserApiInterceptor())
+//                .addPathPatterns("/api/bkusers/**");
+//
+//        registry.addInterceptor(userApiInterceptor())
+//                .addPathPatterns("/api/users/**");
+//
+//        registry.addInterceptor(admApiInterceptor())
+//                .addPathPatterns("/api/admin/**");
 
     }
 

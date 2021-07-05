@@ -16,7 +16,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.test.context.junit4.SpringRunner;
 import udodog.goGetterServer.config.JpaAuditingConfig;
 import udodog.goGetterServer.config.TestConfig;
-import udodog.goGetterServer.model.dto.response.event.ProgressEventsResponseDto;
+import udodog.goGetterServer.model.dto.response.event.EventsResponseDto;
 
 
 @RunWith(SpringRunner.class)
@@ -36,12 +36,12 @@ public class EventQueryRepositoryTest {
     public void 진행중인_이벤트_전체조회(){
         PageRequest pageRequest = PageRequest.of(0, 12, Sort.by("startDate").descending());
 
-        Page<ProgressEventsResponseDto> result = eventQueryRepository.progressEventFindAll(pageRequest);
+        Page<EventsResponseDto> result = eventQueryRepository.progressEventFindAll(pageRequest);
 
         result.stream()
                 .forEach(value -> log.info("title = {}, startDate = {}. endDate = {} ", value.getTitle(), value.getStartDate(), value.getEndDate()));
 
-        Assertions.assertThat(result.getTotalElements()).isEqualTo(12);
+        Assertions.assertThat(result.get().count()).isEqualTo(12);
     }
 
 }

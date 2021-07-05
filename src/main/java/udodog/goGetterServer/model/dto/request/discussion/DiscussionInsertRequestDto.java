@@ -1,32 +1,28 @@
 package udodog.goGetterServer.model.dto.request.discussion;
 
-import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import udodog.goGetterServer.model.entity.DiscussionBoard;
 import udodog.goGetterServer.model.entity.User;
 
 import javax.validation.constraints.NotNull;
+import java.util.Optional;
 
-@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 public class DiscussionInsertRequestDto {
 
     @NotNull
-    @ApiModelProperty(value = "로그인 상태의 사용자의 정보")
-    private User user;
+    private String title;       // 게시판 제목
 
     @NotNull
-    private String title;
-
-    @NotNull
-    private String content;
+    private String content;     // 게시판 내용
 
     @Builder
-    public DiscussionBoard toEntity(DiscussionInsertRequestDto create){
+    public DiscussionBoard toEntity(DiscussionInsertRequestDto create, Optional<User> user){
         return DiscussionBoard.builder()
-                .user(create.user)
+                .user(user.get())
                 .title(create.title)
                 .content(create.content)
                 .build();

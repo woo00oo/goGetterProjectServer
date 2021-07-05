@@ -29,6 +29,8 @@ public class EventCreateRequestDto {
 
     private String imgUrl;
 
+    private Long couponBoxId;
+
     @Builder
     public Event toEntity(){
 
@@ -38,6 +40,7 @@ public class EventCreateRequestDto {
                 .startDate(startDate)
                 .endDate(endDate)
                 .imgUrl(imgUrl)
+                .couponBoxId(couponBoxId)
                 .build();
 
     }

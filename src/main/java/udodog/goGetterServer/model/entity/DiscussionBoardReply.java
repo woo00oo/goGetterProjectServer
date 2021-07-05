@@ -20,11 +20,11 @@ public class DiscussionBoardReply {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = DiscussionBoard.class)
     @JoinColumn(name = "discussion_id")
     private DiscussionBoard discussionBoard;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = User.class)
     @JoinColumn(name = "user_id")
     private User user;
     private String content;

@@ -9,8 +9,6 @@ import udodog.goGetterServer.model.dto.request.discussion.DiscussionEditRequest;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.LinkedList;
-import java.util.List;
 
 @Entity
 @Getter
@@ -22,7 +20,7 @@ public class DiscussionBoard {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = User.class)
     @JoinColumn(name = "user_id")
     private User user;
 
