@@ -14,7 +14,7 @@ import java.util.Optional;
 
 public interface SharingBoardRepository extends JpaRepository<SharingBoard,Long>, SharingBoardExtension {
 
-    @Query(value = "select board from SharingBoard board join fetch board.user",
+    @Query(value = "select board from SharingBoard board join fetch board.user inner join fetch board.sharingBoardReplyList",
             countQuery = "select count(board) from SharingBoard ")
     Page<SharingBoard> findAll(Pageable pageable);
 

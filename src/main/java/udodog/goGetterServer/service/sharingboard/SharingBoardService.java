@@ -15,9 +15,7 @@ import udodog.goGetterServer.model.dto.response.sharingboard.BoardResponse;
 import udodog.goGetterServer.model.dto.response.sharingboard.SimpleBoardResponse;
 import udodog.goGetterServer.model.dto.response.sharingboard.WriterInfo;
 import udodog.goGetterServer.model.entity.SharingBoard;
-import udodog.goGetterServer.model.entity.SharingBoardReply;
 import udodog.goGetterServer.model.entity.User;
-import udodog.goGetterServer.repository.SharingBoardLikeRepository;
 import udodog.goGetterServer.repository.SharingBoardReplyRepository;
 import udodog.goGetterServer.repository.SharingBoardRepository;
 import udodog.goGetterServer.repository.UserRepository;
@@ -31,7 +29,6 @@ import java.util.Optional;
 public class SharingBoardService {
 
     private final SharingBoardRepository sharingBoardRepository;
-    private final SharingBoardLikeRepository sharingBoardLikeRepository;
     private final SharingBoardReplyRepository sharingBoardReplyRepository;
     private final UserRepository userRepository;
 
@@ -42,7 +39,7 @@ public class SharingBoardService {
             return DefaultRes.response(HttpStatus.OK.value(),"데이터 없음");
         }
 
-        return DefaultRes.response(HttpStatus.OK.value(),"조회 성공",getSimpleBoardResponseList(sharingBoardList),new Pagination(sharingBoardList));
+        return DefaultRes.response(HttpStatus.OK.value(),"조회 성공",getSimpleBoardResponseList(sharingBoardList), new Pagination(sharingBoardList));
     }
 
         public DefaultRes<BoardResponse> getBoardDetail(Long boardId) {
@@ -126,10 +123,12 @@ public class SharingBoardService {
         List<SimpleBoardResponse> simpleBoardResponseList = new LinkedList<>();
 
         for(SharingBoard sharingBoard : sharingBoardList){
+
             Integer replyCnt = sharingBoard.getReplyCnt();
             Integer likeCnt = sharingBoard.getLikeCnt();
-                    //sharingBoardLikeRepository.countBySharingBoardId(sharingBoard.getId());
-            WriterInfo writerInfo = WriterInfo.builder().nickName(sharingBoard.getUser().getNickName()).profileUrl(sharingBoard.getUser().getProfileUrl()).build();
+            User user = sharingBoard.getUser();
+
+            WriterInfo writerInfo = WriterInfo.builder().nickName(user.getNickName()).profileUrl(user.getProfileUrl()).build();
 
             SimpleBoardResponse simpleBoardResponse = new SimpleBoardResponse(sharingBoard, replyCnt, likeCnt, writerInfo);
             simpleBoardResponseList.add(simpleBoardResponse);

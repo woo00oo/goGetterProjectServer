@@ -27,8 +27,9 @@ public class SimpleBoardResponse {
 
 
     public SimpleBoardResponse(SharingBoard sharingBoard, Integer replyCnt, Integer likeCnt, WriterInfo writerInfo) {
-        this.writerInfo = writerInfo;
+
         this.id = sharingBoard.getId();
+        this.writerInfo = writerInfo;
         this.title = sharingBoard.getTitle();
         this.createdAt = sharingBoard.getCreatedAt();
 

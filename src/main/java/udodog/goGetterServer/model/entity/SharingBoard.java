@@ -33,6 +33,7 @@ public class SharingBoard {
     // Weekly Best 기능을 위해 추가
     private Integer likeCnt;
 
+
     @OneToMany(mappedBy = "sharingBoard" )
     private List<SharingBoardReply> sharingBoardReplyList = new LinkedList<>();
 

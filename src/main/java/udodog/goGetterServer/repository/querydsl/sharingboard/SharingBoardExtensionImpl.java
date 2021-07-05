@@ -20,11 +20,11 @@ public class SharingBoardExtensionImpl  extends QuerydslRepositorySupport implem
     public List<SharingBoard> getWeeklyBest() {
         QSharingBoard sharingBoard = QSharingBoard.sharingBoard;
 
-        LocalDate endTime = LocalDate.now().plusDays(7L);
+        LocalDate aWeekAgo = LocalDate.now().plusDays(-7);
         JPQLQuery<SharingBoard> query = from(sharingBoard).
                 innerJoin(sharingBoard.user).
                 fetchJoin().
-                where(sharingBoard.createdAt.between(LocalDate.now(), endTime)).
+                where(sharingBoard.createdAt.between(aWeekAgo, LocalDate.now())).
                 orderBy(sharingBoard.likeCnt.desc())
                 .limit(3);
 
