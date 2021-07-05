@@ -60,10 +60,10 @@ public class SharingBoardService {
                 });
     }
 
+    // 게시글 작성
     public DefaultRes createSharingBoard(CreateBoardRequest request) {
         Optional<User> user = userRepository.findById(request.getUserId());
 
-        //글 등록
         SharingBoard sharingBoard = new SharingBoard(request, user);
         SharingBoard saveBoard = sharingBoardRepository.save(sharingBoard);
 
@@ -71,23 +71,23 @@ public class SharingBoardService {
 
     }
 
-    public DefaultRes<BoardResponse> updateSharingBoard(Long boardId, UpdateBoardRequest request) {
-        Optional<SharingBoard> boardById = sharingBoardRepository.findById(boardId);
+    //게시글 수정
+    public DefaultRes<BoardResponse> updateSharingBoard(Long id, UpdateBoardRequest request) {
+        Optional<SharingBoard> boardById = sharingBoardRepository.findById(id);
 
         if (boardById.isEmpty()){
             return DefaultRes.response(HttpStatus.OK.value(),"글이 존재하지 않음");
         }
 
+        // 본인이 작성한 글이 아닌 경우
         if(!isWriter(request, boardById)){
             return DefaultRes.response(HttpStatus.OK.value(),"글 수정 실패");
         }
 
-        // UPDATE
         SharingBoard updateBoard = boardById.get().updateBoard(request);
         SharingBoard saveBoard = sharingBoardRepository.save(updateBoard);
-        //
 
-        if(saveBoard.getId().equals(boardId)){
+        if(saveBoard.getId().equals(id)){
             return DefaultRes.response(HttpStatus.OK.value(),"글 수정 성공");
         }
 
@@ -99,20 +99,21 @@ public class SharingBoardService {
     }
 
 
-    @Transactional
     public DefaultRes deleteSharingBoard(Long boardId, Long UserId) {
-
         Optional<SharingBoard> boardById = sharingBoardRepository.findById(boardId);
 
         if (boardById.isEmpty()){
             return DefaultRes.response(HttpStatus.OK.value(),"글이 존재하지 않음");
         }
 
-        if(!boardById.get().getUser().getId().equals(UserId)){
+        SharingBoard board = boardById.get();
+
+        // 본인이 작성한 글이 아닌 경우
+        if(!board.getUser().getId().equals(UserId)){
             return DefaultRes.response(HttpStatus.OK.value(),"글 삭제 실패");
         }
 
-        sharingBoardReplyRepository.deleteBySharingBoardId(boardById.get().getId());
+        sharingBoardReplyRepository.deleteBySharingBoardId(board.getId());
         sharingBoardRepository.deleteById(boardId);
 
         return DefaultRes.response(HttpStatus.OK.value(),"글 삭제 성공");

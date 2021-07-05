@@ -67,8 +67,8 @@ public class SharingBoardController {
     @ApiResponses(value ={
             @ApiResponse(code = 200, message = "1.글 수정 성공 \t\n 2.글 수정 실패 \t\n 3.글이 존재하지 않음 \t\n 4. 토큰 에러"),
     })
-    public ResponseEntity<DefaultRes> updateSharingBoard(@RequestParam("id") Long boardId, @RequestBody UpdateBoardRequest request){
-        return new ResponseEntity<>(sharingBoardService.updateSharingBoard(boardId,request), HttpStatus.OK);
+    public ResponseEntity<DefaultRes> updateSharingBoard(@RequestParam("id") Long id, @RequestBody UpdateBoardRequest request){
+        return new ResponseEntity<>(sharingBoardService.updateSharingBoard(id,request), HttpStatus.OK);
     }
 
 
