@@ -61,10 +61,10 @@ public class DiscussionBoardQueryRepository {
                 queryFactory
                         .select(Projections.constructor(DiscussionDetailResponse.class,
                                 discussionBoard.id,
+                                user.id,
                                 user.nickName,
                                 discussionBoard.title,
                                 discussionBoard.content,
-                                user.profileUrl,
                                 discussionBoard.createAt))
                         .from(discussionBoard)
                         .innerJoin(discussionBoard.user, user)

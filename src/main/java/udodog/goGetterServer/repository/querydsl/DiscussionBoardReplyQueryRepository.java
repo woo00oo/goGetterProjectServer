@@ -35,6 +35,7 @@ public class DiscussionBoardReplyQueryRepository {
                 queryFactory
                         .select(Projections.constructor(DiscussionReplyResponse.class,
                                 discussionBoardReply.id,
+                                user.id,
                                 user.nickName,
                                 discussionBoardReply.content,
                                 discussionBoardReply.createAt))
