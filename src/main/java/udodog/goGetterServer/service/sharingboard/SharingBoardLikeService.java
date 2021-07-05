@@ -20,7 +20,7 @@ public class SharingBoardLikeService {
 
     public DefaultRes likeFeature(Long boardId, Long userId) {
         Optional<SharingBoard> optionalSharingBoard = sharingBoardRepository.findById(boardId);
-        Optional<SharingBoardLike> sharingBoardLike = sharingBoardLikeRepository.findByUserId(userId);
+        Optional<SharingBoardLike> sharingBoardLike = sharingBoardLikeRepository.findByUserIdAndSharingBoardId(userId,boardId);
 
         if (optionalSharingBoard.isEmpty()){
             return DefaultRes.response(HttpStatus.OK.value(),"글이 존재하지 않음");

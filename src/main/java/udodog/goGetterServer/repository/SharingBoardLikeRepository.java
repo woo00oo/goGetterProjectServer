@@ -9,7 +9,5 @@ import java.util.Optional;
 @Repository
 public interface SharingBoardLikeRepository extends JpaRepository<SharingBoardLike,Long> {
 
-    Integer countBySharingBoardId(Long id);
-
-    Optional<SharingBoardLike> findByUserId(Long userId);
+    Optional<SharingBoardLike> findByUserIdAndSharingBoardId(Long userId, Long boardId);
 }
