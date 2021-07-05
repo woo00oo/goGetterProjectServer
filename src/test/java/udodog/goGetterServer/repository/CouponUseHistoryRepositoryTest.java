@@ -8,7 +8,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import udodog.goGetterServer.config.JpaAuditingConfig;
 import udodog.goGetterServer.model.entity.Coupon;
-import udodog.goGetterServer.model.entity.CouponBox;
+import udodog.goGetterServer.model.entity.CouponUseHistory;
 import udodog.goGetterServer.model.entity.User;
 import udodog.goGetterServer.model.enumclass.UserGrade;
 
@@ -21,7 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
         classes = JpaAuditingConfig.class
 ))
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-class CouponBoxRepositoryTest {
+class CouponUseHistoryRepositoryTest {
 
     @Autowired
     private CouponBoxRepository couponBoxRepository;
@@ -33,12 +33,13 @@ class CouponBoxRepositoryTest {
     private UserRepository userRepository;
 
     @Test
-    void 쿠폰함_저장(){
+    void 쿠폰사용이력_저장(){
 
         //given
         Coupon coupon = Coupon.builder()
                 .name("문화상품권")
-                .serialNumber(1234512345L)
+                .discount(3000)
+                .quantity(30)
                 .validDate(30)
                 .build();
 
@@ -55,17 +56,18 @@ class CouponBoxRepositoryTest {
         User saveUser = userRepository.save(user);
         Coupon saveCoupon = couponRepository.save(coupon);
 
-        CouponBox couponBox = CouponBox.builder()
+        CouponUseHistory couponUseHistory = CouponUseHistory.builder()
                 .user(saveUser)
                 .coupon(saveCoupon)
+                .serialNumber("GHOGLGK30000")
                 .endDate(LocalDate.of(2021,07,15))
                 .build();
 
         //when
-        CouponBox saveCouponBox = couponBoxRepository.save(couponBox);
+        CouponUseHistory saveCouponUseHistory = couponBoxRepository.save(couponUseHistory);
 
         //then
 
-        assertThat(couponBox).isEqualTo(saveCouponBox);
+        assertThat(couponUseHistory).isEqualTo(saveCouponUseHistory);
     }
 }

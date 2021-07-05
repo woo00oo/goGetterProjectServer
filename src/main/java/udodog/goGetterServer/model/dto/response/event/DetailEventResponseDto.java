@@ -1,6 +1,7 @@
 package udodog.goGetterServer.model.dto.response.event;
 
 import lombok.Getter;
+import udodog.goGetterServer.model.entity.Coupon;
 import udodog.goGetterServer.model.entity.Event;
 
 import java.time.LocalDate;
@@ -20,7 +21,17 @@ public class DetailEventResponseDto {
 
     private String imgUrl;
 
-    private Long couponBoxId;
+    private Long couponId;
+
+    public DetailEventResponseDto(Event event, Coupon coupon) {
+        this.id = event.getId();
+        this.title = event.getTitle();
+        this.content = event.getContent();
+        this.startDate = event.getStartDate();
+        this.endDate = event.getEndDate();
+        this.imgUrl = event.getImgUrl();
+        this.couponId = coupon.getId();
+    }
 
     public DetailEventResponseDto(Event event) {
         this.id = event.getId();
@@ -29,6 +40,5 @@ public class DetailEventResponseDto {
         this.startDate = event.getStartDate();
         this.endDate = event.getEndDate();
         this.imgUrl = event.getImgUrl();
-        this.couponBoxId = event.getCouponBoxId();
     }
 }

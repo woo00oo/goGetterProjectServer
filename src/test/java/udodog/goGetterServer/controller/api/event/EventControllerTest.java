@@ -80,7 +80,7 @@ public class EventControllerTest {
                         "  \"title\": \"신규 회원 파격 이벤트\",   \n" +
                         "  \"content\": \"5만원 쿠폰 지급\",\n" +
                         "  \"img_url\" : \"test.jpg\",\n" +
-                        "  \"coupon_box_id\" : \"10\"\n" +
+                        "  \"coupon_id\" : \"10\"\n" +
                         "}"))
                 .andExpect(status().is3xxRedirection());
 

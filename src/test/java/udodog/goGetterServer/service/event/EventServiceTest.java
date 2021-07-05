@@ -17,7 +17,9 @@ import udodog.goGetterServer.model.dto.request.event.EventCreateRequestDto;
 import udodog.goGetterServer.model.dto.request.event.EventUpdateRequestDto;
 import udodog.goGetterServer.model.dto.response.event.DetailEventResponseDto;
 import udodog.goGetterServer.model.dto.response.event.EventsResponseDto;
+import udodog.goGetterServer.model.entity.Coupon;
 import udodog.goGetterServer.model.entity.Event;
+import udodog.goGetterServer.repository.CouponRepository;
 import udodog.goGetterServer.repository.EventRepository;
 import udodog.goGetterServer.repository.querydsl.EventQueryRepository;
 
@@ -43,6 +45,9 @@ public class EventServiceTest {
     @Mock
     EventQueryRepository eventQueryRepository;
 
+    @Mock
+    CouponRepository couponRepository;
+
     @Test
     public void 이벤트_생성(){
 
@@ -52,12 +57,13 @@ public class EventServiceTest {
         LocalDate startData = LocalDate.of(2021,7,1);
         LocalDate endDate = LocalDate.of(2021,7,15);
         String imgUrl = null;
-        Long couponBoxId = null;
+        Coupon coupon = new Coupon();
+        Long couponId = 1L;
 
-        EventCreateRequestDto eventCreateRequestDto = new EventCreateRequestDto(title, content, startData, endDate, imgUrl, couponBoxId);
+        EventCreateRequestDto eventCreateRequestDto = new EventCreateRequestDto(title, content, startData, endDate, imgUrl, couponId);
 
-        Event mockEvent = eventCreateRequestDto.toEntity();
-
+        Event mockEvent = eventCreateRequestDto.toEntity(coupon);
+        given(couponRepository.findById(couponId)).willReturn(Optional.of(coupon));
         //when
         given(eventRepository.save(any())).willReturn(mockEvent);
         DefaultRes defaultRes = eventService.eventCreate(eventCreateRequestDto);
@@ -117,9 +123,9 @@ public class EventServiceTest {
         LocalDate startData = LocalDate.of(2021,7,1);
         LocalDate endDate = LocalDate.of(2021,7,15);
         String imgUrl = null;
-        Long couponBoxId = 5L;
+        Coupon coupon = new Coupon();
 
-        Event event = new Event(id, title, content, startData, endDate, imgUrl, couponBoxId);
+        Event event = new Event(id, title, content, startData, endDate, imgUrl, coupon);
         given(eventRepository.findById(id)).willReturn(Optional.of(event));
 
         //when
@@ -129,7 +135,7 @@ public class EventServiceTest {
         assertThat(result.getMessage()).isEqualTo("조회성공");
         assertThat(result.getData().getId()).isEqualTo(id);
         assertThat(result.getData().getTitle()).isEqualTo(title);
-        assertThat(result.getData().getCouponBoxId()).isEqualTo(5L);
+        assertThat(result.getData().getCouponId()).isEqualTo(coupon.getId());
     }
 
     @Test
@@ -141,16 +147,17 @@ public class EventServiceTest {
         LocalDate startData = LocalDate.of(2021,7,10);
         LocalDate endDate = LocalDate.of(2021,7,15);
         String imgUrl = "test.jpg";
-        Long couponBoxId = 10L;
-        Event event = new Event(id, title, content, startData, endDate, imgUrl, couponBoxId);
+        Coupon coupon = new Coupon();
+        Event event = new Event(id, title, content, startData, endDate, imgUrl, coupon);
 
         given(eventRepository.save(any())).willReturn(event);
 
         String updateTitle = "신규 회원 파격 이벤트";
         String updateContent = "5만원 쿠폰 지급";
-        EventUpdateRequestDto request = new EventUpdateRequestDto(updateTitle, updateContent, imgUrl, couponBoxId);
+        EventUpdateRequestDto request = new EventUpdateRequestDto(updateTitle, updateContent, imgUrl, coupon.getId());
 
         given(eventRepository.findById(1L)).willReturn(Optional.of(event));
+        given(couponRepository.findById(coupon.getId())).willReturn(Optional.of(coupon));
 
         //when
         DefaultRes defaultRes1 = eventService.eventUpdate(1L, request);
@@ -174,8 +181,8 @@ public class EventServiceTest {
         LocalDate startData = LocalDate.of(2021,7,10);
         LocalDate endDate = LocalDate.of(2021,7,15);
         String imgUrl = "test.jpg";
-        Long couponBoxId = 10L;
-        Event event = new Event(id, title, content, startData, endDate, imgUrl, couponBoxId);
+        Coupon coupon = new Coupon();
+        Event event = new Event(id, title, content, startData, endDate, imgUrl, coupon);
 
         //when
         given(eventRepository.findById(id)).willReturn(Optional.of(event));
