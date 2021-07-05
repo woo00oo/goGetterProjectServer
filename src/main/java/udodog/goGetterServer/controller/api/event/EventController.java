@@ -80,7 +80,8 @@ public class EventController {
 
     @ApiOperation(value = "이벤트 업데이트 API",notes = "관리자는 이벤트를 업데이트 합니다.")
     @ApiResponses(value ={
-            @ApiResponse(code=200, message = "1. 업데이트성공\n 2. 데이터없음")
+            @ApiResponse(code=200, message = "1. 데이터없음"),
+            @ApiResponse(code =303, message = "1. 업데이트성공")
     })
     @PatchMapping("/admin/events/{eventId}")
     public ResponseEntity eventUpdate(
@@ -97,5 +98,16 @@ public class EventController {
         }else{
             return new ResponseEntity(result, HttpStatus.OK);
         }
+    }
+
+    @ApiOperation(value = "이벤트 삭제 API",notes = "관리자는 이벤트를 삭제 합니다.")
+    @ApiResponses(value ={
+            @ApiResponse(code=200, message = "1. 삭제성공\n 2. 데이터없음")
+    })
+    @DeleteMapping("/admin/events/{eventId}")
+    public ResponseEntity eventDelete(
+            @PathVariable("eventId") Long eventId
+    ){
+        return new ResponseEntity(eventService.eventDelete(eventId), HttpStatus.OK);
     }
 }

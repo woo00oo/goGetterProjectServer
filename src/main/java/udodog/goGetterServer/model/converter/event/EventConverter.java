@@ -8,6 +8,8 @@ import udodog.goGetterServer.controller.api.event.EventController;
 import udodog.goGetterServer.model.dto.DefaultRes;
 import udodog.goGetterServer.model.dto.response.event.EventsResponseDto;
 
+import java.io.IOException;
+
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
@@ -15,12 +17,23 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 public class EventConverter implements RepresentationModelAssembler<DefaultRes<Page<EventsResponseDto>>, EntityModel<DefaultRes<Page<EventsResponseDto>>>> {
 
     @Override
-    public EntityModel<DefaultRes<Page<EventsResponseDto>>> toModel(DefaultRes<Page<EventsResponseDto>> entity) {
-        return EntityModel.of(entity,
-                linkTo(methodOn(EventController.class).eventCreate(null)).withRel("event-create"),
-                linkTo(methodOn(EventController.class).progressEventFindAll(null)).withRel("progressEvent-Find-All"),
-                linkTo(methodOn(EventController.class).endEventFindAll(null)).withRel("endEvent-Find-All"));
+    public EntityModel<DefaultRes<Page<EventsResponseDto>>> toModel(DefaultRes<Page<EventsResponseDto>> entity){
 
+        EntityModel<DefaultRes<Page<EventsResponseDto>>> result = null;
+
+        try {
+             result = EntityModel.of(entity,
+                     linkTo(methodOn(EventController.class).eventCreate(null)).withRel("event-create"),
+                     linkTo(methodOn(EventController.class).progressEventFindAll(null)).withRel("progressEvent-find-all"),
+                     linkTo(methodOn(EventController.class).endEventFindAll(null)).withRel("endEvent-find-all"),
+                     linkTo(methodOn(EventController.class).eventDetailFind(null)).withRel("event-Find-detail"),
+                     linkTo(methodOn(EventController.class).eventUpdate(null, null, null)).withRel("event-update"),
+                     linkTo(methodOn(EventController.class).eventDelete(null)).withRel("event-delete"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return result;
     }
 
 }
