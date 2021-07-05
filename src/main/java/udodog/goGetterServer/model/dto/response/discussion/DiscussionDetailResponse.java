@@ -1,13 +1,15 @@
 package udodog.goGetterServer.model.dto.response.discussion;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import udodog.goGetterServer.model.entity.DiscussionBoard;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @ToString
 public class DiscussionDetailResponse {
@@ -20,12 +22,15 @@ public class DiscussionDetailResponse {
     private String profileUrl;       // 유저 프로필
     private LocalDate createAt;      // 게시판 등록일
 
-    public DiscussionDetailResponse(DiscussionBoard discussionBoard){
-        this.id = discussionBoard.getId();
-        this.userNickName = discussionBoard.getUser().getNickName();
-        this.title = discussionBoard.getTitle();
-        this.content = discussionBoard.getContent();
-        this.profileUrl = discussionBoard.getUser().getProfileUrl();
-        this.createAt = discussionBoard.getCreateAt();
+
+    public DiscussionDetailResponse(Optional<DiscussionDetailResponse> discussionBoard) {
+
+        this.id = discussionBoard.get().getId();
+        this.userNickName = discussionBoard.get().getUserNickName();
+        this.title = discussionBoard.get().getTitle();
+        this.content = discussionBoard.get().getContent();
+        this.profileUrl = discussionBoard.get().getProfileUrl();
+        this.createAt = discussionBoard.get().getCreateAt();
+
     }
 }
