@@ -47,6 +47,7 @@ public class SharingBoard {
 
     public SharingBoard(CreateBoardRequest request, Optional<User> user) {
         this.user = user.get();
+
         this.title = request.getTitle();
         this.content = request.getContent();
         this.likeCnt = 0;

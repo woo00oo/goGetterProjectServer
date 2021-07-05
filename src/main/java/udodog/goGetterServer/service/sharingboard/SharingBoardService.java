@@ -49,7 +49,7 @@ public class SharingBoardService {
         WriterInfo writerInfo = WriterInfo.builder().nickName(user.getNickName()).profileUrl(user.getProfileUrl()).build();
 
         return sharingBoard.map(board -> DefaultRes.response(HttpStatus.OK.value(), "조회 성공",
-                new BoardResponse(sharingBoard,board.getReplyCnt(),board.getLikeCnt()/*sharingBoardLikeRepository.countBySharingBoardId(board.getId())*/,writerInfo)))
+                new BoardResponse(sharingBoard,board.getReplyCnt(),board.getLikeCnt(),writerInfo)))
                 .orElseGet(()->{
                     return DefaultRes.response(HttpStatus.OK.
                             value(), "데이터 없음");
@@ -59,14 +59,11 @@ public class SharingBoardService {
     public DefaultRes createSharingBoard(CreateBoardRequest request) {
         Optional<User> user = userRepository.findById(request.getUserId());
 
+        //글 등록
         SharingBoard sharingBoard = new SharingBoard(request, user);
         SharingBoard saveBoard = sharingBoardRepository.save(sharingBoard);
 
-        if(sharingBoard.getId().equals(saveBoard.getId())){
-            return DefaultRes.response(HttpStatus.OK.value(),"글 등록 성공");
-        }
-
-        return DefaultRes.response(HttpStatus.OK.value(),"글 등록 실패");
+        return DefaultRes.response(HttpStatus.OK.value(),"글 등록 성공");
 
     }
 

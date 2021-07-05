@@ -11,13 +11,11 @@ import udodog.goGetterServer.repository.querydsl.sharingboard.SharingBoardExtens
 import java.util.Optional;
 
 @Repository
-
 public interface SharingBoardRepository extends JpaRepository<SharingBoard,Long>, SharingBoardExtension {
 
-    @Query(value = "select board from SharingBoard board join fetch board.user inner join fetch board.sharingBoardReplyList",
-            countQuery = "select count(board) from SharingBoard ")
+    @Query(value = "select board from SharingBoard board join fetch board.user left join fetch board.sharingBoardReplyList",
+            countQuery = "select count(board) from SharingBoard board ")
     Page<SharingBoard> findAll(Pageable pageable);
-
 
 
     @Query(value = "select board from SharingBoard board join fetch board.user where board.id = :boardId")

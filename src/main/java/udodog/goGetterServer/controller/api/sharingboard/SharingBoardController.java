@@ -12,8 +12,8 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import udodog.goGetterServer.model.converter.sharingboard.SharingConvertor;
-import udodog.goGetterServer.model.converter.sharingboard.SharingListConvertor;
+import udodog.goGetterServer.model.converter.sharingboard.SharingConverter;
+import udodog.goGetterServer.model.converter.sharingboard.SharingListConverter;
 import udodog.goGetterServer.model.dto.DefaultRes;
 import udodog.goGetterServer.model.dto.request.sharingboard.UpdateBoardRequest;
 import udodog.goGetterServer.model.dto.request.sharingboard.CreateBoardRequest;
@@ -28,8 +28,8 @@ import java.util.List;
 public class SharingBoardController {
 
     private final SharingBoardService sharingBoardService;
-    private final SharingListConvertor sharingListConvertor;
-    private final SharingConvertor sharingConvertor;
+    private final SharingListConverter sharingListConverter;
+    private final SharingConverter sharingConverter;
 
     @ApiOperation(value = "공유 게시판 전체 조회 API", notes = "공유 게시판 게시글 목록 조회 시 사용되는 API입니다.")
     @ApiResponses(value ={
@@ -38,7 +38,7 @@ public class SharingBoardController {
     @GetMapping("/api/sharings")
     public ResponseEntity<EntityModel<DefaultRes<List<SimpleBoardResponse>>>> getBoardList(
             @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC, size = 9) Pageable pageable){
-        return new ResponseEntity<>(sharingListConvertor.toModel(sharingBoardService.getBoardList(pageable)), HttpStatus.OK);
+        return new ResponseEntity<>(sharingListConverter.toModel(sharingBoardService.getBoardList(pageable)), HttpStatus.OK);
     }
 
 
@@ -48,13 +48,13 @@ public class SharingBoardController {
     })
     @GetMapping("/api/bkuser/sharings")
     public ResponseEntity<EntityModel<DefaultRes<BoardResponse>>> getBoardDetail(@RequestParam("id") Long boardId){
-        return new ResponseEntity<>(sharingConvertor.toModel(sharingBoardService.getBoardDetail(boardId)), HttpStatus.OK);
+        return new ResponseEntity<>(sharingConverter.toModel(sharingBoardService.getBoardDetail(boardId)), HttpStatus.OK);
     }
 
 
     @ApiOperation(value = "공유 게시판 글 작성 API", notes = "공유 게시판 게시글 작성 시 사용되는 API입니다.")
     @ApiResponses(value ={
-            @ApiResponse(code = 200, message = "1.글 등록 성공 \t\n 2.글 등록 실패 \t\n 3.토큰 에러"),
+            @ApiResponse(code = 200, message = "1. 글 등록 성공 \t\n 2. 글 등록 실패 \t\n 3. 토큰 에러"),
     })
     @PostMapping("/api/user/sharings")
     public ResponseEntity<DefaultRes> createSharingBoard(@RequestBody CreateBoardRequest request){

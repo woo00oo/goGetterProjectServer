@@ -12,7 +12,7 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import udodog.goGetterServer.model.converter.sharingboard.SharingReplyConvertor;
+import udodog.goGetterServer.model.converter.sharingboard.SharingReplyConverter;
 import udodog.goGetterServer.model.dto.DefaultRes;
 import udodog.goGetterServer.model.dto.request.UpdateSharingReplyRequest;
 import udodog.goGetterServer.model.dto.request.sharingboard.CreateSharingReplyRequest;
@@ -28,7 +28,7 @@ import java.util.List;
 public class SharingReplyController {
 
     private final SharingReplyService replyService;
-    private final SharingReplyConvertor sharingReplyConvertor;
+    private final SharingReplyConverter sharingReplyConverter;
 
     // 댓글 목록 조회
     @ApiOperation(value = "공유 게시판 댓글 목록 조회 API",notes = "댓글 목록 조회 API입니다.")
@@ -40,7 +40,7 @@ public class SharingReplyController {
             @RequestParam("boardId") Long boardId,
             @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC, size = 10) Pageable pageable
     ){
-        return new ResponseEntity<>(sharingReplyConvertor.toModel(replyService.getReplyList(boardId, pageable)), HttpStatus.OK);
+        return new ResponseEntity<>(sharingReplyConverter.toModel(replyService.getReplyList(boardId, pageable)), HttpStatus.OK);
     }
 
     // 댓글 등록

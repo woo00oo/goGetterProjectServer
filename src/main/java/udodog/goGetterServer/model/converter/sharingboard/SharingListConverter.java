@@ -13,7 +13,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Component
-public class SharingListConvertor implements RepresentationModelAssembler<DefaultRes<List<SimpleBoardResponse>>
+public class SharingListConverter implements RepresentationModelAssembler<DefaultRes<List<SimpleBoardResponse>>
         , EntityModel<DefaultRes<List<SimpleBoardResponse>>>> {
 
     @Override
