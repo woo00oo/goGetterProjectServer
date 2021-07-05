@@ -32,6 +32,7 @@ public class SharingBoardService {
     private final SharingBoardReplyRepository sharingBoardReplyRepository;
     private final UserRepository userRepository;
 
+    // 전체 조회
     public DefaultRes<List<SimpleBoardResponse>> getBoardList(Pageable pageable) {
         Page<SharingBoard> sharingBoardList = sharingBoardRepository.findAll(pageable);
 
@@ -42,14 +43,17 @@ public class SharingBoardService {
         return DefaultRes.response(HttpStatus.OK.value(),"조회 성공",getSimpleBoardResponseList(sharingBoardList), new Pagination(sharingBoardList));
     }
 
-        public DefaultRes<BoardResponse> getBoardDetail(Long boardId) {
-        Optional<SharingBoard> sharingBoard = sharingBoardRepository.findById(boardId);
 
-        User user = sharingBoard.get().getUser();
-        WriterInfo writerInfo = WriterInfo.builder().nickName(user.getNickName()).profileUrl(user.getProfileUrl()).build();
+    // 상세 조회
+    public DefaultRes<BoardResponse> getBoardDetail(Long id) {
+        Optional<SharingBoard> sharingBoard = sharingBoardRepository.findById(id);
 
         return sharingBoard.map(board -> DefaultRes.response(HttpStatus.OK.value(), "조회 성공",
-                new BoardResponse(sharingBoard,board.getReplyCnt(),board.getLikeCnt(),writerInfo)))
+                new BoardResponse(sharingBoard,board.getReplyCnt(),board.getLikeCnt(),
+                        WriterInfo.builder().
+                                nickName(board.getUser().getNickName()).
+                                profileUrl(board.getUser().getProfileUrl()).build()))
+        )
                 .orElseGet(()->{
                     return DefaultRes.response(HttpStatus.OK.
                             value(), "데이터 없음");

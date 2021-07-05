@@ -6,6 +6,7 @@ import udodog.goGetterServer.model.entity.SharingBoard;
 import udodog.goGetterServer.model.entity.SharingBoardReply;
 
 import java.time.LocalDate;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,7 +31,7 @@ public class BoardResponse {
     private Integer likeCnt;
 
 
-    private List<SharingBoardReply> sharingBoardReplyList;
+    private List<SharingReplyResponse> sharingBoardReplyList = new LinkedList<>();
 
     public BoardResponse(Optional<SharingBoard> sharingBoard,Integer replyCnt, Integer likeCnt, WriterInfo writerInfo) {
         SharingBoard board = sharingBoard.get();
@@ -43,6 +44,11 @@ public class BoardResponse {
 
         this.replyCnt = replyCnt;
         this.likeCnt = likeCnt;
+
+        for (SharingBoardReply sharingBoardReply : board.getSharingBoardReplyList()){
+            SharingReplyResponse sharingReplyResponse = new SharingReplyResponse(sharingBoardReply, writerInfo);
+            this.sharingBoardReplyList.add(sharingReplyResponse);
+        }
 
     }
 }

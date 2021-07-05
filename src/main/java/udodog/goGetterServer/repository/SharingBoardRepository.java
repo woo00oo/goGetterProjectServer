@@ -18,7 +18,7 @@ public interface SharingBoardRepository extends JpaRepository<SharingBoard,Long>
     Page<SharingBoard> findAll(Pageable pageable);
 
 
-    @Query(value = "select board from SharingBoard board join fetch board.user where board.id = :boardId")
+    @Query(value = "select board from SharingBoard board join fetch board.user left join fetch board.sharingBoardReplyList where board.id = :boardId")
     Optional<SharingBoard> findById(@Param("boardId") Long id);
 
 
