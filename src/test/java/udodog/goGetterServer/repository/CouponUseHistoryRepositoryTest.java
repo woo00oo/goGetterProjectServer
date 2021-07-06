@@ -24,7 +24,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class CouponUseHistoryRepositoryTest {
 
     @Autowired
-    private CouponBoxRepository couponBoxRepository;
+    private CouponUseHistoryRepository couponUseHistoryRepository;
 
     @Autowired
     private CouponRepository couponRepository;
@@ -64,7 +64,7 @@ class CouponUseHistoryRepositoryTest {
                 .build();
 
         //when
-        CouponUseHistory saveCouponUseHistory = couponBoxRepository.save(couponUseHistory);
+        CouponUseHistory saveCouponUseHistory = couponUseHistoryRepository.save(couponUseHistory);
 
         //then
 
