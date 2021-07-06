@@ -7,6 +7,7 @@ import javax.validation.constraints.NotEmpty;
 
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 public class CreateBoardRequest {
 
     @NotEmpty
