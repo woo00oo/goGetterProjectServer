@@ -8,10 +8,14 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import udodog.goGetterServer.config.JpaAuditingConfig;
+import udodog.goGetterServer.model.dto.request.sharingboard.CreateBoardRequest;
 import udodog.goGetterServer.model.entity.SharingBoardLike;
 import udodog.goGetterServer.model.entity.SharingBoard;
 import udodog.goGetterServer.model.entity.User;
 import udodog.goGetterServer.model.enumclass.UserGrade;
+
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest(includeFilters = @ComponentScan.Filter(
@@ -19,7 +23,7 @@ import static org.assertj.core.api.Assertions.assertThat;
         classes = JpaAuditingConfig.class
 ))
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-class SharingBoardSharingBoardLikeRepositoryTest {
+class SharingBoardLikeRepositoryTest {
 
     @Autowired private UserRepository userRepository;
     @Autowired private SharingBoardRepository sharingBoardRepository;
@@ -41,19 +45,17 @@ class SharingBoardSharingBoardLikeRepositoryTest {
 
         User saveUser = userRepository.save(user);
 
-        SharingBoard sharingBoard = SharingBoard.builder().
-                user(saveUser).
-                content("Sharing Board Test Content").
-                title("Sharing Board Test Title").
-                build();
+        CreateBoardRequest request = new CreateBoardRequest(user.getId(), "Sharing Board Test Title", "Sharing Board Test Content");
 
+        SharingBoard sharingBoard = new SharingBoard(request, Optional.of(saveUser));
+        //when
         SharingBoard saveSharingBoard = sharingBoardRepository.save(sharingBoard);
 
 
         SharingBoardLike sharingBoardLike = SharingBoardLike.
                     builder().
                     userId(saveUser.getId()).
-                    boardId(saveSharingBoard.getId()).
+                    sharingBoardId(saveSharingBoard.getId()).
                     build();
 
         //when
