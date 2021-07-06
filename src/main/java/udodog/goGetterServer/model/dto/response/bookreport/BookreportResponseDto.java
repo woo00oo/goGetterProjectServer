@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 
 @Getter
+@NoArgsConstructor
 public class BookreportResponseDto {
 
     private Long bookReportId;       // 독서 기록 Index 번호
