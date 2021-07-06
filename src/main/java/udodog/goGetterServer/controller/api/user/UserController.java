@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import udodog.goGetterServer.model.converter.user.UserConverter;
 import udodog.goGetterServer.model.dto.DefaultRes;
+import udodog.goGetterServer.model.dto.request.user.UserFindEmailRequest;
+import udodog.goGetterServer.model.dto.request.user.UserFindPwdRequest;
 import udodog.goGetterServer.model.dto.request.user.UserSignInRequestDto;
 import udodog.goGetterServer.model.dto.request.user.UserSignUpRequestDto;
 import udodog.goGetterServer.service.user.UserService;
@@ -73,4 +75,21 @@ public class UserController {
         return new ResponseEntity<>(userConverter.toModel(userService.signIn(requestDto)), HttpStatus.OK);
     }
 
+    @ApiOperation(value = "이메일 찾기 API",notes = "이메일 찾기 API 입니다.")
+    @ApiResponses(value ={
+            @ApiResponse(code=200, message = "1.메일전송성공 \t\n 2.메일전송실패 \t\n 3.데이터없음")
+    })
+    @PostMapping("/signin/findemail")
+    public ResponseEntity<EntityModel<DefaultRes>> findEmail (@RequestBody UserFindEmailRequest requestDto){
+        return new ResponseEntity<>(userConverter.toModel(userService.findEmail(requestDto)), HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "비밀번호 찾기 API",notes = "비밀번호 찾기 API 입니다.")
+    @ApiResponses(value ={
+            @ApiResponse(code=200, message = "1.메일전송성공 \t\n 2.메일전송실패 \t\n 3.데이터없음")
+    })
+    @PostMapping("/signin/findpw")
+    public ResponseEntity<EntityModel<DefaultRes>> findPwd (@RequestBody UserFindPwdRequest requestDto, HttpServletRequest request){
+        return new ResponseEntity<>(userConverter.toModel(userService.findPassword(requestDto, request)), HttpStatus.OK);
+    }
 }
