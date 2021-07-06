@@ -18,7 +18,7 @@ import udodog.goGetterServer.model.entity.User;
 @Slf4j
 @RestController
 public class SampleController {
-
+    // 테스트
     @Autowired
     private EntityToModelConvertor entityToModelConvertor;
 
