@@ -2,11 +2,15 @@ package udodog.goGetterServer.repository;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
+import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 import udodog.goGetterServer.config.JpaAuditingConfig;
 import udodog.goGetterServer.model.entity.SharingBoard;
 import udodog.goGetterServer.model.entity.SharingBoardReply;
@@ -27,6 +31,7 @@ class SharingBoardReplyRepositoryTest {
     @Autowired private SharingBoardReplyRepository sharingBoardReplyRepository;
 
     @Test
+    @Rollback(false)
     @DisplayName("SharingBoardReply Repository save Test")
     void saveSharingBoardReply(){
         //given
