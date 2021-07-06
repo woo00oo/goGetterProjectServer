@@ -1,11 +1,9 @@
 package udodog.goGetterServer.repository.querydsl.sharingboard;
 
 import com.querydsl.jpa.JPQLQuery;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import udodog.goGetterServer.model.entity.QSharingBoard;
 import udodog.goGetterServer.model.entity.SharingBoard;
-import udodog.goGetterServer.repository.SharingBoardLikeRepository;
 
 import java.time.LocalDate;
 import java.util.List;

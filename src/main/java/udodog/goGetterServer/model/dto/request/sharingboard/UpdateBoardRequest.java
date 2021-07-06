@@ -18,4 +18,7 @@ public class UpdateBoardRequest {
     @NotEmpty
     private String content;
 
+    @NotEmpty
+    private String bookTitle;
+
 }

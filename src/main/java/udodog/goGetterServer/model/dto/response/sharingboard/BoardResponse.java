@@ -30,8 +30,10 @@ public class BoardResponse {
     // 좋아요 수
     private Integer likeCnt;
 
-
     private List<SharingReplyResponse> sharingBoardReplyList = new LinkedList<>();
+
+    // 책 제목
+    private String bookTitle;
 
     public BoardResponse(Optional<SharingBoard> sharingBoard,Integer replyCnt, Integer likeCnt, WriterInfo writerInfo) {
         SharingBoard board = sharingBoard.get();
@@ -41,6 +43,7 @@ public class BoardResponse {
         this.title = board.getTitle();
         this.content = board.getContent();
         this.createdAt = board.getCreatedAt();
+        this.bookTitle = board.getBookTitle();
 
         this.replyCnt = replyCnt;
         this.likeCnt = likeCnt;

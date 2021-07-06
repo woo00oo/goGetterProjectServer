@@ -19,4 +19,8 @@ public class CreateBoardRequest {
 
     @NotEmpty
     private String content;
+
+    @NotEmpty
+    private String bookTitle;
+
 }
