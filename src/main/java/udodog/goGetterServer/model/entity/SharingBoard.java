@@ -33,6 +33,8 @@ public class SharingBoard {
     // Weekly Best 기능을 위해 추가
     private Integer likeCnt;
 
+    //책 제목 추가
+    private String bookTitle;
 
     @OneToMany(mappedBy = "sharingBoard" )
     private List<SharingBoardReply> sharingBoardReplyList = new LinkedList<>();
@@ -49,6 +51,7 @@ public class SharingBoard {
         this.user = user.get();
         this.title = request.getTitle();
         this.content = request.getContent();
+        this.bookTitle = request.getBookTitle();
         this.likeCnt = 0;
     }
 
@@ -60,6 +63,7 @@ public class SharingBoard {
 
         this.title = request.getTitle();
         this.content = request.getContent();
+        this.bookTitle = request.getBookTitle();
 
         return this;
     }
