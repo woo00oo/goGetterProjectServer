@@ -64,6 +64,7 @@ public class SharingBoardService {
     public DefaultRes createSharingBoard(CreateBoardRequest request) {
         Optional<User> user = userRepository.findById(request.getUserId());
 
+
         SharingBoard sharingBoard = new SharingBoard(request, user);
         SharingBoard saveBoard = sharingBoardRepository.save(sharingBoard);
 
