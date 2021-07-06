@@ -18,9 +18,7 @@ import udodog.goGetterServer.repository.UserRepository;
 import udodog.goGetterServer.repository.querydsl.DiscussionBoardQueryRepository;
 import udodog.goGetterServer.repository.querydsl.DiscussionBoardReplyQueryRepository;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -45,62 +43,57 @@ public class DiscussionReplyService {
             replyRepository.save(requestDto.toEntity(board, user, requestDto));
         }
 
-        return DefaultRes.response(HttpStatus.OK.value(), "등록성공");
+        return DefaultRes.response(HttpStatus.SEE_OTHER.value(), "등록성공");
     }
 
     // 댓글 조회
-    public DefaultRes<List<DiscussionReplyResponse>> getBoardReplyList(Long discussionId, Pageable pageable) {
+    public DefaultRes<Page<DiscussionReplyResponse>> getBoardReplyList(Long discussionId, Pageable pageable) {
 
         Page<DiscussionReplyResponse> replyResponsesPage = replyQueryRepository.findAllWithFetchJoin(discussionId, pageable);
 
         if (replyResponsesPage.getTotalElements() == 0){
             return DefaultRes.response(HttpStatus.OK.value(), "데이터없음");
         }else {
-            return DefaultRes.response(HttpStatus.OK.value(), "조회성공", replyData(replyResponsesPage), new Pagination(replyResponsesPage));
+            return DefaultRes.response(HttpStatus.OK.value(), "조회성공", replyResponsesPage, new Pagination(replyResponsesPage));
         }
     }
 
-    private List<DiscussionReplyResponse> replyData(Page<DiscussionReplyResponse> replyResponsesPage) {
-        return replyResponsesPage.stream()
-                .map(DiscussionReplyResponse::new)
-                .collect(Collectors.toList());
-    }
-
-
     // 댓글 수정
-    public DefaultRes updateReply(DiscussionReplyEditRequest requestDto, Long replyId, Long userId) {
+    public DefaultRes updateReply(DiscussionReplyEditRequest requestDto, Long discussionId, Long replyId, Long userId) {
 
-        Optional<DiscussionBoardReply> boardReply = replyQueryRepository.findById(replyId);
+        Optional<DiscussionBoardReply> boardReply = replyQueryRepository.findByReplyId(replyId);
 
         if (boardReply.isEmpty()){
             return DefaultRes.response(HttpStatus.OK.value(), "데이터없음");
         }
-        return boardReply.filter(board -> board.getId().equals(replyId))
+        return boardReply.filter(board -> board.getDiscussionBoard().getId().equals(discussionId))
+                .filter(board -> board.getId().equals(replyId))
                 .filter(board -> board.getUser().getId().equals(userId))
                 .map(board -> {
 
                     replyQueryRepository.updateBoard(requestDto, board.getId(), board.getUser().getId());
 
-                    return DefaultRes.response(HttpStatus.OK.value(), "수정성공");
+                    return DefaultRes.response(HttpStatus.SEE_OTHER.value(), "수정성공");
                 }).orElseGet(() -> DefaultRes.response(HttpStatus.OK.value(), "수정실패"));
 
     }
 
     // 댓글 삭제
-    public DefaultRes delete(Long replyId, Long userId) {
-        Optional<DiscussionBoardReply> deleteReply = replyQueryRepository.findById(replyId);
+    public DefaultRes delete(Long discussionId, Long replyId, Long userId) {
+        Optional<DiscussionBoardReply> deleteReply = replyQueryRepository.findByReplyId(replyId);
 
         if (deleteReply.isEmpty()){
             return DefaultRes.response(HttpStatus.OK.value(), "데이터없음");
         }
 
-        return deleteReply.filter(board -> board.getId().equals(replyId))
+        return deleteReply.filter(board -> board.getDiscussionBoard().getId().equals(discussionId))
+                .filter(board -> board.getId().equals(replyId))
                 .filter(board -> board.getUser().getId().equals(userId))
                 .map(board -> {
 
                     replyQueryRepository.deleteById(board.getId(), board.getUser().getId());
 
-                    return DefaultRes.response(HttpStatus.OK.value(), "삭제성공");
+                    return DefaultRes.response(HttpStatus.SEE_OTHER.value(), "삭제성공");
                 }).orElseGet(() -> DefaultRes.response(HttpStatus.OK.value(), "삭제실패"));
     }
 }
