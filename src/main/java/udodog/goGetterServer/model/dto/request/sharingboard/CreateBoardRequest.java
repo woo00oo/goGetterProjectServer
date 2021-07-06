@@ -28,7 +28,6 @@ public class CreateBoardRequest {
 
     private List<String> sharingBoardTagList;
 
-
     public CreateBoardRequest(@NotEmpty Long userId, @NotEmpty String title, @NotEmpty String content, @NotEmpty String bookTitle) {
         this.userId = userId;
         this.title = title;

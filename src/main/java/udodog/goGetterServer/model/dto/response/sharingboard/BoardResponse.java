@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import udodog.goGetterServer.model.entity.SharingBoard;
 import udodog.goGetterServer.model.entity.SharingBoardReply;
+import udodog.goGetterServer.model.entity.SharingBoardTag;
 
 import java.time.LocalDate;
 import java.util.LinkedList;
@@ -35,7 +36,9 @@ public class BoardResponse {
     // 책 제목
     private String bookTitle;
 
-    public BoardResponse(Optional<SharingBoard> sharingBoard,Integer replyCnt, Integer likeCnt, WriterInfo writerInfo) {
+    private List<String> sharingBoardTagList = new LinkedList<>();
+
+    public BoardResponse(Optional<SharingBoard> sharingBoard, Integer replyCnt, Integer likeCnt, WriterInfo writerInfo, List<SharingBoardTag> sharingBoardTagList) {
         SharingBoard board = sharingBoard.get();
 
         this.id = board.getId();
@@ -51,6 +54,10 @@ public class BoardResponse {
         for (SharingBoardReply sharingBoardReply : board.getSharingBoardReplyList()){
             SharingReplyResponse sharingReplyResponse = new SharingReplyResponse(sharingBoardReply, writerInfo);
             this.sharingBoardReplyList.add(sharingReplyResponse);
+        }
+
+        if (!sharingBoardTagList.isEmpty()) {
+            sharingBoardTagList.stream().forEach(tag -> this.sharingBoardTagList.add(tag.getContent()));
         }
 
     }
