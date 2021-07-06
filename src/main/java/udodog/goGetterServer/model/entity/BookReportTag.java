@@ -13,7 +13,7 @@ public class BookReportTag {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long bookReportTagId;
 
     @ManyToOne(targetEntity = BookReport.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "book_report_id")

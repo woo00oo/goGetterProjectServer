@@ -8,7 +8,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import udodog.goGetterServer.config.JpaAuditingConfig;
-import udodog.goGetterServer.model.entity.Book;
 import udodog.goGetterServer.model.entity.BookReport;
 import udodog.goGetterServer.model.entity.BookReportTag;
 import udodog.goGetterServer.model.entity.User;
@@ -25,9 +24,6 @@ class BookReportTagRepositoryTest {
     private UserRepository userRepository;
 
     @Autowired
-    private BookRepository bookRepository;
-
-    @Autowired
     private BookReportRepository bookReportRepository;
 
     @Autowired
@@ -37,13 +33,6 @@ class BookReportTagRepositoryTest {
     void 테그_저장(){
 
         //given
-        Book book = Book.builder()
-                .bookName("토비의 스프링")
-                .author("토비")
-                .genre("기술서적")
-                .price(3000)
-                .build();
-
         User user = User.builder()
                 .email("hwoo00oo96@gmail.com")
                 .password("1234")
@@ -53,12 +42,11 @@ class BookReportTagRepositoryTest {
                 .grade(UserGrade.USER)
                 .build();
 
-        Book saveBook = bookRepository.save(book);
         User saveUser = userRepository.save(user);
         BookReport bookReport = BookReport.builder()
-                .book(saveBook)
                 .user(saveUser)
                 .title("공부 1일차")
+                .bookName("누가 내 머리에 똥 샀어!")
                 .content("독서 기록입니다")
                 .build();
 

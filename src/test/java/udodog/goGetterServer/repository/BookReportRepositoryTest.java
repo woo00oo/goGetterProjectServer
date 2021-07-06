@@ -7,7 +7,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import udodog.goGetterServer.config.JpaAuditingConfig;
-import udodog.goGetterServer.model.entity.Book;
 import udodog.goGetterServer.model.entity.BookReport;
 import udodog.goGetterServer.model.entity.User;
 import udodog.goGetterServer.model.enumclass.UserGrade;
@@ -25,21 +24,11 @@ class BookReportRepositoryTest {
     private UserRepository userRepository;
 
     @Autowired
-    private BookRepository bookRepository;
-
-    @Autowired
     private BookReportRepository bookReportRepository;
 
     @Test
     void 독서기록_저장(){
         //given
-        Book book = Book.builder()
-                .bookName("토비의 스프링")
-                .author("토비")
-                .genre("기술서적")
-                .price(3000)
-                .build();
-
         User user = User.builder()
                 .email("hwoo00oo96@gmail.com")
                 .password("1234")
@@ -49,12 +38,11 @@ class BookReportRepositoryTest {
                 .grade(UserGrade.USER)
                 .build();
 
-        Book saveBook = bookRepository.save(book);
         User saveUser = userRepository.save(user);
 
         BookReport bookReport = BookReport.builder()
-                .book(saveBook)
                 .user(saveUser)
+                .bookName("누가 내 머리에 똥 쌋어!")
                 .title("공부 1일차")
                 .content("독서 기록입니다")
                 .build();
@@ -66,6 +54,6 @@ class BookReportRepositoryTest {
         assertThat(bookReport).isEqualTo(saveBookReport);
 
 
-    }
+    } //독서기록_저장() 끝
 
-}
+} // Class 끝

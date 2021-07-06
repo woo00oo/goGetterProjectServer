@@ -7,7 +7,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Getter
 @NoArgsConstructor
@@ -17,28 +17,27 @@ public class BookReport {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @ManyToOne(targetEntity = Book.class, fetch = FetchType.LAZY)
-    @JoinColumn(name = "book_id")
-    private Book book;
-
+    private Long bookReportId;
+    
     @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
     private String title;
+    
+    private String bookName;
 
     private String content;
 
     @CreatedDate
-    private LocalDateTime createdAt;
+    private LocalDate createdAt;
 
     @Builder
-    public BookReport(Book book, User user, String title, String content) {
-        this.book = book;
+    public BookReport(User user, String title, String bookName, String content, LocalDate createdAt) {
         this.user = user;
         this.title = title;
+        this.bookName = bookName;
         this.content = content;
-    }
-}
+        this.createdAt = createdAt;
+    } // 생성자 끝
+} // Class끝
