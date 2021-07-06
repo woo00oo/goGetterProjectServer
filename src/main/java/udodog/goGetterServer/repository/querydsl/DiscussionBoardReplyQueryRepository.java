@@ -33,14 +33,16 @@ public class DiscussionBoardReplyQueryRepository {
 
         List<DiscussionReplyResponse> boardReplyList =
                 queryFactory
-                        .select(Projections.fields(DiscussionReplyResponse.class,
+                        .select(Projections.constructor(DiscussionReplyResponse.class,
                                 discussionBoardReply.id,
-                                discussionBoardReply.user,
+                                user.id,
+                                user.nickName,
                                 discussionBoardReply.content,
                                 discussionBoardReply.createAt))
                         .from(discussionBoardReply)
                         .innerJoin(discussionBoardReply.user, user)
                         .where(discussionBoardReply.discussionBoard.id.eq(discussionId))
+                        .orderBy(discussionBoardReply.id.desc())
                         .fetch();
 
         int start = (int)pageable.getOffset();
@@ -50,7 +52,7 @@ public class DiscussionBoardReplyQueryRepository {
     }
 
     // 댓글 번호로 검색
-    public Optional<DiscussionBoardReply> findById(Long replyId) {
+    public Optional<DiscussionBoardReply> findByReplyId(Long replyId) {
 
         DiscussionBoardReply replyBoard =
                 queryFactory
@@ -63,6 +65,21 @@ public class DiscussionBoardReplyQueryRepository {
         return Optional.ofNullable(replyBoard);
     }
 
+    // 게시판 번호로 검색
+    public Optional<List<DiscussionBoardReply>> findByDiscussionId(Long discussionId) {
+
+        List<DiscussionBoardReply> replyBoard =
+                queryFactory
+                        .selectFrom(discussionBoardReply)
+                        .innerJoin(discussionBoardReply.user, user)
+                        .fetchJoin()
+                        .where(discussionBoardReply.discussionBoard.id.eq(discussionId))
+                        .fetch();
+
+        return Optional.ofNullable(replyBoard);
+    }
+
+    // 댓글 수정
     @Transactional
     public void updateBoard(DiscussionReplyEditRequest requestDto, Long replyId, Long userId) { // 댓글 번호, 유저 번호가 같을 시 댓글 수정
 
@@ -71,9 +88,11 @@ public class DiscussionBoardReplyQueryRepository {
         updateClause
                 .where(discussionBoardReply.id.eq(replyId), discussionBoardReply.user.id.eq(userId))
                 .set(discussionBoardReply.content, requestDto.getContent())
+                .set(discussionBoardReply.createAt, requestDto.getCreateAt())
                 .execute();
     }
 
+    // 댓글 삭제
     @Transactional
     public void deleteById(Long replyId, Long userId) { // 댓글 번호, 유저 번호가 맞으면 댓글 삭제
 
@@ -84,6 +103,7 @@ public class DiscussionBoardReplyQueryRepository {
                 .execute();
     }
 
+    // 게시판 번호로 댓글 삭제
     @Transactional
     public void deleteByDiscussionId(Long discussionId) {   // 게시판 삭제 될 시 댓글도 같이 삭제
         JPADeleteClause deleteClause = new JPADeleteClause(em, discussionBoardReply);
