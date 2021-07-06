@@ -10,7 +10,7 @@ import java.time.LocalDate;
 @Getter
 @NoArgsConstructor
 @Entity
-public class CouponBox {
+public class CouponUseHistory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,12 +24,15 @@ public class CouponBox {
     @JoinColumn(name = "coupon_id")
     private Coupon coupon;
 
+    private String serialNumber;
+
     private LocalDate endDate;
 
     @Builder
-    public CouponBox(User user, Coupon coupon, LocalDate endDate) {
+    public CouponUseHistory(User user, Coupon coupon, String serialNumber, LocalDate endDate) {
         this.user = user;
         this.coupon = coupon;
+        this.serialNumber = serialNumber;
         this.endDate = endDate;
     }
 }

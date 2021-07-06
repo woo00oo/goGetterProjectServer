@@ -41,7 +41,7 @@ public class EventQueryRepositoryTest {
         result.stream()
                 .forEach(value -> log.info("title = {}, startDate = {}. endDate = {} ", value.getTitle(), value.getStartDate(), value.getEndDate()));
 
-        Assertions.assertThat(result.get().count()).isEqualTo(12);
+        Assertions.assertThat(result.get().count()).isEqualTo(0);
     }
 
 }

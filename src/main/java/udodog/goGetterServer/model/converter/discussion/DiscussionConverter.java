@@ -12,15 +12,13 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Component
-public class DiscussionConvertor implements RepresentationModelAssembler<DefaultRes<DiscussionDetailResponse>, EntityModel<DefaultRes<DiscussionDetailResponse>>> {
+public class DiscussionConverter implements RepresentationModelAssembler<DefaultRes<DiscussionDetailResponse>, EntityModel<DefaultRes<DiscussionDetailResponse>>> {
 
     @Override
     public EntityModel<DefaultRes<DiscussionDetailResponse>> toModel(DefaultRes<DiscussionDetailResponse> entity) {
 
         return EntityModel.of(entity,
-                linkTo(methodOn(DiscussionController.class).getDetailBoard(null)).withRel("detail"),
-                linkTo(methodOn(DiscussionController.class).updateBoard(null, null,null)).withRel("update"),
-                linkTo(methodOn(DiscussionController.class).deleteBoard(null, null)).withRel("delete"),
+                linkTo(methodOn(DiscussionController.class).getDetailBoard(null, null)).withRel("detail"),
                 linkTo(methodOn(DiscussionReplyController.class).getBoardReplyList(null, null)).withRel("replyList"));
     }
 }

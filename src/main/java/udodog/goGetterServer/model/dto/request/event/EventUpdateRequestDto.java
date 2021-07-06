@@ -22,5 +22,5 @@ public class EventUpdateRequestDto {
     private String imgUrl;
 
     @NotNull
-    private Long couponBoxId;
+    private Long couponId;
 }

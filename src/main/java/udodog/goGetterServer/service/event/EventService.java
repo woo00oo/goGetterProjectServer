@@ -11,7 +11,9 @@ import udodog.goGetterServer.model.dto.request.event.EventCreateRequestDto;
 import udodog.goGetterServer.model.dto.request.event.EventUpdateRequestDto;
 import udodog.goGetterServer.model.dto.response.event.DetailEventResponseDto;
 import udodog.goGetterServer.model.dto.response.event.EventsResponseDto;
+import udodog.goGetterServer.model.entity.Coupon;
 import udodog.goGetterServer.model.entity.Event;
+import udodog.goGetterServer.repository.CouponRepository;
 import udodog.goGetterServer.repository.EventRepository;
 import udodog.goGetterServer.repository.querydsl.EventQueryRepository;
 
@@ -26,9 +28,25 @@ public class EventService {
 
     private final EventQueryRepository eventQueryRepository;
 
+    private final CouponRepository couponRepository;
+
     public DefaultRes eventCreate(EventCreateRequestDto request){
-        eventRepository.save(request.toEntity());
-        return DefaultRes.response(HttpStatus.OK.value(), "등록성공");
+
+        if (request.getCouponId() != null){
+
+            Optional<Coupon> optionalCoupon = couponRepository.findById(request.getCouponId());
+            return optionalCoupon.map(coupon -> {
+                eventRepository.save(request.toEntity(coupon));
+                return DefaultRes.response(HttpStatus.OK.value(), "등록성공");
+            }).orElseGet(()->DefaultRes.response(HttpStatus.OK.value(),"쿠폰없음"));
+
+        }else{
+
+            eventRepository.save(request.toEntity(null));
+            return DefaultRes.response(HttpStatus.OK.value(), "등록성공");
+
+        }
+
     }
 
     public DefaultRes<Page<EventsResponseDto>> progressEventFindAll(Pageable pageable){
@@ -55,8 +73,15 @@ public class EventService {
 
         Optional<Event> optionalEvent = eventRepository.findById(eventId);
 
+
         return optionalEvent
-                .map(event -> DefaultRes.response(HttpStatus.OK.value(), "조회성공", new DetailEventResponseDto(event)))
+                .map(event -> {
+                    if(event.getCoupon() != null){
+                        return DefaultRes.response(HttpStatus.OK.value(), "조회성공", new DetailEventResponseDto(event, event.getCoupon()));
+                    }else{
+                        return DefaultRes.response(HttpStatus.OK.value(), "조회성공", new DetailEventResponseDto(event));
+                    }
+                })
                 .orElseGet(() -> DefaultRes.response(HttpStatus.OK.value(), "데이터없음"));
 
     }
@@ -65,11 +90,29 @@ public class EventService {
     public DefaultRes eventUpdate(Long eventId, EventUpdateRequestDto request){
 
         Optional<Event> optionalEvent = eventRepository.findById(eventId);
+        Optional<Coupon> optionalCoupon = couponRepository.findById(request.getCouponId());
 
-        return optionalEvent.map(event ->{
-            event.update(request);
-            return DefaultRes.response(HttpStatus.SEE_OTHER.value(), "업데이트성공");
+        if (optionalCoupon.isPresent()){
+
+            return optionalEvent.map(event ->{
+                event.update(request, optionalCoupon.get());
+                return DefaultRes.response(HttpStatus.SEE_OTHER.value(), "업데이트성공");
+            }).orElseGet(()-> DefaultRes.response(HttpStatus.OK.value(), "데이터없음"));
+        }else{
+            return DefaultRes.response(HttpStatus.OK.value(), "쿠폰없음");
+        }
+
+    }
+
+    @Transactional
+    public DefaultRes eventDelete(Long eventId){
+
+        Optional<Event> optionalEvent = eventRepository.findById(eventId);
+        return optionalEvent.map(event -> {
+            eventRepository.delete(event);
+            return DefaultRes.response(HttpStatus.OK.value(), "삭제성공");
         }).orElseGet(()-> DefaultRes.response(HttpStatus.OK.value(), "데이터없음"));
+
     }
 
 }

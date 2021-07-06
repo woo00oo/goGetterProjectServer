@@ -26,8 +26,9 @@ class CouponRepositoryTest {
         //given
         Coupon coupon = Coupon.builder()
                 .name("문화상품권")
-                .serialNumber(1234512345L)
+                .discount(3000)
                 .validDate(30)
+                .quantity(30)
                 .build();
 
         //when

@@ -2,6 +2,7 @@ package udodog.goGetterServer.controller.api.discussion;
 
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -9,8 +10,7 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import udodog.goGetterServer.model.converter.discussion.DiscussionReplyConvertor;
-import udodog.goGetterServer.model.converter.discussion.DiscussionReplyListConvertor;
+import udodog.goGetterServer.model.converter.discussion.DiscussionReplyListConverter;
 import udodog.goGetterServer.model.dto.DefaultRes;
 import udodog.goGetterServer.model.dto.request.discussion.DiscussionReplyEditRequest;
 import udodog.goGetterServer.model.dto.request.discussion.DiscussionReplyInsertRequest;
@@ -18,16 +18,16 @@ import udodog.goGetterServer.model.dto.response.discussion.DiscussionReplyRespon
 import udodog.goGetterServer.model.entity.DiscussionBoardReply;
 import udodog.goGetterServer.service.discussion.DiscussionReplyService;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.util.List;
+import java.io.IOException;
 
 @Api(tags = {"토론 게시판 댓글 관련 API"})
 @RestController
 @RequiredArgsConstructor
 public class DiscussionReplyController {
 
-    private final DiscussionReplyListConvertor replyListConvertor;
-    private final DiscussionReplyConvertor replyConvertor;
+    private final DiscussionReplyListConverter replyListConvertor;
     private final DiscussionReplyService replyService;
 
     @ApiOperation(value = "토론게시판 댓글 등록 API",notes = "댓글 등록 API 입니다.")
@@ -35,14 +35,23 @@ public class DiscussionReplyController {
             @ApiResponse(code=200, message = "1. 등록성공 \t\n 2. 등록실패 \t\n 3. 토큰에러")
     })
 
-    // 글 등록 Controller
-    @PostMapping("/api/users/discussionreplies")
+    // 댓글 등록 Controller
+    @PostMapping("/api/users/discussionreplies/{discussionId}")
     public ResponseEntity<EntityModel<DefaultRes<DiscussionReplyResponse>>> createReply(
             @ApiParam("필수 : 모든사항")
-            @RequestBody DiscussionReplyInsertRequest requestDto,
-            @RequestParam("discussionId") Long discussionId,
-            @RequestParam("userId") Long userId){
-        return new ResponseEntity<>(replyConvertor.toModel(replyService.createReply(requestDto, discussionId, userId)), HttpStatus.OK);
+            @RequestBody DiscussionReplyInsertRequest requestDto, HttpServletResponse response,
+            @PathVariable("discussionId") Long discussionId,
+            @RequestParam("userId") Long userId) throws IOException {
+
+        String redirect = "/api/bkusers/discussions/" + discussionId + "?userId=" + userId;
+        DefaultRes createReply = replyService.createReply(requestDto, discussionId, userId);
+
+        if(createReply.getStatusCode() == HttpStatus.SEE_OTHER.value()){
+            response.sendRedirect(redirect);
+            return new ResponseEntity(createReply, HttpStatus.SEE_OTHER);
+        }else{
+            return new ResponseEntity(createReply, HttpStatus.OK);
+        }
     }
 
 
@@ -52,9 +61,9 @@ public class DiscussionReplyController {
     })
 
     // 댓글 조회 Controller
-    @GetMapping("/api/bkusers/discussionreplies")
-    public ResponseEntity<EntityModel<DefaultRes<List<DiscussionReplyResponse>>>> getBoardReplyList(
-            @RequestParam("discussionId") Long discussionId,
+    @GetMapping("/api/bkusers/discussionreplies/{discussionId}")
+    public ResponseEntity<EntityModel<DefaultRes<Page<DiscussionReplyResponse>>>> getBoardReplyList(
+            @PathVariable("discussionId") Long discussionId,
             @PageableDefault(sort = "id", direction = Sort.Direction.DESC, size = 3) Pageable pageable // 최신 날짜순으로 내림차순, 페이지당 3개씩 출력
     ){
         return new ResponseEntity<>(replyListConvertor.toModel(replyService.getBoardReplyList(discussionId, pageable)), HttpStatus.OK);
@@ -66,13 +75,23 @@ public class DiscussionReplyController {
     })
 
     // 댓글 수정 Controller
-    @PutMapping("/api/users/discussionreplies")
+    @PatchMapping("/api/users/discussionreplies/{discussionId}")
     public ResponseEntity<EntityModel<DefaultRes<DiscussionReplyEditRequest>>> updateReply(
+            @PathVariable("discussionId") Long discussionId,
             @RequestParam("replyId") Long replyId,
-            @RequestParam("userId") Long userId,
+            @RequestParam("userId") Long userId, HttpServletResponse response,
             @Valid@RequestBody DiscussionReplyEditRequest requestDto
-    ){
-        return new ResponseEntity<>(replyConvertor.toModel(replyService.updateReply(requestDto, replyId, userId)), HttpStatus.OK);
+    ) throws IOException{
+
+        String redirect = "/api/bkusers/discussions/" + discussionId + "?userId=" + userId;
+        DefaultRes updateReply = replyService.updateReply(requestDto, discussionId, replyId, userId);
+
+        if(updateReply.getStatusCode() == HttpStatus.SEE_OTHER.value()){
+            response.sendRedirect(redirect);
+            return new ResponseEntity(updateReply, HttpStatus.SEE_OTHER);
+        }else{
+            return new ResponseEntity(updateReply, HttpStatus.OK);
+        }
     }
 
     @ApiOperation(value = "토론게시판 댓글삭제 API",notes = "댓글삭제 API입니다.")
@@ -81,9 +100,20 @@ public class DiscussionReplyController {
     })
 
     // 댓글 삭제 Controller
-    @DeleteMapping("/api/users/discussionreplies")
-    public ResponseEntity<EntityModel<DefaultRes<DiscussionBoardReply>>> deleteReply (@RequestParam("replyId") Long replyId,
-                                                                                      @RequestParam("userId") Long userId){
-        return new ResponseEntity<>(replyConvertor.toModel(replyService.delete(replyId, userId)), HttpStatus.OK);
+    @DeleteMapping("/api/users/discussionreplies/{discussionId}")
+    public ResponseEntity<EntityModel<DefaultRes<DiscussionBoardReply>>> deleteReply (
+            @PathVariable("discussionId") Long discussionId, @RequestParam("replyId") Long replyId,
+            @RequestParam("userId") Long userId, HttpServletResponse response) throws IOException{
+
+        String redirect = "/api/bkusers/discussions/" + discussionId + "?userId=" + userId;
+
+        DefaultRes deleteReply = replyService.delete(discussionId, replyId, userId);
+
+        if (deleteReply.getStatusCode() == HttpStatus.SEE_OTHER.value()){
+            response.sendRedirect(redirect);
+            return new ResponseEntity(deleteReply, HttpStatus.SEE_OTHER);
+        } else {
+            return new ResponseEntity(deleteReply, HttpStatus.OK);
+        }
     }
 }

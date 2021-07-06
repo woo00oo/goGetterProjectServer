@@ -6,10 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import udodog.goGetterServer.model.dto.request.event.EventUpdateRequestDto;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDate;
 
 @Getter
@@ -32,22 +29,24 @@ public class Event {
 
     private String imgUrl;
 
-    private Long couponBoxId;
+    @ManyToOne(targetEntity = Coupon.class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "coupon_id")
+    private Coupon coupon;
 
     @Builder
-    public Event(String title, String content, LocalDate startDate, LocalDate endDate, String imgUrl, Long couponBoxId) {
+    public Event(String title, String content, LocalDate startDate, LocalDate endDate, String imgUrl, Coupon coupon) {
         this.title = title;
         this.content = content;
         this.startDate = startDate;
         this.endDate = endDate;
         this.imgUrl = imgUrl;
-        this.couponBoxId = couponBoxId;
+        this.coupon = coupon;
     }
 
-    public void update(EventUpdateRequestDto request){
+    public void update(EventUpdateRequestDto request, Coupon coupon){
         this.title = request.getTitle();
         this.content = request.getContent();
         this.imgUrl = request.getImgUrl();
-        this.couponBoxId = request.getCouponBoxId();
+        this.coupon = coupon;
     }
 }
