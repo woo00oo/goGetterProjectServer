@@ -37,7 +37,7 @@ public class SharingBoardController {
     })
     @GetMapping("/api/sharings")
     public ResponseEntity<EntityModel<DefaultRes<List<SimpleBoardResponse>>>> getBoardList(
-            @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC, size = 9) Pageable pageable){
+            @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC, size = 8) Pageable pageable){
         return new ResponseEntity<>(sharingListConverter.toModel(sharingBoardService.getBoardList(pageable)), HttpStatus.OK);
     }
 

@@ -26,7 +26,7 @@ public class SharingBoardExtensionImpl  extends QuerydslRepositorySupport implem
                 fetchJoin().
                 where(sharingBoard.createdAt.between(aWeekAgo, LocalDate.now())).
                 orderBy(sharingBoard.likeCnt.desc())
-                .limit(3);
+                .limit(4);
 
         // 좋아요 순으로 정렬하기 위해 sharingBoard Entity에 likeCnt 필드 추가
 
