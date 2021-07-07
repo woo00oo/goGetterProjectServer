@@ -1,5 +1,6 @@
 package udodog.goGetterServer.model.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,6 +12,7 @@ import javax.persistence.Id;
 
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class Coupon {
 
@@ -32,5 +34,9 @@ public class Coupon {
         this.discount = discount;
         this.validDate = validDate;
         this.quantity = quantity;
+    }
+
+    public void decreaseQuantity(){
+        this.quantity = quantity - 1;
     }
 }
