@@ -1,5 +1,6 @@
 package udodog.goGetterServer.repository;
 
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -10,6 +11,7 @@ import udodog.goGetterServer.config.JpaAuditingConfig;
 import udodog.goGetterServer.model.entity.Event;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -18,6 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
         classes = JpaAuditingConfig.class
 ))
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@Slf4j
 class EventRepositoryTest {
 
     @Autowired
@@ -39,6 +42,13 @@ class EventRepositoryTest {
 
         //then
         assertThat(event).isEqualTo(saveEvent);
+
+    }
+
+    @Test
+    void 이벤트_조회_N1테스트(){
+        Optional<Event> optionalEvent = eventRepository.findById(163L);
+        log.info("event = {}" , optionalEvent.get().getCoupon());
 
     }
 }

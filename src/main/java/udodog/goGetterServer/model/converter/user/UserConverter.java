@@ -18,7 +18,9 @@ public class UserConverter implements RepresentationModelAssembler<DefaultRes, E
                 linkTo(methodOn(UserController.class).emailConfirm(null,null)).withRel("email-confirm"),
                 linkTo(methodOn(UserController.class).issuanceConfirm(null,null)).withRel("issuance-confirm"),
                 linkTo(methodOn(UserController.class).signUp(null)).withRel("sign-up"),
-                linkTo(methodOn(UserController.class).signin(null)).withRel("sign-in"));
+                linkTo(methodOn(UserController.class).signin(null)).withRel("sign-in"),
+                linkTo(methodOn(UserController.class).findEmail(null)).withRel("findEmail"),
+                linkTo(methodOn(UserController.class).findPwd(null,null)).withRel("findPwd"));
     }
 
 }
