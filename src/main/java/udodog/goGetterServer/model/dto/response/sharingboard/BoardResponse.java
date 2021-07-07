@@ -2,11 +2,11 @@ package udodog.goGetterServer.model.dto.response.sharingboard;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import udodog.goGetterServer.model.entity.SharingBoard;
 import udodog.goGetterServer.model.entity.SharingBoardReply;
-import udodog.goGetterServer.model.entity.SharingBoardTag;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -23,7 +23,7 @@ public class BoardResponse {
 
     private String content;
 
-    private LocalDate createdAt;
+    private LocalDateTime createdAt;
 
     // 댓글 수
     private Integer replyCnt;
@@ -36,9 +36,9 @@ public class BoardResponse {
     // 책 제목
     private String bookTitle;
 
-    private List<String> sharingBoardTagList = new LinkedList<>();
+    private String tagContent;
 
-    public BoardResponse(Optional<SharingBoard> sharingBoard, Integer replyCnt, Integer likeCnt, WriterInfo writerInfo, List<SharingBoardTag> sharingBoardTagList) {
+    public BoardResponse(Optional<SharingBoard> sharingBoard, Integer replyCnt, Integer likeCnt, WriterInfo writerInfo, String content) {
         SharingBoard board = sharingBoard.get();
 
         this.id = board.getId();
@@ -56,8 +56,26 @@ public class BoardResponse {
             this.sharingBoardReplyList.add(sharingReplyResponse);
         }
 
-        if (!sharingBoardTagList.isEmpty()) {
-            sharingBoardTagList.stream().forEach(tag -> this.sharingBoardTagList.add(tag.getContent()));
+        this.tagContent = content;
+
+    }
+
+    public BoardResponse(Optional<SharingBoard> sharingBoard, Integer replyCnt, Integer likeCnt, WriterInfo writerInfo) {
+        SharingBoard board = sharingBoard.get();
+
+        this.id = board.getId();
+        this.writerInfo = writerInfo;
+        this.title = board.getTitle();
+        this.content = board.getContent();
+        this.createdAt = board.getCreatedAt();
+        this.bookTitle = board.getBookTitle();
+
+        this.replyCnt = replyCnt;
+        this.likeCnt = likeCnt;
+
+        for (SharingBoardReply sharingBoardReply : board.getSharingBoardReplyList()){
+            SharingReplyResponse sharingReplyResponse = new SharingReplyResponse(sharingBoardReply, writerInfo);
+            this.sharingBoardReplyList.add(sharingReplyResponse);
         }
 
     }

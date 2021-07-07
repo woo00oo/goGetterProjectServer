@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport
 import udodog.goGetterServer.model.entity.QSharingBoard;
 import udodog.goGetterServer.model.entity.SharingBoard;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class SharingBoardExtensionImpl  extends QuerydslRepositorySupport implements SharingBoardExtension {
@@ -18,11 +18,11 @@ public class SharingBoardExtensionImpl  extends QuerydslRepositorySupport implem
     public List<SharingBoard> getWeeklyBest() {
         QSharingBoard sharingBoard = QSharingBoard.sharingBoard;
 
-        LocalDate aWeekAgo = LocalDate.now().plusDays(-7);
+        LocalDateTime aWeekAgo = LocalDateTime.now().plusDays(-7);
         JPQLQuery<SharingBoard> query = from(sharingBoard).
                 innerJoin(sharingBoard.user).
                 fetchJoin().
-                where(sharingBoard.createdAt.between(aWeekAgo, LocalDate.now())).
+                where(sharingBoard.createdAt.between(aWeekAgo, LocalDateTime.now())).
                 orderBy(sharingBoard.likeCnt.desc())
                 .limit(4);
 

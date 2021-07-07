@@ -12,6 +12,10 @@ import lombok.NoArgsConstructor;
 public class WriterInfo {
 
     private String nickName;
+
     private String profileUrl;
+
+    // 글 작성자 id(pk)
+    private Long writerId;
 
 }

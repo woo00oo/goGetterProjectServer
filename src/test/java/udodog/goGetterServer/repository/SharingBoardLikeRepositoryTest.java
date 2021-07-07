@@ -45,7 +45,8 @@ class SharingBoardLikeRepositoryTest {
 
         User saveUser = userRepository.save(user);
 
-        CreateBoardRequest request = new CreateBoardRequest(user.getId(), "Sharing Board Test Title", "Sharing Board Test Content", "Sharing Board Book Title");
+        String sharingBoardTag = "tag1, tag2, tag3";
+        CreateBoardRequest request = new CreateBoardRequest(user.getId(), "Sharing Board Test Title", "Sharing Board Test Content", "Sharing Board Book Title",sharingBoardTag);
 
         SharingBoard sharingBoard = new SharingBoard(request, Optional.of(saveUser));
         //when

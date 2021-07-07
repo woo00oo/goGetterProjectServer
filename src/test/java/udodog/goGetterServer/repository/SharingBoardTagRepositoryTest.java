@@ -47,11 +47,8 @@ class SharingBoardTagRepositoryTest {
 
         User saveUser = userRepository.save(user);
 
-        List<String> tagList = new LinkedList<>();
-        tagList.add("태그 1");
-        tagList.add("태그 2");
-
-        CreateBoardRequest request = new CreateBoardRequest(user.getId(), "Sharing Board Test Title", "Sharing Board Test Content","book Title",tagList);
+        String sharingBoardTag = "tag1, tag2, tag3";
+        CreateBoardRequest request = new CreateBoardRequest(user.getId(), "Sharing Board Test Title", "Sharing Board Test Content","book Title",sharingBoardTag);
 
         SharingBoard sharingBoard = new SharingBoard(request, Optional.of(saveUser));
         //when
