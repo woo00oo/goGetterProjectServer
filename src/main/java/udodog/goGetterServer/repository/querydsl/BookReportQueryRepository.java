@@ -49,9 +49,10 @@ public class BookReportQueryRepository {
     } // reportList끝
 
     // 독서 기록 상세 조회
-    public Optional<BookReport> findById(Long bookReportId) {
+    public Optional<BookReport> findById(Long bookReportId, Long userId) {
 
         BookReport bookReport = jpaQueryFactory.selectFrom(QBookReport.bookReport)
+                                                .where(QBookReport.bookReport.bookReportId.eq(bookReportId), QBookReport.bookReport.user.id.eq(userId))
                                                 .innerJoin(QBookReport.bookReport.user, user)
                                                 .fetchJoin()
                                                 .fetchOne();

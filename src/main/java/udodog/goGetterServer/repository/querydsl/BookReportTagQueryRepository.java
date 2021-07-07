@@ -10,6 +10,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import udodog.goGetterServer.model.dto.request.bookreport.BookreportUpdateRequestDto;
 import udodog.goGetterServer.model.dto.request.bookreporttag.BookReportTagUpdateRequestDto;
 import udodog.goGetterServer.model.dto.response.bookreporttag.BookReportTagResponseDto;
 import udodog.goGetterServer.model.entity.BookReport;
@@ -84,12 +85,12 @@ public class BookReportTagQueryRepository {
     } // findByBookReportTagId() 끝
 
     @Transactional
-    public void bookReportTagUpdate (BookReportTagUpdateRequestDto bookReportTagUpdateRequestDto, Long bookReportTagId) {    // 독서 기록 Tag 번호가 같다면 수정
+    public void bookReportTagUpdate (BookreportUpdateRequestDto bookreportUpdateRequestDto, Long bookReportId) {    // 독서 기록 Tag 번호가 같다면 수정
 
         JPAUpdateClause jpaUpdateClause = new JPAUpdateClause(entityManager, bookReportTag);
 
-        jpaUpdateClause.where(bookReportTag.bookReportTagId.eq(bookReportTagId))
-                       .set(bookReportTag.tagName, bookReportTagUpdateRequestDto.getTagName())
+        jpaUpdateClause.where(bookReportTag.bookReport.bookReportId.eq(bookReportId))
+                       .set(bookReportTag.tagName, bookreportUpdateRequestDto.getTagName())
                        .execute();
     } // bookReportTagUpdate() 끝
 
