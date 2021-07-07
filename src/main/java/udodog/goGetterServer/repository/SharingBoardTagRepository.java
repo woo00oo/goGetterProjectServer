@@ -5,13 +5,12 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import udodog.goGetterServer.model.entity.SharingBoardTag;
 
-import java.util.List;
 
 @Repository
 @Transactional
 public interface SharingBoardTagRepository extends JpaRepository<SharingBoardTag, Long> {
 
-    List<SharingBoardTag> findAllBySharingBoardId(Long id);
+    SharingBoardTag findBySharingBoardId(Long id);
 
-    void deleteAllBySharingBoardId(Long id);
+    void deleteAllBySharingBoardId(Long boardId);
 }

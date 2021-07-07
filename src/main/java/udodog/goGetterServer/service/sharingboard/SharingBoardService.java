@@ -50,13 +50,13 @@ public class SharingBoardService {
     // 상세 조회
     public DefaultRes<BoardResponse> getBoardDetail(Long id) {
         Optional<SharingBoard> sharingBoard = sharingBoardRepository.findById(id);
-        List<SharingBoardTag> sharingBoardTagList = sharingBoardTagRepository.findAllBySharingBoardId(id);
+        SharingBoardTag sharingBoardTag = sharingBoardTagRepository.findBySharingBoardId(id);
 
         return sharingBoard.map(board -> DefaultRes.response(HttpStatus.OK.value(), "조회 성공",
                 new BoardResponse(sharingBoard,board.getReplyCnt(),board.getLikeCnt(),
                         WriterInfo.builder().
                                 nickName(board.getUser().getNickName()).
-                                profileUrl(board.getUser().getProfileUrl()).build(),sharingBoardTagList))
+                                profileUrl(board.getUser().getProfileUrl()).build(),sharingBoardTag.getContent()))
         )
                 .orElseGet(()->{
                     return DefaultRes.response(HttpStatus.OK.
@@ -70,8 +70,7 @@ public class SharingBoardService {
         SharingBoard sharingBoard = new SharingBoard(request, user);
         SharingBoard saveBoard = sharingBoardRepository.save(sharingBoard);
 
-        request.getSharingBoardTagList().stream().
-                forEach(content -> sharingBoardTagRepository.save(new SharingBoardTag(saveBoard.getId(),content)));
+        sharingBoardTagRepository.save(new SharingBoardTag(saveBoard.getId(),request.getSharingBoardTag()));
 
         return DefaultRes.response(HttpStatus.OK.value(),"글 등록 성공");
 
@@ -81,23 +80,17 @@ public class SharingBoardService {
     @Transactional
     public DefaultRes<BoardResponse> updateSharingBoard(Long id, UpdateBoardRequest request) {
         Optional<SharingBoard> boardById = sharingBoardRepository.findById(id);
-        sharingBoardTagRepository.deleteAllBySharingBoardId(id); //태그 전체 삭제
 
         if (boardById.isEmpty()){
             return DefaultRes.response(HttpStatus.OK.value(),"글이 존재하지 않음");
-        }
-
-        // 본인이 작성한 글이 아닌 경우
-        if(!isWriter(request, boardById)){
-            return DefaultRes.response(HttpStatus.OK.value(),"글 수정 실패");
         }
 
         SharingBoard updateBoard = boardById.get().updateBoard(request);
         SharingBoard saveBoard = sharingBoardRepository.save(updateBoard);
 
         // 태그 재등록
-        request.getSharingBoardTagList().stream().
-                forEach(content -> sharingBoardTagRepository.save(new SharingBoardTag(saveBoard.getId(),content)));
+        sharingBoardTagRepository.deleteAllBySharingBoardId(id);
+        sharingBoardTagRepository.save(new SharingBoardTag(saveBoard.getId(),request.getSharingBoardTag()));
 
         if(saveBoard.getId().equals(id)){
             return DefaultRes.response(HttpStatus.OK.value(),"글 수정 성공");
@@ -119,11 +112,6 @@ public class SharingBoardService {
         }
 
         SharingBoard board = boardById.get();
-
-        // 본인이 작성한 글이 아닌 경우
-        if(!board.getUser().getId().equals(UserId)){
-            return DefaultRes.response(HttpStatus.OK.value(),"글 삭제 실패");
-        }
 
         sharingBoardTagRepository.deleteAllBySharingBoardId(boardId);
         sharingBoardReplyRepository.deleteBySharingBoardId(boardId);
