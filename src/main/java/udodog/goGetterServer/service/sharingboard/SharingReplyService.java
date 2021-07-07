@@ -10,7 +10,6 @@ import udodog.goGetterServer.model.dto.Pagination;
 import udodog.goGetterServer.model.dto.request.UpdateSharingReplyRequest;
 import udodog.goGetterServer.model.dto.request.sharingboard.CreateSharingReplyRequest;
 import udodog.goGetterServer.model.dto.request.sharingboard.DeleteSharingReplyRequest;
-import udodog.goGetterServer.model.dto.request.sharingboard.UpdateBoardRequest;
 import udodog.goGetterServer.model.dto.response.sharingboard.SharingReplyResponse;
 import udodog.goGetterServer.model.dto.response.sharingboard.WriterInfo;
 import udodog.goGetterServer.model.entity.SharingBoard;
@@ -49,7 +48,7 @@ public class SharingReplyService {
 
         for(SharingBoardReply sharingBoardReply : sharingBoardReplies){
             User user = sharingBoardReply.getUser();
-            WriterInfo writerInfo = WriterInfo.builder().nickName(user.getNickName()).profileUrl(user.getProfileUrl()).build();
+            WriterInfo writerInfo = WriterInfo.builder().nickName(user.getNickName()).profileUrl(user.getProfileUrl()).writerId(user.getId()).build();
 
             SharingReplyResponse sharingReplyResponse = new SharingReplyResponse(sharingBoardReply, writerInfo);
             sharingReplyResponseList.add(sharingReplyResponse);
@@ -89,10 +88,6 @@ public class SharingReplyService {
             return DefaultRes.response(HttpStatus.OK.value(),"글이 존재하지 않음");
         }
 
-        if(!isWriter(request, boardById)){
-            return DefaultRes.response(HttpStatus.OK.value(),"댓글 수정 실패");
-        }
-
         // UPDATE
         SharingBoardReply updateBoardReply = replyById.get().updateBoard(request);
         SharingBoardReply saveBoardReply = sharingBoardReplyRepository.save(updateBoardReply);
@@ -105,9 +100,6 @@ public class SharingReplyService {
         return DefaultRes.response(HttpStatus.OK.value(),"댓글 수정 실패");
     }
 
-    private boolean isWriter(UpdateSharingReplyRequest request, Optional<SharingBoard> boardById) {
-        return boardById.get().getUser().getId().equals(request.getUserId());
-    }
 
     public DefaultRes deleteReply(Long boardId, DeleteSharingReplyRequest request) {
         Optional<SharingBoardReply> replyById = sharingBoardReplyRepository.findById(request.getReplyId());

@@ -57,7 +57,7 @@ public class SharingBoardService {
                     new BoardResponse(sharingBoard, board.getReplyCnt(), board.getLikeCnt(),
                             WriterInfo.builder().
                                     nickName(board.getUser().getNickName()).
-                                    profileUrl(board.getUser().getProfileUrl()).build(), sharingBoardTag.getContent()))
+                                    profileUrl(board.getUser().getProfileUrl()).writerId(board.getUser().getId()).build(), sharingBoardTag.getContent()))
             )
                     .orElseGet(() -> {
                         return DefaultRes.response(HttpStatus.OK.
@@ -69,7 +69,7 @@ public class SharingBoardService {
                     new BoardResponse(sharingBoard, board.getReplyCnt(), board.getLikeCnt(),
                             WriterInfo.builder().
                                     nickName(board.getUser().getNickName()).
-                                    profileUrl(board.getUser().getProfileUrl()).build()))
+                                    profileUrl(board.getUser().getProfileUrl()).writerId(board.getUser().getId()).build()))
             )
                     .orElseGet(() -> {
                         return DefaultRes.response(HttpStatus.OK.
@@ -114,10 +114,6 @@ public class SharingBoardService {
         return DefaultRes.response(HttpStatus.OK.value(),"글 수정 실패");
     }
 
-    private boolean isWriter(UpdateBoardRequest request, Optional<SharingBoard> boardById) {
-        return boardById.get().getUser().getId().equals(request.getUserId());
-    }
-
 
     public DefaultRes deleteSharingBoard(Long boardId, Long UserId) {
         Optional<SharingBoard> boardById = sharingBoardRepository.findById(boardId);
@@ -146,7 +142,7 @@ public class SharingBoardService {
             Integer likeCnt = sharingBoard.getLikeCnt();
             User user = sharingBoard.getUser();
 
-            WriterInfo writerInfo = WriterInfo.builder().nickName(user.getNickName()).profileUrl(user.getProfileUrl()).build();
+            WriterInfo writerInfo = WriterInfo.builder().nickName(user.getNickName()).profileUrl(user.getProfileUrl()).writerId(user.getId()).build();
 
             SimpleBoardResponse simpleBoardResponse = new SimpleBoardResponse(sharingBoard, replyCnt, likeCnt, writerInfo);
             simpleBoardResponseList.add(simpleBoardResponse);
