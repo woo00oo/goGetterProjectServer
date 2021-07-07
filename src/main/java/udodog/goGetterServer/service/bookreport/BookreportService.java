@@ -8,9 +8,11 @@ import org.springframework.stereotype.Service;
 import udodog.goGetterServer.model.dto.DefaultRes;
 import udodog.goGetterServer.model.dto.request.bookreport.BookreportInsertRequestDto;
 import udodog.goGetterServer.model.dto.request.bookreport.BookreportUpdateRequestDto;
+import udodog.goGetterServer.model.dto.request.bookreporttag.BookReportTagInsertRequestDto;
 import udodog.goGetterServer.model.dto.response.bookreport.BookReportDetailResponseDto;
 import udodog.goGetterServer.model.dto.response.bookreport.BookreportResponseDto;
 import udodog.goGetterServer.model.entity.BookReport;
+import udodog.goGetterServer.model.entity.BookReportTag;
 import udodog.goGetterServer.model.entity.User;
 import udodog.goGetterServer.repository.BookReportRepository;
 import udodog.goGetterServer.repository.BookReportTagRepository;
@@ -18,6 +20,7 @@ import udodog.goGetterServer.repository.UserRepository;
 import udodog.goGetterServer.repository.querydsl.BookReportQueryRepository;
 import udodog.goGetterServer.repository.querydsl.BookReportTagQueryRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -54,33 +57,36 @@ public class BookreportService {
 
             return DefaultRes.response(HttpStatus.OK.value(), "등록실패");
 
-        } else {                                    // 독서 기록 입력 값이 있다면?
-            BookReport bookReport = bookReportRepository.save(bookreportInsertRequestDto.toEntity(bookreportInsertRequestDto, user));
-            
+        }                                    // 독서 기록 입력 값이 있다면?
+            Optional<BookReport> bookReport = Optional.ofNullable( bookReportRepository.save(bookreportInsertRequestDto.toEntity(bookreportInsertRequestDto, user)) );
+
+            bookReportTagRepository.save(BookReportTag.builder().bookReport(bookReport.get()).tagName(bookreportInsertRequestDto.getBookReportTag()).build());
+
             return DefaultRes.response(HttpStatus.OK.value(), "등록성공");
-            
-        } // if - else 끝
         
     } // insertReport() 끝
 
     // 독서 기록 상세 조회 Method
-    public DefaultRes<BookReportDetailResponseDto> viewDetailBookReport(Long bookReportId) {
+    public DefaultRes<BookReportDetailResponseDto> viewDetailBookReport(Long bookReportId, Long userId) {
 
-        Optional<BookReport> bookReportOptional = bookReportQueryRepository.findById(bookReportId);
+        Optional<BookReport> bookReportOptional = bookReportQueryRepository.findById(bookReportId, userId);
+        String bookReportTag = bookReportTagRepository.findByBookReportId(bookReportId);
+
+        BookReportTag reportTag = BookReportTag.builder().tagName(bookReportTag).build();
 
         if (bookReportOptional.isEmpty()) { // 독서 기록이 비어 있다면?
             return DefaultRes.response(HttpStatus.OK.value(), "데이터없음");
 
         } else {                            // 독서 기록 내용이 있다면?
 
-            return bookReportOptional.map(bookReport -> DefaultRes.response(HttpStatus.OK.value(), "조회성공", new BookReportDetailResponseDto(bookReport)))
+            return bookReportOptional.map(bookReport -> DefaultRes.response(HttpStatus.OK.value(), "조회성공", new BookReportDetailResponseDto(bookReport, reportTag)))
                     .orElseGet(() -> DefaultRes.response(HttpStatus.OK.value(), "조회실패"));
         } // if-else 끝
     } // viewDetailBookReport() 끝
 
     // 독서 기록 수정 Method
     public DefaultRes updateReport(BookreportUpdateRequestDto updateRequestDto, Long bookReportId, Long userId) {  // updateDto, 글번호, 유저 ID
-        Optional<BookReport> optionalBookReport = bookReportQueryRepository.findById(bookReportId);
+        Optional<BookReport> optionalBookReport = bookReportQueryRepository.findById(bookReportId, userId);
 
         if (optionalBookReport.isEmpty()) { // 대상 게시물이 없다면?
             DefaultRes.response(HttpStatus.OK.value(), "내용없음");
@@ -91,6 +97,7 @@ public class BookreportService {
                 .map(bookReport -> {
 
                     bookReportQueryRepository.updateBookReport(updateRequestDto, bookReportId, userId);
+                    bookReportTagQueryRepository.bookReportTagUpdate(updateRequestDto, bookReport.getBookReportId());
 
                     return DefaultRes.response(HttpStatus.OK.value(), "수정성공");
                 }).orElseGet(() -> DefaultRes.response(HttpStatus.OK.value(), "수정실패"));
@@ -99,7 +106,7 @@ public class BookreportService {
 
     // 독서 기록 삭제 Method
     public DefaultRes deleteReport(Long bookReportId, Long userId) {    // 게시글 번호, User 번호
-        Optional<BookReport> bookReportOptional = bookReportQueryRepository.findById(bookReportId);
+        Optional<BookReport> bookReportOptional = bookReportQueryRepository.findById(bookReportId, userId);
 
         if (bookReportOptional.isEmpty()) { // 대상 게시물이 없다면?
             return DefaultRes.response(HttpStatus.OK.value(), "내용없음");
