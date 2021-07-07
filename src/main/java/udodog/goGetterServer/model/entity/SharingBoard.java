@@ -29,7 +29,6 @@ public class SharingBoard {
     private String content;
 
     @CreatedDate
-    @DateTimeFormat(pattern = "yyyy-MM-dd kk:mm:ss")
     private LocalDateTime createdAt;
 
     // Weekly Best 기능을 위해 추가

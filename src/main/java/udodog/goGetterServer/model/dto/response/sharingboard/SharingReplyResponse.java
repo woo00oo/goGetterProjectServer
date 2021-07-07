@@ -16,7 +16,6 @@ public class SharingReplyResponse {
 
     private String comment;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd kk:mm:ss")
     private LocalDateTime createdAt;
 
     private Long replyId;

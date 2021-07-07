@@ -23,7 +23,6 @@ public class BoardResponse {
 
     private String content;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd kk:mm:ss")
     private LocalDateTime createdAt;
 
     // 댓글 수

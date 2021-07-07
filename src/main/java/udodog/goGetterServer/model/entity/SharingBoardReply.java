@@ -31,7 +31,6 @@ public class SharingBoardReply {
     private String comment;
 
     @CreatedDate
-    @DateTimeFormat(pattern = "yyyy-MM-dd kk:mm:ss")
     private LocalDateTime createdAt;
 
     @Builder
