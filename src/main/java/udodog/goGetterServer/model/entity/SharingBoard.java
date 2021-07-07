@@ -3,11 +3,12 @@ package udodog.goGetterServer.model.entity;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.format.annotation.DateTimeFormat;
 import udodog.goGetterServer.model.dto.request.sharingboard.UpdateBoardRequest;
 import udodog.goGetterServer.model.dto.request.sharingboard.CreateBoardRequest;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -28,7 +29,8 @@ public class SharingBoard {
     private String content;
 
     @CreatedDate
-    private LocalDate createdAt;
+    @DateTimeFormat(pattern = "yyyy-MM-dd kk:mm:ss")
+    private LocalDateTime createdAt;
 
     // Weekly Best 기능을 위해 추가
     private Integer likeCnt;

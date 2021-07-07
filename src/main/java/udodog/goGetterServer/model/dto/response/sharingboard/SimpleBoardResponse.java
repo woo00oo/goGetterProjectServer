@@ -1,11 +1,10 @@
 package udodog.goGetterServer.model.dto.response.sharingboard;
 
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 import udodog.goGetterServer.model.entity.SharingBoard;
-import udodog.goGetterServer.model.entity.SharingBoardReply;
 
-import java.time.LocalDate;
-import java.util.List;
+import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
@@ -17,7 +16,8 @@ public class SimpleBoardResponse {
 
     private String title;
 
-    private LocalDate createdAt;
+    @DateTimeFormat(pattern = "yyyy-MM-dd kk:mm:ss")
+    private LocalDateTime createdAt;
 
     // 댓글 수
     private Integer replyCnt;

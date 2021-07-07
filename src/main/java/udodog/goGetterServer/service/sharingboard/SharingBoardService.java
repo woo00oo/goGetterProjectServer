@@ -52,16 +52,31 @@ public class SharingBoardService {
         Optional<SharingBoard> sharingBoard = sharingBoardRepository.findById(id);
         SharingBoardTag sharingBoardTag = sharingBoardTagRepository.findBySharingBoardId(id);
 
-        return sharingBoard.map(board -> DefaultRes.response(HttpStatus.OK.value(), "조회 성공",
-                new BoardResponse(sharingBoard,board.getReplyCnt(),board.getLikeCnt(),
-                        WriterInfo.builder().
-                                nickName(board.getUser().getNickName()).
-                                profileUrl(board.getUser().getProfileUrl()).build(),sharingBoardTag.getContent()))
-        )
-                .orElseGet(()->{
-                    return DefaultRes.response(HttpStatus.OK.
-                            value(), "데이터 없음");
-                });
+        if(sharingBoardTag != null) {
+            return sharingBoard.map(board -> DefaultRes.response(HttpStatus.OK.value(), "조회 성공",
+                    new BoardResponse(sharingBoard, board.getReplyCnt(), board.getLikeCnt(),
+                            WriterInfo.builder().
+                                    nickName(board.getUser().getNickName()).
+                                    profileUrl(board.getUser().getProfileUrl()).build(), sharingBoardTag.getContent()))
+            )
+                    .orElseGet(() -> {
+                        return DefaultRes.response(HttpStatus.OK.
+                                value(), "데이터 없음");
+                    });
+        }
+        else{
+            return sharingBoard.map(board -> DefaultRes.response(HttpStatus.OK.value(), "조회 성공",
+                    new BoardResponse(sharingBoard, board.getReplyCnt(), board.getLikeCnt(),
+                            WriterInfo.builder().
+                                    nickName(board.getUser().getNickName()).
+                                    profileUrl(board.getUser().getProfileUrl()).build()))
+            )
+                    .orElseGet(() -> {
+                        return DefaultRes.response(HttpStatus.OK.
+                                value(), "데이터 없음");
+                    });
+
+        }
     }
 
     // 게시글 작성

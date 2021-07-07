@@ -2,9 +2,11 @@ package udodog.goGetterServer.model.dto.response.sharingboard;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import udodog.goGetterServer.model.entity.SharingBoardReply;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @NoArgsConstructor
 @Getter
@@ -14,7 +16,8 @@ public class SharingReplyResponse {
 
     private String comment;
 
-    private LocalDate createdAt;
+    @DateTimeFormat(pattern = "yyyy-MM-dd kk:mm:ss")
+    private LocalDateTime createdAt;
 
     private Long replyId;
 
