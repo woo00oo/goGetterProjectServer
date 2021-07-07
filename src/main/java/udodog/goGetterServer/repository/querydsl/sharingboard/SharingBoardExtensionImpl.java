@@ -1,11 +1,9 @@
 package udodog.goGetterServer.repository.querydsl.sharingboard;
 
 import com.querydsl.jpa.JPQLQuery;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import udodog.goGetterServer.model.entity.QSharingBoard;
 import udodog.goGetterServer.model.entity.SharingBoard;
-import udodog.goGetterServer.repository.SharingBoardLikeRepository;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -26,7 +24,7 @@ public class SharingBoardExtensionImpl  extends QuerydslRepositorySupport implem
                 fetchJoin().
                 where(sharingBoard.createdAt.between(aWeekAgo, LocalDate.now())).
                 orderBy(sharingBoard.likeCnt.desc())
-                .limit(3);
+                .limit(4);
 
         // 좋아요 순으로 정렬하기 위해 sharingBoard Entity에 likeCnt 필드 추가
 

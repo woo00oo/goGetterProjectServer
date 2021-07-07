@@ -21,4 +21,5 @@ public interface SharingBoardReplyRepository extends JpaRepository<SharingBoardR
     @Query(value = "select sr from SharingBoardReply sr join fetch sr.sharingBoard board join fetch board.user where board.id= :boardId",
             countQuery = "select count(sr) from SharingBoardReply")
     Page<SharingBoardReply> findAll(@Param("boardId") Long boardId, Pageable pageable);
+
 }

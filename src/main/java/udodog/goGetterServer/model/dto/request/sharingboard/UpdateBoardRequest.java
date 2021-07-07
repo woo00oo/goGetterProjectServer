@@ -3,6 +3,7 @@ package udodog.goGetterServer.model.dto.request.sharingboard;
 import lombok.*;
 
 import javax.validation.constraints.NotEmpty;
+import java.util.List;
 
 
 @Getter
@@ -17,5 +18,10 @@ public class UpdateBoardRequest {
 
     @NotEmpty
     private String content;
+
+    @NotEmpty
+    private String bookTitle;
+
+    private List<String> sharingBoardTagList;
 
 }

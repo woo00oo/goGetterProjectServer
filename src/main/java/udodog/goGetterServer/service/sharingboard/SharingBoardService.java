@@ -15,9 +15,11 @@ import udodog.goGetterServer.model.dto.response.sharingboard.BoardResponse;
 import udodog.goGetterServer.model.dto.response.sharingboard.SimpleBoardResponse;
 import udodog.goGetterServer.model.dto.response.sharingboard.WriterInfo;
 import udodog.goGetterServer.model.entity.SharingBoard;
+import udodog.goGetterServer.model.entity.SharingBoardTag;
 import udodog.goGetterServer.model.entity.User;
 import udodog.goGetterServer.repository.SharingBoardReplyRepository;
 import udodog.goGetterServer.repository.SharingBoardRepository;
+import udodog.goGetterServer.repository.SharingBoardTagRepository;
 import udodog.goGetterServer.repository.UserRepository;
 
 import java.util.LinkedList;
@@ -31,6 +33,7 @@ public class SharingBoardService {
     private final SharingBoardRepository sharingBoardRepository;
     private final SharingBoardReplyRepository sharingBoardReplyRepository;
     private final UserRepository userRepository;
+    private final SharingBoardTagRepository sharingBoardTagRepository;
 
     // 전체 조회
     public DefaultRes<List<SimpleBoardResponse>> getBoardList(Pageable pageable) {
@@ -47,12 +50,13 @@ public class SharingBoardService {
     // 상세 조회
     public DefaultRes<BoardResponse> getBoardDetail(Long id) {
         Optional<SharingBoard> sharingBoard = sharingBoardRepository.findById(id);
+        List<SharingBoardTag> sharingBoardTagList = sharingBoardTagRepository.findAllBySharingBoardId(id);
 
         return sharingBoard.map(board -> DefaultRes.response(HttpStatus.OK.value(), "조회 성공",
                 new BoardResponse(sharingBoard,board.getReplyCnt(),board.getLikeCnt(),
                         WriterInfo.builder().
                                 nickName(board.getUser().getNickName()).
-                                profileUrl(board.getUser().getProfileUrl()).build()))
+                                profileUrl(board.getUser().getProfileUrl()).build(),sharingBoardTagList))
         )
                 .orElseGet(()->{
                     return DefaultRes.response(HttpStatus.OK.
@@ -63,17 +67,21 @@ public class SharingBoardService {
     // 게시글 작성
     public DefaultRes createSharingBoard(CreateBoardRequest request) {
         Optional<User> user = userRepository.findById(request.getUserId());
-
         SharingBoard sharingBoard = new SharingBoard(request, user);
         SharingBoard saveBoard = sharingBoardRepository.save(sharingBoard);
+
+        request.getSharingBoardTagList().stream().
+                forEach(content -> sharingBoardTagRepository.save(new SharingBoardTag(saveBoard.getId(),content)));
 
         return DefaultRes.response(HttpStatus.OK.value(),"글 등록 성공");
 
     }
 
     //게시글 수정
+    @Transactional
     public DefaultRes<BoardResponse> updateSharingBoard(Long id, UpdateBoardRequest request) {
         Optional<SharingBoard> boardById = sharingBoardRepository.findById(id);
+        sharingBoardTagRepository.deleteAllBySharingBoardId(id); //태그 전체 삭제
 
         if (boardById.isEmpty()){
             return DefaultRes.response(HttpStatus.OK.value(),"글이 존재하지 않음");
@@ -86,6 +94,10 @@ public class SharingBoardService {
 
         SharingBoard updateBoard = boardById.get().updateBoard(request);
         SharingBoard saveBoard = sharingBoardRepository.save(updateBoard);
+
+        // 태그 재등록
+        request.getSharingBoardTagList().stream().
+                forEach(content -> sharingBoardTagRepository.save(new SharingBoardTag(saveBoard.getId(),content)));
 
         if(saveBoard.getId().equals(id)){
             return DefaultRes.response(HttpStatus.OK.value(),"글 수정 성공");
@@ -113,7 +125,8 @@ public class SharingBoardService {
             return DefaultRes.response(HttpStatus.OK.value(),"글 삭제 실패");
         }
 
-        sharingBoardReplyRepository.deleteBySharingBoardId(board.getId());
+        sharingBoardTagRepository.deleteAllBySharingBoardId(boardId);
+        sharingBoardReplyRepository.deleteBySharingBoardId(boardId);
         sharingBoardRepository.deleteById(boardId);
 
         return DefaultRes.response(HttpStatus.OK.value(),"글 삭제 성공");

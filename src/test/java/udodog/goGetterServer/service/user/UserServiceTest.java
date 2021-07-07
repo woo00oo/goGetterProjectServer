@@ -19,6 +19,7 @@ import udodog.goGetterServer.model.entity.User;
 import udodog.goGetterServer.model.enumclass.UserGrade;
 import udodog.goGetterServer.model.utils.JwtUtil;
 import udodog.goGetterServer.repository.UserRepository;
+import udodog.goGetterServer.repository.querydsl.UserQueryRepository;
 
 import java.util.Optional;
 import java.util.concurrent.Executor;
@@ -40,6 +41,9 @@ public class UserServiceTest {
     UserRepository userRepository;
 
     @Mock
+    UserQueryRepository userQueryRepository;
+
+    @Mock
     JavaMailSender mailSender;
 
     @Mock
@@ -54,7 +58,7 @@ public class UserServiceTest {
         mockHttpSession = new MockHttpSession();
         httpServletRequest = new MockHttpServletRequest();
         jwtUtil = new JwtUtil("HONGPARKKIMSEOPARKBYEONGOGETTER!");
-        userService = new UserService(mailSender, executor, userRepository);
+        userService = new UserService(mailSender, executor, userRepository, userQueryRepository);
     }
 
     @After
