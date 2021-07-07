@@ -6,13 +6,17 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import udodog.goGetterServer.model.dto.DefaultRes;
+import udodog.goGetterServer.model.dto.request.user.UserFindEmailRequest;
+import udodog.goGetterServer.model.dto.request.user.UserFindPwdRequest;
 import udodog.goGetterServer.model.dto.request.user.UserSignInRequestDto;
 import udodog.goGetterServer.model.dto.request.user.UserSignUpRequestDto;
+import udodog.goGetterServer.model.dto.response.user.UserFindEmailResponseDto;
 import udodog.goGetterServer.model.dto.response.user.UserSignInResponseDto;
 import udodog.goGetterServer.model.entity.User;
 import udodog.goGetterServer.model.utils.JwtUtil;
 import udodog.goGetterServer.model.utils.MailHandler;
 import udodog.goGetterServer.repository.UserRepository;
+import udodog.goGetterServer.repository.querydsl.UserQueryRepository;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
@@ -31,6 +35,7 @@ public class UserService {
     private final JavaMailSender mailSender;
     private final Executor executor;
     private final UserRepository userRepository;
+    private final UserQueryRepository queryRepository;
 
 
     public DefaultRes emailConfirm(HttpServletRequest request, String email){
@@ -135,5 +140,76 @@ public class UserService {
         }).orElseGet(()->DefaultRes.response(HttpStatus.OK.value(), "아이디불일치"));
 
     }
+
+    public DefaultRes findEmail(UserFindEmailRequest requestDto) {
+        Optional<UserFindEmailResponseDto> userEmail = queryRepository.findByUser(requestDto);
+
+        if (userEmail.isEmpty()){
+            return DefaultRes.response(HttpStatus.OK.value(), "데이터없음");
+        }
+
+        return userEmail.map(email -> {
+            return DefaultRes.response(HttpStatus.OK.value(), "이메일찾기성공", new UserFindEmailResponseDto(userEmail));
+        }).orElseGet(() -> DefaultRes.response(HttpStatus.OK.value(), "이메일찾기실패"));
+    }
+
+    public DefaultRes findPassword(UserFindPwdRequest findPwd, HttpServletRequest request) {
+
+        Optional<String> checkMail = userRepository.findByEmail(findPwd.getEmail());
+        Optional<String> checkname = userRepository.findByEmail(findPwd.getName());
+
+        if(checkMail.isEmpty()){
+            return DefaultRes.response(HttpStatus.OK.value(), "데이터없음");
+       }
+
+        return checkMail.filter(email -> email.equals(findPwd.getEmail()))
+                .map(findMail -> {
+                    checkname.filter(name -> name.equals(findPwd.getName()));
+
+                    CompletableFuture.runAsync(()-> sendPwdMail(findPwd, request), executor);
+
+
+
+                    return DefaultRes.response(HttpStatus.OK.value(), "메일전송성공");
+        }).orElseGet(()-> DefaultRes.response(HttpStatus.OK.value(), "메일전송실패"));
+
+    }
+
+    private void sendPwdMail(UserFindPwdRequest findPwd, HttpServletRequest request) {
+
+        HttpSession session = request.getSession();
+        String email = findPwd.getEmail();
+        String pw = "";
+        for (int i = 0; i < 12; i++){
+            pw += (char)((Math.random() * 26 ) + 97);
+        }
+
+        queryRepository.updatePwd(email, pw);
+        session.setAttribute("findPwd", pw);
+        session.setMaxInactiveInterval(5*60);
+
+        String htmlContent = "<h2><b>안녕하세요&nbsp;</b></h2>" +
+                "<h2><b>Go-getter 입니다.</b><h2>"+
+                "<h3><br></h3><p><h2> 임시 비밀번호 입니다. </h2></p>" +
+                "<p><h2><span style=\"background-color: rgb(255, 255, 0);\">"+ pw +"</span><h2></p>" +
+                "<h3><br></h3><p></p><p><h2>감사합니다.</h2></p>" +
+                "<br><br><img src='cid:go-getter-img' width=90 height=90>";
+
+        try{
+            MailHandler mailHandler = new MailHandler(mailSender);
+            mailHandler.setTo(email);
+            mailHandler.setFrom(FROM_ADDRESS);
+            mailHandler.setSubject("[go-getter] 임시비밀번호 입니다.");
+            mailHandler.setText(htmlContent,true);
+            mailHandler.setInline("go-getter-img","static/go-getter.jpg");
+
+            mailHandler.send();
+
+        } catch (MessagingException | IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
 
 }
