@@ -14,7 +14,7 @@ public class BookReportTagInsertRequestDto {
 
     private String tagName;         // Tag 내용
     
-    public BookReportTag toEntiry(Optional<BookReport> bookReport, BookReportTagInsertRequestDto bookReportTagInsertRequestDto) {
+    public BookReportTag toEntity(Optional<BookReport> bookReport, BookReportTagInsertRequestDto bookReportTagInsertRequestDto) {
         
         return BookReportTag.builder()
                 .bookReport(bookReport.get())

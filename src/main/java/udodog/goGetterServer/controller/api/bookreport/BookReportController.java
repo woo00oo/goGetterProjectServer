@@ -34,7 +34,7 @@ public class BookReportController {
     @ApiResponses( value = { @ApiResponse( code=200, message = "1. 조회성공 \t\n 2. 데이터없음 \t\n 3. 토큰에러" )})
 
     // 전체 조회 관련 Method
-    @GetMapping("/api/book-reports")
+    @GetMapping("/api/bkusers/book-reports")
     public ResponseEntity<EntityModel<DefaultRes<Page<BookreportResponseDto>>>> totalBookReportFindAll(
             @PageableDefault( sort = "bookReportId", direction = Sort.Direction.DESC, size = 10 ) Pageable pageable ) {  // Index Value를 이용 최신 날짜순을 기준으로 내림차순으로 페이지당 10개씩 출력
 
@@ -50,7 +50,7 @@ public class BookReportController {
     })
 
     // 독서 기록 상세보기 관련 Method
-    @GetMapping("/api/book-reports/{bookReportId}")
+    @GetMapping("/api/bkusers/book-reports/{bookReportId}")
     public ResponseEntity<EntityModel<DefaultRes<BookReportDetailResponseDto>>> viewDetailBookReport(@PathVariable("bookReportId") Long bookReportId, @RequestParam("userId") Long userId) {
 
         return new ResponseEntity<>(bookReportConverter.toModel(bookreportService.viewDetailBookReport(bookReportId, userId)), HttpStatus.OK);
@@ -62,9 +62,9 @@ public class BookReportController {
     @ApiResponses(value = { @ApiResponse(code=200, message = "1.등록성공 \t\n 2.등록실패 \t\n 3. 토큰에러") })
 
     // 독서 기록 등록 관련 Mehotd
-    @PostMapping("/api/book-reports")
+    @PostMapping("/api/bkusers/book-reports")
     public ResponseEntity<EntityModel<DefaultRes<BookreportInsertRequestDto>>> insertReport (
-            @ApiParam( value = "필수 : 모든 항목" )
+            @ApiParam( value = "필수 : Tag를 제외한 모든 항목" )
             @Valid @RequestBody BookreportInsertRequestDto bookreportInsertRequestDto, @RequestParam ( "userId" ) Long userId ) {
 
         return new ResponseEntity<>(bookReportConverter.toModel(bookreportService.insertReport(bookreportInsertRequestDto, userId)), HttpStatus.OK);
@@ -74,7 +74,7 @@ public class BookReportController {
     @ApiResponses(value = { @ApiResponse( code = 200, message = "1.수정성공 \t\n 2.수정실패 \t\n 3.데이터없음 \t\n 4.토큰에러" )})
 
     // 수정 Method
-    @PatchMapping("/api/book-reports/{bookReportId}")
+    @PatchMapping("/api/bkusers/book-reports/{bookReportId}")
     public ResponseEntity<EntityModel<EntityModel<DefaultRes>>> updateBookReport (
             @Valid @RequestBody BookreportUpdateRequestDto updateRequestDto, @PathVariable("bookReportId") Long bookReportId, @RequestParam("userId") Long userId) {
 
@@ -82,7 +82,7 @@ public class BookReportController {
     } // updateBookReport() 끝
 
     // 삭제 Method
-    @DeleteMapping("/api/book-reports/{bookReportId}")
+    @DeleteMapping("/api/bkusers/book-reports/{bookReportId}")
     public ResponseEntity<EntityModel<DefaultRes<BookReportDetailResponseDto>>> deleteReport (@PathVariable("bookReportId") Long bookReportId, @RequestParam("userId") Long userId) {
 
         return new ResponseEntity<>(bookReportConverter.toModel(bookreportService.deleteReport(bookReportId, userId)), HttpStatus.OK);
@@ -93,7 +93,7 @@ public class BookReportController {
     // ##################################### 검색 기능 #####################################
 
     // 제목 검색
-    @GetMapping("/api/book-reports/search/{title-search}")
+    @GetMapping("/api/bkusers/book-reports/search/{title-search}")
     public ResponseEntity<EntityModel<DefaultRes<Page<BookreportResponseDto>>>> titleSearch ( @PathVariable("title-search") String title, @PageableDefault (sort = "bookReportId", direction = Sort.Direction.DESC, size = 10) Pageable pageable) {
 
         return new ResponseEntity<>(bookReportPagingConverter.toModel(bookreportService.titleSearch(title, pageable)), HttpStatus.OK);
