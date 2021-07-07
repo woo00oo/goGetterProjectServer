@@ -8,9 +8,13 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import udodog.goGetterServer.config.JpaAuditingConfig;
+import udodog.goGetterServer.model.dto.request.sharingboard.CreateBoardRequest;
 import udodog.goGetterServer.model.entity.SharingBoard;
 import udodog.goGetterServer.model.entity.User;
 import udodog.goGetterServer.model.enumclass.UserGrade;
+
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest(includeFilters = @ComponentScan.Filter(
@@ -39,12 +43,9 @@ class SharingBoardRepositoryTest {
 
         User saveUser = userRepository.save(user);
 
-        SharingBoard sharingBoard = SharingBoard.
-                                    builder().
-                                    user(saveUser).
-                                    content("Sharing Board Test Content").
-                                    title("Sharing Board Test Title").
-                                    build();
+        CreateBoardRequest request = new CreateBoardRequest(user.getId(), "Sharing Board Test Title", "Sharing Board Test Content","book Title");
+
+        SharingBoard sharingBoard = new SharingBoard(request, Optional.of(saveUser));
         //when
         SharingBoard saveSharingBoard = sharingBoardRepository.save(sharingBoard);
 

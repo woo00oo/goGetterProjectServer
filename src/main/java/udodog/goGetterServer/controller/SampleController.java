@@ -11,14 +11,14 @@ import org.springframework.web.bind.annotation.RestController;
 import udodog.goGetterServer.model.converter.EntityToModelConvertor;
 import udodog.goGetterServer.model.dto.DefaultRes;
 import udodog.goGetterServer.model.dto.ModelMapperTestDTO;
-import udodog.goGetterServer.model.entity.Book;
 import udodog.goGetterServer.model.entity.SharingBoard;
+import udodog.goGetterServer.model.entity.User;
 
 
 @Slf4j
 @RestController
 public class SampleController {
-
+    // 테스트
     @Autowired
     private EntityToModelConvertor entityToModelConvertor;
 
@@ -27,12 +27,12 @@ public class SampleController {
 
 
     @GetMapping("/sample")
-    public ResponseEntity<EntityModel<DefaultRes<Book>>> getBook(){
-        Book book = new Book();
+    public ResponseEntity<EntityModel<DefaultRes<User>>> getBook(){
+        User user = new User();
 
         return ResponseEntity
                 .ok(entityToModelConvertor.toModel(
-                        DefaultRes.response(HttpStatus.OK.value(), "정상 조회되었습니다",book)
+                        DefaultRes.response(HttpStatus.OK.value(), "정상 조회되었습니다",user)
                 ));
 
     }
@@ -47,4 +47,4 @@ public class SampleController {
                 );
     }
 
-}
+} // Class끝

@@ -20,14 +20,17 @@ public class Coupon {
 
     private String name;
 
-    private Long serialNumber;
+    private Integer discount;
 
     private Integer validDate;
 
+    private Integer quantity;
+
     @Builder
-    public Coupon(String name, Long serialNumber, Integer validDate) {
+    public Coupon(String name, Integer discount, Integer validDate, Integer quantity) {
         this.name = name;
-        this.serialNumber = serialNumber;
+        this.discount = discount;
         this.validDate = validDate;
+        this.quantity = quantity;
     }
 }

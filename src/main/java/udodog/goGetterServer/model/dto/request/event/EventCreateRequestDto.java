@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import udodog.goGetterServer.model.entity.Coupon;
 import udodog.goGetterServer.model.entity.Event;
 
 import javax.validation.constraints.FutureOrPresent;
@@ -29,8 +30,10 @@ public class EventCreateRequestDto {
 
     private String imgUrl;
 
+    private Long couponId;
+
     @Builder
-    public Event toEntity(){
+    public Event toEntity(Coupon coupon){
 
         return Event.builder()
                 .title(title)
@@ -38,6 +41,7 @@ public class EventCreateRequestDto {
                 .startDate(startDate)
                 .endDate(endDate)
                 .imgUrl(imgUrl)
+                .coupon(coupon)
                 .build();
 
     }

@@ -5,7 +5,7 @@ import lombok.Getter;
 import java.time.LocalDate;
 
 @Getter
-public class ProgressEventsResponseDto {
+public class EventsResponseDto {
 
     private Long id;
 
@@ -15,7 +15,7 @@ public class ProgressEventsResponseDto {
 
     private LocalDate endDate;
 
-    public ProgressEventsResponseDto(Long id, String title, LocalDate startDate, LocalDate endDate) {
+    public EventsResponseDto(Long id, String title, LocalDate startDate, LocalDate endDate) {
         this.id = id;
         this.title = title;
         this.startDate = startDate;

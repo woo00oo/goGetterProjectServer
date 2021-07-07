@@ -1,0 +1,155 @@
+package udodog.goGetterServer.service.sharingboard;
+
+import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import udodog.goGetterServer.model.dto.DefaultRes;
+import udodog.goGetterServer.model.dto.Pagination;
+import udodog.goGetterServer.model.dto.request.sharingboard.UpdateBoardRequest;
+import udodog.goGetterServer.model.dto.request.sharingboard.CreateBoardRequest;
+import udodog.goGetterServer.model.dto.response.sharingboard.BoardResponse;
+import udodog.goGetterServer.model.dto.response.sharingboard.SimpleBoardResponse;
+import udodog.goGetterServer.model.dto.response.sharingboard.WriterInfo;
+import udodog.goGetterServer.model.entity.SharingBoard;
+import udodog.goGetterServer.model.entity.SharingBoardTag;
+import udodog.goGetterServer.model.entity.User;
+import udodog.goGetterServer.repository.SharingBoardReplyRepository;
+import udodog.goGetterServer.repository.SharingBoardRepository;
+import udodog.goGetterServer.repository.SharingBoardTagRepository;
+import udodog.goGetterServer.repository.UserRepository;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Optional;
+
+@Service
+@RequiredArgsConstructor
+public class SharingBoardService {
+
+    private final SharingBoardRepository sharingBoardRepository;
+    private final SharingBoardReplyRepository sharingBoardReplyRepository;
+    private final UserRepository userRepository;
+    private final SharingBoardTagRepository sharingBoardTagRepository;
+
+    // 전체 조회
+    public DefaultRes<List<SimpleBoardResponse>> getBoardList(Pageable pageable) {
+        Page<SharingBoard> sharingBoardList = sharingBoardRepository.findAll(pageable);
+
+        if (sharingBoardList.isEmpty()){
+            return DefaultRes.response(HttpStatus.OK.value(),"데이터 없음");
+        }
+
+        return DefaultRes.response(HttpStatus.OK.value(),"조회 성공",getSimpleBoardResponseList(sharingBoardList), new Pagination(sharingBoardList));
+    }
+
+
+    // 상세 조회
+    public DefaultRes<BoardResponse> getBoardDetail(Long id) {
+        Optional<SharingBoard> sharingBoard = sharingBoardRepository.findById(id);
+        List<SharingBoardTag> sharingBoardTagList = sharingBoardTagRepository.findAllBySharingBoardId(id);
+
+        return sharingBoard.map(board -> DefaultRes.response(HttpStatus.OK.value(), "조회 성공",
+                new BoardResponse(sharingBoard,board.getReplyCnt(),board.getLikeCnt(),
+                        WriterInfo.builder().
+                                nickName(board.getUser().getNickName()).
+                                profileUrl(board.getUser().getProfileUrl()).build(),sharingBoardTagList))
+        )
+                .orElseGet(()->{
+                    return DefaultRes.response(HttpStatus.OK.
+                            value(), "데이터 없음");
+                });
+    }
+
+    // 게시글 작성
+    public DefaultRes createSharingBoard(CreateBoardRequest request) {
+        Optional<User> user = userRepository.findById(request.getUserId());
+        SharingBoard sharingBoard = new SharingBoard(request, user);
+        SharingBoard saveBoard = sharingBoardRepository.save(sharingBoard);
+
+        request.getSharingBoardTagList().stream().
+                forEach(content -> sharingBoardTagRepository.save(new SharingBoardTag(saveBoard.getId(),content)));
+
+        return DefaultRes.response(HttpStatus.OK.value(),"글 등록 성공");
+
+    }
+
+    //게시글 수정
+    @Transactional
+    public DefaultRes<BoardResponse> updateSharingBoard(Long id, UpdateBoardRequest request) {
+        Optional<SharingBoard> boardById = sharingBoardRepository.findById(id);
+        sharingBoardTagRepository.deleteAllBySharingBoardId(id); //태그 전체 삭제
+
+        if (boardById.isEmpty()){
+            return DefaultRes.response(HttpStatus.OK.value(),"글이 존재하지 않음");
+        }
+
+        // 본인이 작성한 글이 아닌 경우
+        if(!isWriter(request, boardById)){
+            return DefaultRes.response(HttpStatus.OK.value(),"글 수정 실패");
+        }
+
+        SharingBoard updateBoard = boardById.get().updateBoard(request);
+        SharingBoard saveBoard = sharingBoardRepository.save(updateBoard);
+
+        // 태그 재등록
+        request.getSharingBoardTagList().stream().
+                forEach(content -> sharingBoardTagRepository.save(new SharingBoardTag(saveBoard.getId(),content)));
+
+        if(saveBoard.getId().equals(id)){
+            return DefaultRes.response(HttpStatus.OK.value(),"글 수정 성공");
+        }
+
+        return DefaultRes.response(HttpStatus.OK.value(),"글 수정 실패");
+    }
+
+    private boolean isWriter(UpdateBoardRequest request, Optional<SharingBoard> boardById) {
+        return boardById.get().getUser().getId().equals(request.getUserId());
+    }
+
+
+    public DefaultRes deleteSharingBoard(Long boardId, Long UserId) {
+        Optional<SharingBoard> boardById = sharingBoardRepository.findById(boardId);
+
+        if (boardById.isEmpty()){
+            return DefaultRes.response(HttpStatus.OK.value(),"글이 존재하지 않음");
+        }
+
+        SharingBoard board = boardById.get();
+
+        // 본인이 작성한 글이 아닌 경우
+        if(!board.getUser().getId().equals(UserId)){
+            return DefaultRes.response(HttpStatus.OK.value(),"글 삭제 실패");
+        }
+
+        sharingBoardTagRepository.deleteAllBySharingBoardId(boardId);
+        sharingBoardReplyRepository.deleteBySharingBoardId(boardId);
+        sharingBoardRepository.deleteById(boardId);
+
+        return DefaultRes.response(HttpStatus.OK.value(),"글 삭제 성공");
+
+    }
+
+    @NotNull
+    private List<SimpleBoardResponse> getSimpleBoardResponseList(Page<SharingBoard> sharingBoardList) {
+        List<SimpleBoardResponse> simpleBoardResponseList = new LinkedList<>();
+
+        for(SharingBoard sharingBoard : sharingBoardList){
+
+            Integer replyCnt = sharingBoard.getReplyCnt();
+            Integer likeCnt = sharingBoard.getLikeCnt();
+            User user = sharingBoard.getUser();
+
+            WriterInfo writerInfo = WriterInfo.builder().nickName(user.getNickName()).profileUrl(user.getProfileUrl()).build();
+
+            SimpleBoardResponse simpleBoardResponse = new SimpleBoardResponse(sharingBoard, replyCnt, likeCnt, writerInfo);
+            simpleBoardResponseList.add(simpleBoardResponse);
+        }
+        return simpleBoardResponseList;
+    }
+
+
+}
