@@ -6,9 +6,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import udodog.goGetterServer.model.dto.DefaultRes;
+import udodog.goGetterServer.model.dto.Pagination;
 import udodog.goGetterServer.model.dto.request.bookreport.BookreportInsertRequestDto;
 import udodog.goGetterServer.model.dto.request.bookreport.BookreportUpdateRequestDto;
-import udodog.goGetterServer.model.dto.request.bookreporttag.BookReportTagInsertRequestDto;
 import udodog.goGetterServer.model.dto.response.bookreport.BookReportDetailResponseDto;
 import udodog.goGetterServer.model.dto.response.bookreport.BookreportResponseDto;
 import udodog.goGetterServer.model.entity.BookReport;
@@ -20,7 +20,6 @@ import udodog.goGetterServer.repository.UserRepository;
 import udodog.goGetterServer.repository.querydsl.BookReportQueryRepository;
 import udodog.goGetterServer.repository.querydsl.BookReportTagQueryRepository;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -42,7 +41,7 @@ public class BookreportService {
             return DefaultRes.response(HttpStatus.OK.value(), "데이터없음");
 
         } else {                                      // bookreport의 내용이 있다면?
-            return DefaultRes.response(HttpStatus.OK.value(), "조회성공", bookReportPage);
+            return DefaultRes.response(HttpStatus.OK.value(), "조회성공", bookReportPage, new Pagination(bookReportPage));
         } // if-else 끝
 
     } // searchBookReportList() 끝
