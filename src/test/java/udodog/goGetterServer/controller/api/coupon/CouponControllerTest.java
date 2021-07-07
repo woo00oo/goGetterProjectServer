@@ -9,9 +9,15 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import udodog.goGetterServer.config.WebMvcConfig;
+import udodog.goGetterServer.model.dto.DefaultRes;
 import udodog.goGetterServer.service.coupon.CouponService;
 
+import static org.hamcrest.core.IsEqual.equalTo;
+import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
@@ -39,6 +45,23 @@ public class CouponControllerTest {
                         "  \"valid_date\": 30\n" +
                         "}"))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    public void 쿠폰_다운로드() throws Exception{
+        Long userId = 1L;
+        Long couponId = 1L;
+
+        DefaultRes mockDefaultRes = new DefaultRes(200,"다운로드성공", null, null);
+        given(couponService.couponDownload(userId, couponId)).willReturn(mockDefaultRes);
+
+        mvc.perform(get("/api/users/coupons")
+                .param("couponId", String.valueOf(couponId))
+                .param("userId", String.valueOf(userId)))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.status_code", equalTo(200)))
+                .andExpect(jsonPath("$.message", equalTo("다운로드성공")));
     }
 
 }
