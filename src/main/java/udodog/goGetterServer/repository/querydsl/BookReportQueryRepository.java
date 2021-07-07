@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import udodog.goGetterServer.model.dto.request.bookreport.BookreportUpdateRequestDto;
+import udodog.goGetterServer.model.dto.response.bookreport.BookReportDetailResponseDto;
 import udodog.goGetterServer.model.dto.response.bookreport.BookreportResponseDto;
 import udodog.goGetterServer.model.entity.BookReport;
 import udodog.goGetterServer.model.entity.QBookReport;
@@ -20,6 +21,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static udodog.goGetterServer.model.entity.QBookReport.bookReport;
+import static udodog.goGetterServer.model.entity.QBookReportTag.bookReportTag;
 import static udodog.goGetterServer.model.entity.QUser.user;
 
 @RequiredArgsConstructor
@@ -37,9 +39,12 @@ public class BookReportQueryRepository {
                 user.nickName,
                 bookReport.bookName,
                 bookReport.title,
-                bookReport.createdAt))
+                bookReport.createdAt,
+                bookReportTag.tagName))
            .from(bookReport)
            .innerJoin(bookReport.user, user)
+           .join(bookReportTag).on(bookReportTag.bookReport.bookReportId.eq(bookReport.bookReportId))
+           .orderBy(bookReport.bookReportId.desc())
            .fetch();
 
         int start = (int)pageable.getOffset();
@@ -49,15 +54,27 @@ public class BookReportQueryRepository {
     } // reportList끝
 
     // 독서 기록 상세 조회
-    public Optional<BookReport> findById(Long bookReportId, Long userId) {
+    public Optional<BookReportDetailResponseDto> findById(Long bookReportId, Long userId) {
 
-        BookReport bookReport = jpaQueryFactory.selectFrom(QBookReport.bookReport)
-                                                .where(QBookReport.bookReport.bookReportId.eq(bookReportId), QBookReport.bookReport.user.id.eq(userId))
-                                                .innerJoin(QBookReport.bookReport.user, user)
-                                                .fetchJoin()
-                                                .fetchOne();
+        BookReportDetailResponseDto report = jpaQueryFactory.select(Projections.constructor(BookReportDetailResponseDto.class,
+                                                        bookReport.bookReportId,
+                                                        user.nickName,
+                                                        bookReport.bookName,
+                                                        bookReport.title,
+                                                        bookReport.content,
+                                                        bookReport.createdAt,
+                                                        bookReportTag.tagName))
+                                                         .from(bookReport)
+                                                         .where(bookReport.bookReportId.eq(bookReportId))
+                                                         .innerJoin(bookReport.user, user)
+                                                         .join(bookReportTag).on(bookReportTag.bookReport.bookReportId.eq(bookReport.bookReportId))
+//                                                         .fetchJoin()
+                                                         .fetchOne();
 
-        return Optional.ofNullable(bookReport);
+        return Optional.ofNullable(report);
+
+
+
 
     } // findById() 끝
 
@@ -107,4 +124,15 @@ public class BookReportQueryRepository {
     } // findByTitle() 끝
 
 
+    public Optional<BookReport> findByBookReportId(Long bookReportId, Long userId) {
+
+        BookReport report = jpaQueryFactory.selectFrom(QBookReport.bookReport)
+                                .where(QBookReport.bookReport.bookReportId.eq(bookReportId), QBookReport.bookReport.user.id.eq(userId))
+                                .innerJoin(QBookReport.bookReport.user, user)
+//                                .fetchJoin()
+                                .fetchOne();
+
+        return Optional.ofNullable(report);
+
+    } // findByBookReportId() 끝
 } // Class 끝
