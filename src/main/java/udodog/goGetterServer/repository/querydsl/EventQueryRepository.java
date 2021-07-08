@@ -30,6 +30,7 @@ public class EventQueryRepository {
                         event.endDate))
                 .from(event)
                 .where(event.endDate.after(LocalDate.now().minusDays(1)))
+                .orderBy(event.startDate.desc())
                 .fetch();
 
         int start = (int)pageable.getOffset();

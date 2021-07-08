@@ -41,9 +41,9 @@ public class BookReportQueryRepository {
                         bookReport.createdAt,
                         bookReportTag.tagName))
                 .from(bookReport)
-                .innerJoin(bookReport.user, user)
-                .join(bookReportTag).on(bookReportTag.bookReport.bookReportId.eq(bookReport.bookReportId))
+                .innerJoin(bookReportTag).on(bookReportTag.bookReport.bookReportId.eq(bookReport.bookReportId))
                 .where(bookReport.user.id.eq(userId))
+                .orderBy(bookReport.createdAt.desc())
                 .fetch();
 
         int start = (int)pageable.getOffset();

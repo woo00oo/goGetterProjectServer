@@ -36,7 +36,7 @@ public class BookReportController {
     // 전체 조회 관련 Method
     @GetMapping("/api/bkusers/book-reports/{userId}")
     public ResponseEntity<EntityModel<DefaultRes<Page<BookreportResponseDto>>>> totalBookReportFindAll(
-            @PageableDefault( sort = "createdAt", direction = Sort.Direction.DESC, size = 8 ) Pageable pageable,
+            @PageableDefault(size = 8) Pageable pageable,
             @PathVariable("userId") Long userId) {  // Index Value를 이용 최신 날짜순을 기준으로 내림차순으로 페이지당 10개씩 출력
 
         return new ResponseEntity<>(bookReportPagingConverter.toModel( bookreportService.searchBookReportList(pageable, userId)), HttpStatus.OK );
