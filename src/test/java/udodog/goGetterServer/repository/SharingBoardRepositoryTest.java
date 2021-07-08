@@ -7,6 +7,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
+import org.springframework.test.annotation.Rollback;
 import udodog.goGetterServer.config.JpaAuditingConfig;
 import udodog.goGetterServer.model.dto.request.sharingboard.CreateBoardRequest;
 import udodog.goGetterServer.model.entity.SharingBoard;
@@ -29,29 +30,32 @@ class SharingBoardRepositoryTest {
 
     @Test
     @DisplayName("SharingBoard Repository save Test")
-    void saveSharingBoard(){
+    @Rollback(value = false)
+    void saveSharingBoard() {
 
-        //given
-        User user = User.builder().
-                email("testEmail@gmail.com").
-                phoneNumber("010-1234-5678").
-                name("user1").
-                nickName("user1Nickname").
-                password("password").
-                grade(UserGrade.USER).
-                build();
+        for (int i = 0; i < 100; i++) {
+            //given
+            User user = User.builder().
+                    email("testEmail@gmail.com").
+                    phoneNumber("010-1234-5678").
+                    name("user1").
+                    nickName("user1Nickname").
+                    password("password").
+                    grade(UserGrade.USER).
+                    build();
 
-        User saveUser = userRepository.save(user);
+            User saveUser = userRepository.save(user);
 
-        String sharingBoardTag = "tag1, tag2, tag3";
-        CreateBoardRequest request = new CreateBoardRequest(user.getId(), "Sharing Board Test Title", "Sharing Board Test Content","book Title",sharingBoardTag);
+            String sharingBoardTag = "tag1, tag2, tag3";
+            CreateBoardRequest request = new CreateBoardRequest(user.getId(), "Sharing Board Test Title" + i, "Sharing Board Test Content" + i, "book Title" + i, sharingBoardTag);
 
-        SharingBoard sharingBoard = new SharingBoard(request, Optional.of(saveUser));
-        //when
-        SharingBoard saveSharingBoard = sharingBoardRepository.save(sharingBoard);
+            SharingBoard sharingBoard = new SharingBoard(request, Optional.of(saveUser));
+            //when
+            SharingBoard saveSharingBoard = sharingBoardRepository.save(sharingBoard);
 
-        //then
-        assertThat(saveSharingBoard).isEqualTo(sharingBoard);
+            //then
+            assertThat(saveSharingBoard).isEqualTo(sharingBoard);
+        }
     }
 
 }
