@@ -1,29 +1,25 @@
 package udodog.goGetterServer.model.dto.response.bookreport;
 
 import lombok.Getter;
-import udodog.goGetterServer.model.entity.BookReport;
-import udodog.goGetterServer.model.entity.BookReportTag;
+import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
-import java.util.List;
+import java.time.LocalDateTime;
 
 @Getter
+@NoArgsConstructor
 public class BookReportDetailResponseDto {
 
-    private Long bookReportId;
     private String bookName;
     private String title;
     private String content;
-    private LocalDate createAt;
+    private LocalDateTime createAt;
     private String bookReportTag;
 
-    public BookReportDetailResponseDto (BookReport bookReport, BookReportTag bookReportTag) {
-        this.bookReportId = bookReport.getBookReportId();
-        this.bookName = bookReport.getBookName();
-        this.title = bookReport.getTitle();
-        this.content = bookReport.getContent();
-        this.createAt = bookReport.getCreatedAt();
-        this.bookReportTag = bookReportTag.getTagName();
-    } // 생성자 끝
-
+    public BookReportDetailResponseDto(String bookName, String title, String content, LocalDateTime createAt, String bookReportTag) {
+        this.bookName = bookName;
+        this.title = title;
+        this.content = content;
+        this.createAt = createAt;
+        this.bookReportTag = bookReportTag;
+    }
 } // Class 끝

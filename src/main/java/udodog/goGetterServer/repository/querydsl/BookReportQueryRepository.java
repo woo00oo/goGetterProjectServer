@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import udodog.goGetterServer.model.dto.request.bookreport.BookreportUpdateRequestDto;
+import udodog.goGetterServer.model.dto.response.bookreport.BookReportDetailResponseDto;
 import udodog.goGetterServer.model.dto.response.bookreport.BookreportResponseDto;
 import udodog.goGetterServer.model.entity.BookReport;
 import udodog.goGetterServer.model.entity.QBookReport;
@@ -20,6 +21,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static udodog.goGetterServer.model.entity.QBookReport.bookReport;
+import static udodog.goGetterServer.model.entity.QBookReportTag.bookReportTag;
 import static udodog.goGetterServer.model.entity.QUser.user;
 
 @RequiredArgsConstructor
@@ -30,17 +32,20 @@ public class BookReportQueryRepository {
     private final EntityManager entityManager;
 
     // 전체 조회
-    public Page<BookreportResponseDto> findAllWithFetchJoin(Pageable pageable) { // 페이징 처리
+    public Page<BookreportResponseDto> findAllWithFetchJoin(Pageable pageable, Long userId) { // 페이징 처리
 
-        List<BookreportResponseDto> reportList = jpaQueryFactory.select(Projections.constructor(BookreportResponseDto.class,
-                bookReport.bookReportId,
-                user.nickName,
-                bookReport.bookName,
-                bookReport.title,
-                bookReport.createdAt))
-           .from(bookReport)
-           .innerJoin(bookReport.user, user)
-           .fetch();
+        List<BookreportResponseDto> reportList = jpaQueryFactory
+                .select(Projections.constructor(BookreportResponseDto.class,
+                        bookReport.bookReportId,
+                        bookReport.bookName,
+                        bookReport.title,
+                        bookReport.createdAt,
+                        bookReportTag.tagName))
+                .from(bookReport)
+                .innerJoin(bookReportTag).on(bookReportTag.bookReport.bookReportId.eq(bookReport.bookReportId))
+                .where(bookReport.user.id.eq(userId))
+                .orderBy(bookReport.createdAt.desc())
+                .fetch();
 
         int start = (int)pageable.getOffset();
         int end = Math.min((start + pageable.getPageSize()), reportList.size());
@@ -48,18 +53,22 @@ public class BookReportQueryRepository {
         return new PageImpl<>(reportList.subList(start, end), pageable, reportList.size());
     } // reportList끝
 
-    // 독서 기록 상세 조회
-    public Optional<BookReport> findById(Long bookReportId, Long userId) {
 
-        BookReport bookReport = jpaQueryFactory.selectFrom(QBookReport.bookReport)
-                                                .where(QBookReport.bookReport.bookReportId.eq(bookReportId), QBookReport.bookReport.user.id.eq(userId))
-                                                .innerJoin(QBookReport.bookReport.user, user)
-                                                .fetchJoin()
-                                                .fetchOne();
+    public Optional<BookReportDetailResponseDto> findByBookReportId(Long bookReportId){
+        BookReportDetailResponseDto result = jpaQueryFactory
+                .select(Projections.constructor(BookReportDetailResponseDto.class,
+                        bookReport.bookName,
+                        bookReport.title,
+                        bookReport.content,
+                        bookReport.createdAt,
+                        bookReportTag.tagName))
+                .from(bookReport)
+                .innerJoin(bookReportTag).on(bookReportTag.bookReport.bookReportId.eq(bookReport.bookReportId))
+                .where(bookReport.bookReportId.eq(bookReportId))
+                .fetchOne();
 
-        return Optional.ofNullable(bookReport);
-
-    } // findById() 끝
+        return Optional.ofNullable(result);
+    }
 
     // 독서 기록 수정
     @Transactional
@@ -107,4 +116,15 @@ public class BookReportQueryRepository {
     } // findByTitle() 끝
 
 
+    public Optional<BookReport> findByBookReportId(Long bookReportId, Long userId) {
+
+        BookReport report = jpaQueryFactory.selectFrom(QBookReport.bookReport)
+                                .where(QBookReport.bookReport.bookReportId.eq(bookReportId), QBookReport.bookReport.user.id.eq(userId))
+                                .innerJoin(QBookReport.bookReport.user, user)
+//                                .fetchJoin()
+                                .fetchOne();
+
+        return Optional.ofNullable(report);
+
+    } // findByBookReportId() 끝
 } // Class 끝

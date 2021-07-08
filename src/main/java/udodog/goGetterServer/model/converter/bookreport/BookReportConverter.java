@@ -14,7 +14,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 public class BookReportConverter implements RepresentationModelAssembler<DefaultRes<BookReportDetailResponseDto>, EntityModel<DefaultRes<BookReportDetailResponseDto>>> {
     @Override
     public EntityModel<DefaultRes<BookReportDetailResponseDto>> toModel(DefaultRes<BookReportDetailResponseDto> entity) {
-        return EntityModel.of(entity, linkTo( methodOn( BookReportController.class ).viewDetailBookReport( null, null )).withRel("detail"),
+        return EntityModel.of(entity, linkTo( methodOn( BookReportController.class ).viewDetailBookReport( null)).withRel("detail"),
                 linkTo( methodOn( BookReportController.class ).updateBookReport( null, null, null )).withRel("update"),
                 linkTo( methodOn( BookReportController.class ).deleteReport( null, null )).withRel("delete"));
     } // toModel() 끝

@@ -3,6 +3,7 @@ package udodog.goGetterServer.config;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
+import udodog.goGetterServer.repository.querydsl.CouponQueryRepository;
 import udodog.goGetterServer.repository.querydsl.EventQueryRepository;
 
 import javax.persistence.EntityManager;
@@ -23,5 +24,11 @@ public class TestConfig {
     public EventQueryRepository eventQueryRepository(){
         return new EventQueryRepository(jpaQueryFactory());
     }
+
+    @Bean
+    public CouponQueryRepository queryRepository(){
+        return new CouponQueryRepository(jpaQueryFactory());
+    }
+
 
 }
