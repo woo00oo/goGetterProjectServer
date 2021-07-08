@@ -2,7 +2,6 @@ package udodog.goGetterServer.model.dto.response.bookreport;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import udodog.goGetterServer.model.entity.BookReport;
 
 import java.time.LocalDateTime;
 
@@ -16,11 +15,11 @@ public class BookReportDetailResponseDto {
     private LocalDateTime createAt;
     private String bookReportTag;
 
-    public BookReportDetailResponseDto(BookReport bookReport) {
-        this.bookName = bookReport.getBookName();
-        this.title = bookReport.getTitle();
-        this.content = bookReport.getContent();
-        this.createAt = bookReport.getCreatedAt();
-        this.bookReportTag = bookReport.getBookName();
+    public BookReportDetailResponseDto(String bookName, String title, String content, LocalDateTime createAt, String bookReportTag) {
+        this.bookName = bookName;
+        this.title = title;
+        this.content = content;
+        this.createAt = createAt;
+        this.bookReportTag = bookReportTag;
     }
 } // Class 끝

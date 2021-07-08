@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import udodog.goGetterServer.model.dto.request.bookreport.BookreportUpdateRequestDto;
+import udodog.goGetterServer.model.dto.response.bookreport.BookReportDetailResponseDto;
 import udodog.goGetterServer.model.dto.response.bookreport.BookreportResponseDto;
 import udodog.goGetterServer.model.entity.BookReport;
 import udodog.goGetterServer.model.entity.QBookReport;
@@ -51,6 +52,23 @@ public class BookReportQueryRepository {
 
         return new PageImpl<>(reportList.subList(start, end), pageable, reportList.size());
     } // reportList끝
+
+
+    public Optional<BookReportDetailResponseDto> findByBookReportId(Long bookReportId){
+        BookReportDetailResponseDto result = jpaQueryFactory
+                .select(Projections.constructor(BookReportDetailResponseDto.class,
+                        bookReport.bookName,
+                        bookReport.title,
+                        bookReport.content,
+                        bookReport.createdAt,
+                        bookReportTag.tagName))
+                .from(bookReport)
+                .innerJoin(bookReportTag).on(bookReportTag.bookReport.bookReportId.eq(bookReport.bookReportId))
+                .where(bookReport.bookReportId.eq(bookReportId))
+                .fetchOne();
+
+        return Optional.ofNullable(result);
+    }
 
     // 독서 기록 수정
     @Transactional

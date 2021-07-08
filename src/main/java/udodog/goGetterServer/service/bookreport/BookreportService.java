@@ -68,7 +68,7 @@ public class BookreportService {
     // 독서 기록 상세 조회 Method
     public DefaultRes<BookReportDetailResponseDto> viewDetailBookReport(Long bookReportId) {
 
-        Optional<BookReport> bookReportOptional = bookReportRepository.findById(bookReportId);
+        Optional<BookReportDetailResponseDto> bookReportOptional = bookReportQueryRepository.findByBookReportId(bookReportId);
 
 
         if (bookReportOptional.isEmpty()) { // 독서 기록이 비어 있다면?
@@ -76,7 +76,7 @@ public class BookreportService {
 
         } else {                            // 독서 기록 내용이 있다면?
 
-            return bookReportOptional.map(bookReport -> DefaultRes.response(HttpStatus.OK.value(), "조회성공", new BookReportDetailResponseDto(bookReport)))
+            return bookReportOptional.map(bookReport -> DefaultRes.response(HttpStatus.OK.value(), "조회성공", bookReport))
                     .orElseGet(() -> DefaultRes.response(HttpStatus.OK.value(), "조회실패"));
         } // if-else 끝
     } // viewDetailBookReport() 끝
