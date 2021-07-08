@@ -35,6 +35,7 @@ public class BookReportQueryRepository {
     public Page<BookreportResponseDto> findAllWithFetchJoin(Pageable pageable) { // 페이징 처리
 
         List<BookreportResponseDto> reportList = jpaQueryFactory.select(Projections.constructor(BookreportResponseDto.class,
+                user.id,
                 bookReport.bookReportId,
                 user.nickName,
                 bookReport.bookName,
