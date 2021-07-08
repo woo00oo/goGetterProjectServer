@@ -8,6 +8,7 @@ import udodog.goGetterServer.model.entity.DiscussionBoard;
 import udodog.goGetterServer.model.entity.User;
 
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @NoArgsConstructor
