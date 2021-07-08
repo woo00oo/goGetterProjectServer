@@ -33,9 +33,9 @@ public class BookreportService {
     private final BookReportQueryRepository bookReportQueryRepository;
 
     // 전체 조회
-    public DefaultRes<Page<BookreportResponseDto>> searchBookReportList(Pageable pageable) { // 페이징 처리
+    public DefaultRes<Page<BookreportResponseDto>> searchBookReportList(Pageable pageable, Long userId) { // 페이징 처리
 
-        Page<BookreportResponseDto> bookReportPage = bookReportQueryRepository.findAllWithFetchJoin(pageable);
+        Page<BookreportResponseDto> bookReportPage = bookReportQueryRepository.findAllWithFetchJoin(pageable, userId);
 
         if (bookReportPage.getTotalElements() == 0) { // bookreport의 내용이 없다면?
             return DefaultRes.response(HttpStatus.OK.value(), "데이터없음");

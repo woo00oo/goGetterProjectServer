@@ -32,21 +32,18 @@ public class BookReportQueryRepository {
     private final EntityManager entityManager;
 
     // 전체 조회
-    public Page<BookreportResponseDto> findAllWithFetchJoin(Pageable pageable) { // 페이징 처리
+    public Page<BookreportResponseDto> findAllWithFetchJoin(Pageable pageable, Long userId) { // 페이징 처리
 
-        List<BookreportResponseDto> reportList = jpaQueryFactory.select(Projections.constructor(BookreportResponseDto.class,
-                user.id,
-                bookReport.bookReportId,
-                user.nickName,
-                bookReport.bookName,
-                bookReport.title,
-                bookReport.createdAt,
-                bookReportTag.tagName))
-           .from(bookReport)
-           .innerJoin(bookReport.user, user)
-           .join(bookReportTag).on(bookReportTag.bookReport.bookReportId.eq(bookReport.bookReportId))
-           .orderBy(bookReport.bookReportId.desc())
-           .fetch();
+        List<BookreportResponseDto> reportList = jpaQueryFactory
+                .select(Projections.constructor(BookreportResponseDto.class,
+                        bookReport.bookReportId,
+                        bookReport.bookName,
+                        bookReport.title,
+                        bookReport.createdAt,
+                        bookReportTag.tagName))
+               .from(bookReport, user, bookReportTag)
+               .where(bookReport.user.id.eq(userId))
+               .fetch();
 
         int start = (int)pageable.getOffset();
         int end = Math.min((start + pageable.getPageSize()), reportList.size());

@@ -34,11 +34,12 @@ public class BookReportController {
     @ApiResponses( value = { @ApiResponse( code=200, message = "1. 조회성공 \t\n 2. 데이터없음 \t\n 3. 토큰에러" )})
 
     // 전체 조회 관련 Method
-    @GetMapping("/api/bkusers/book-reports")
+    @GetMapping("/api/bkusers/book-reports/{userId}")
     public ResponseEntity<EntityModel<DefaultRes<Page<BookreportResponseDto>>>> totalBookReportFindAll(
-            @PageableDefault( sort = "bookReportId", direction = Sort.Direction.DESC, size = 8 ) Pageable pageable ) {  // Index Value를 이용 최신 날짜순을 기준으로 내림차순으로 페이지당 10개씩 출력
+            @PageableDefault( sort = "createdAt", direction = Sort.Direction.DESC, size = 8 ) Pageable pageable,
+            @PathVariable("userId") Long userId) {  // Index Value를 이용 최신 날짜순을 기준으로 내림차순으로 페이지당 10개씩 출력
 
-        return new ResponseEntity<>(bookReportPagingConverter.toModel( bookreportService.searchBookReportList(pageable)), HttpStatus.OK );
+        return new ResponseEntity<>(bookReportPagingConverter.toModel( bookreportService.searchBookReportList(pageable, userId)), HttpStatus.OK );
     } // totalBookReportFindAll() 끝
 
 
@@ -50,7 +51,7 @@ public class BookReportController {
     })
 
     // 독서 기록 상세보기 관련 Method
-    @GetMapping("/api/bkusers/book-reports/{bookReportId}")
+    @GetMapping("/api/bkusers/book-reports/detail/{bookReportId}")
     public ResponseEntity<EntityModel<DefaultRes<BookReportDetailResponseDto>>> viewDetailBookReport(@PathVariable("bookReportId") Long bookReportId, @RequestParam("userId") Long userId) {
 
         return new ResponseEntity<>(bookReportConverter.toModel(bookreportService.viewDetailBookReport(bookReportId, userId)), HttpStatus.OK);
