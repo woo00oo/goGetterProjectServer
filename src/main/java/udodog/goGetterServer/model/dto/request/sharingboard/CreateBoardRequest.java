@@ -2,15 +2,12 @@ package udodog.goGetterServer.model.dto.request.sharingboard;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.validation.constraints.NotEmpty;
-import java.util.List;
 
 
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
 public class CreateBoardRequest {
 
     @NotEmpty
@@ -26,12 +23,13 @@ public class CreateBoardRequest {
     @NotEmpty
     private String bookTitle;
 
-    private List<String> sharingBoardTagList;
+    private String sharingBoardTag;
 
-    public CreateBoardRequest(@NotEmpty Long userId, @NotEmpty String title, @NotEmpty String content, @NotEmpty String bookTitle) {
+    public CreateBoardRequest(@NotEmpty Long userId, @NotEmpty String title, @NotEmpty String content, @NotEmpty String bookTitle, String sharingBoardTag) {
         this.userId = userId;
         this.title = title;
         this.content = content;
         this.bookTitle = bookTitle;
+        this.sharingBoardTag = sharingBoardTag;
     }
 }

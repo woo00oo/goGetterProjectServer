@@ -1,12 +1,10 @@
 package udodog.goGetterServer.model.dto.response.bookreport;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import udodog.goGetterServer.model.entity.BookReportTag;
 
 import java.time.LocalDate;
-import java.util.List;
+import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
@@ -16,17 +14,18 @@ public class BookreportResponseDto {
     private String userNickname;                    // User Nickname
     private String bookName;                        // 책 제목
     private String title;                           // 독서 기록 글 제목
-    private LocalDate createAt;                     // 작성일
-    private String bookReportTag;                    // 태그 객체
+    private LocalDateTime createAt;                     // 작성일
+    private String bookReportTag;                    // 태그 내용
 
 
-    public BookreportResponseDto ( Long bookReportId, String userNickname, String bookName, String title, LocalDate createAt ) {
+    public BookreportResponseDto ( Long bookReportId, String userNickname, String bookName, String title, LocalDateTime createAt, String bookReportTag ) {
 
         this.bookReportId = bookReportId;
         this.userNickname = userNickname;
         this.bookName = bookName;
         this.title = title;
         this.createAt = createAt;
+        this.bookReportTag = bookReportTag;
 
     } // 생성자 끝
 

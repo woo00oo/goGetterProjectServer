@@ -7,7 +7,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
@@ -30,10 +30,10 @@ public class BookReport {
     private String content;
 
     @CreatedDate
-    private LocalDate createdAt;
+    private LocalDateTime createdAt;
 
     @Builder
-    public BookReport(User user, String title, String bookName, String content, LocalDate createdAt) {
+    public BookReport(User user, String title, String bookName, String content, LocalDateTime createdAt) {
         this.user = user;
         this.title = title;
         this.bookName = bookName;

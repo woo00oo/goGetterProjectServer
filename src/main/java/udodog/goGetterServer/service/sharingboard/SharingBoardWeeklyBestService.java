@@ -40,7 +40,7 @@ public class SharingBoardWeeklyBestService {
             Integer replyCnt = sharingBoard.getReplyCnt();
             Integer likeCnt = sharingBoard.getLikeCnt();
 
-            WriterInfo writerInfo = WriterInfo.builder().nickName(sharingBoard.getUser().getNickName()).profileUrl(sharingBoard.getUser().getProfileUrl()).build();
+            WriterInfo writerInfo = WriterInfo.builder().nickName(sharingBoard.getUser().getNickName()).profileUrl(sharingBoard.getUser().getProfileUrl()).writerId(sharingBoard.getUser().getId()).build();
 
             SimpleBoardResponse simpleBoardResponse = new SimpleBoardResponse(sharingBoard, replyCnt, likeCnt, writerInfo);
             simpleBoardResponseList.add(simpleBoardResponse);

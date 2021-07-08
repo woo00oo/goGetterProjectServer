@@ -4,11 +4,13 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.format.annotation.DateTimeFormat;
 import udodog.goGetterServer.model.dto.request.UpdateSharingReplyRequest;
 import udodog.goGetterServer.model.dto.request.sharingboard.CreateSharingReplyRequest;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter @NoArgsConstructor
@@ -29,7 +31,7 @@ public class SharingBoardReply {
     private String comment;
 
     @CreatedDate
-    private LocalDate createdAt;
+    private LocalDateTime createdAt;
 
     @Builder
     public SharingBoardReply(User user, SharingBoard sharingBoard, String comment) {

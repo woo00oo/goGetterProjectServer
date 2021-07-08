@@ -22,6 +22,6 @@ public class UpdateBoardRequest {
     @NotEmpty
     private String bookTitle;
 
-    private List<String> sharingBoardTagList;
+    private String sharingBoardTag;
 
 }
