@@ -18,7 +18,7 @@ public class BookReportPagingConverter implements RepresentationModelAssembler<D
     public EntityModel<DefaultRes<Page<BookreportResponseDto>>> toModel(DefaultRes<Page<BookreportResponseDto>> defaultRes ) {
         return EntityModel.of(defaultRes,
                 linkTo(methodOn( BookReportController.class ).insertReport(null, null)).withRel("BookReport-Insert"),
-                linkTo(methodOn( BookReportController.class ).viewDetailBookReport(null, null)).withRel("viewdetail"),
+                linkTo(methodOn( BookReportController.class ).viewDetailBookReport(null)).withRel("viewdetail"),
                 linkTo(methodOn( BookReportController.class ).titleSearch(null, null)).withRel("titleSearch"),
                 linkTo(methodOn( BookReportController.class ).totalBookReportFindAll(null, null)).withRel("Find-All"));
 

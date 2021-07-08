@@ -52,9 +52,9 @@ public class BookReportController {
 
     // 독서 기록 상세보기 관련 Method
     @GetMapping("/api/bkusers/book-reports/detail/{bookReportId}")
-    public ResponseEntity<EntityModel<DefaultRes<BookReportDetailResponseDto>>> viewDetailBookReport(@PathVariable("bookReportId") Long bookReportId, @RequestParam("userId") Long userId) {
+    public ResponseEntity<EntityModel<DefaultRes<BookReportDetailResponseDto>>> viewDetailBookReport(@PathVariable("bookReportId") Long bookReportId) {
 
-        return new ResponseEntity<>(bookReportConverter.toModel(bookreportService.viewDetailBookReport(bookReportId, userId)), HttpStatus.OK);
+        return new ResponseEntity<>(bookReportConverter.toModel(bookreportService.viewDetailBookReport(bookReportId)), HttpStatus.OK);
 
     } // viewDetailBookReport() 끝
 

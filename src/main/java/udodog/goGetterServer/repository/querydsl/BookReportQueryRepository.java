@@ -11,7 +11,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import udodog.goGetterServer.model.dto.request.bookreport.BookreportUpdateRequestDto;
-import udodog.goGetterServer.model.dto.response.bookreport.BookReportDetailResponseDto;
 import udodog.goGetterServer.model.dto.response.bookreport.BookreportResponseDto;
 import udodog.goGetterServer.model.entity.BookReport;
 import udodog.goGetterServer.model.entity.QBookReport;
@@ -41,40 +40,17 @@ public class BookReportQueryRepository {
                         bookReport.title,
                         bookReport.createdAt,
                         bookReportTag.tagName))
-               .from(bookReport, user, bookReportTag)
-               .where(bookReport.user.id.eq(userId))
-               .fetch();
+                .from(bookReport)
+                .innerJoin(bookReport.user, user)
+                .join(bookReportTag).on(bookReportTag.bookReport.bookReportId.eq(bookReport.bookReportId))
+                .where(bookReport.user.id.eq(userId))
+                .fetch();
 
         int start = (int)pageable.getOffset();
         int end = Math.min((start + pageable.getPageSize()), reportList.size());
 
         return new PageImpl<>(reportList.subList(start, end), pageable, reportList.size());
     } // reportList끝
-
-    // 독서 기록 상세 조회
-    public Optional<BookReportDetailResponseDto> findById(Long bookReportId, Long userId) {
-
-        BookReportDetailResponseDto report = jpaQueryFactory.select(Projections.constructor(BookReportDetailResponseDto.class,
-                                                        bookReport.bookReportId,
-                                                        user.nickName,
-                                                        bookReport.bookName,
-                                                        bookReport.title,
-                                                        bookReport.content,
-                                                        bookReport.createdAt,
-                                                        bookReportTag.tagName))
-                                                         .from(bookReport)
-                                                         .where(bookReport.bookReportId.eq(bookReportId))
-                                                         .innerJoin(bookReport.user, user)
-                                                         .join(bookReportTag).on(bookReportTag.bookReport.bookReportId.eq(bookReport.bookReportId))
-//                                                         .fetchJoin()
-                                                         .fetchOne();
-
-        return Optional.ofNullable(report);
-
-
-
-
-    } // findById() 끝
 
     // 독서 기록 수정
     @Transactional
