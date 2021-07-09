@@ -17,20 +17,22 @@ public class Message {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    private User receiver;
-
-    @OneToOne(fetch =  FetchType.LAZY)
+    @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "sender_id")
     private User sender;
+
+    @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "receiver_id")
+    private User receiver;
 
     private String content;
 
     @CreatedDate
     private LocalDateTime sendAt;
 
-    private boolean isChecked;
+    private Boolean isChecked;
 
-    private boolean isDeleted;
+    private Boolean isDeleted;
 
     @Builder
     public Message(User receiver, User sender, String content, LocalDateTime sendAt) {
@@ -38,6 +40,8 @@ public class Message {
         this.sender = sender;
         this.content = content;
         this.sendAt = sendAt;
+        this.isChecked = false;
+        this.isDeleted = false;
     }
 
 
