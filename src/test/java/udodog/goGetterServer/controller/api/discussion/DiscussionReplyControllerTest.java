@@ -6,6 +6,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -13,10 +14,14 @@ import udodog.goGetterServer.config.WebMvcConfig;
 import udodog.goGetterServer.model.converter.discussion.DiscussionConverter;
 import udodog.goGetterServer.model.converter.discussion.DiscussionListConverter;
 import udodog.goGetterServer.model.converter.discussion.DiscussionReplyListConverter;
+import udodog.goGetterServer.model.dto.DefaultRes;
 import udodog.goGetterServer.service.discussion.DiscussionReplyService;
 import udodog.goGetterServer.service.discussion.DiscussionService;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -52,6 +57,9 @@ public class DiscussionReplyControllerTest {
         Long discussionId = 37L;
         Long userId = 197L;
 
+        DefaultRes defaultRes = new DefaultRes(HttpStatus.SEE_OTHER.value(), "전송성공", null,null);
+        given(replyService.createReply(any(), anyLong(), anyLong())).willReturn(defaultRes);
+
         mvc.perform(post("/api/users/discussionreplies/{discussionId}", discussionId)
                 .param("userId", String.valueOf(userId))
                 .contentType(MediaType.APPLICATION_JSON)
@@ -70,6 +78,9 @@ public class DiscussionReplyControllerTest {
         Long replyId = 97L;
         Long userId = 457L;
 
+        DefaultRes defaultRes = new DefaultRes(HttpStatus.SEE_OTHER.value(), "전송성공", null,null);
+        given(replyService.updateReply(any(), anyLong(), anyLong(), anyLong())).willReturn(defaultRes);
+
         mvc.perform(patch("/api/users/discussionreplies/{discussionId}", discussionId)
                 .param("replyId", String.valueOf(replyId))
                 .param("userId", String.valueOf(userId))
@@ -86,6 +97,9 @@ public class DiscussionReplyControllerTest {
         Long discussionId = 37L;
         Long replyId = 97L;
         Long userId = 457L;
+
+        DefaultRes defaultRes = new DefaultRes(HttpStatus.SEE_OTHER.value(), "전송성공", null,null);
+        given(replyService.delete(anyLong(), anyLong(), anyLong())).willReturn(defaultRes);
 
         mvc.perform(delete("/api/users/discussionreplies/{discussionId}", discussionId)
                 .param("replyId", String.valueOf(replyId))
