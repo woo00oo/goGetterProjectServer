@@ -21,8 +21,6 @@ public class Message {
     @OneToOne(fetch =  FetchType.LAZY)
     private User sender;
 
-    private String title;
-
     private String content;
 
     @CreatedDate
@@ -33,12 +31,13 @@ public class Message {
     private boolean isDeleted;
 
     @Builder
-    public Message(User receiver, User sender, String title, String content) {
+    public Message(User receiver, User sender, String content, LocalDate sendAt) {
         this.receiver = receiver;
         this.sender = sender;
-        this.title = title;
         this.content = content;
+        this.sendAt = sendAt;
     }
+
 
     public void checkMessage(){
         this.isChecked = true;
