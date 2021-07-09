@@ -4,12 +4,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import org.springframework.format.annotation.DateTimeFormat;
-import udodog.goGetterServer.model.dto.request.UpdateSharingReplyRequest;
+import udodog.goGetterServer.model.dto.request.sharingboard.UpdateSharingReplyRequest;
 import udodog.goGetterServer.model.dto.request.sharingboard.CreateSharingReplyRequest;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
