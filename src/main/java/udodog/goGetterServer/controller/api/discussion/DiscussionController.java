@@ -73,12 +73,8 @@ public class DiscussionController {
         String redirectUrl = "/api/discussions";
         DefaultRes result = discussionService.insertBoard(requestDto, userId);
 
-        if(result.getStatusCode() == HttpStatus.SEE_OTHER.value()){
-            response.sendRedirect(redirectUrl);
-            return new ResponseEntity(result, HttpStatus.SEE_OTHER);
-        }else {
-            return new ResponseEntity(result, HttpStatus.OK);
-        }
+        response.sendRedirect(redirectUrl);
+        return new ResponseEntity(result, HttpStatus.SEE_OTHER);
     }
 
     @ApiOperation(value = "토론게시판 글수정 API",notes = "글수정 API입니다.")
@@ -97,12 +93,8 @@ public class DiscussionController {
 
         String redirectUrl = "/api/bkusers/discussions/" + id + "?userId=" + userId;
 
-        if(updateResult.getStatusCode() == HttpStatus.SEE_OTHER.value()){
-            response.sendRedirect(redirectUrl);
-            return new ResponseEntity(updateResult, HttpStatus.SEE_OTHER);
-        }else {
-            return new ResponseEntity(updateResult, HttpStatus.OK);
-        }
+        response.sendRedirect(redirectUrl);
+        return new ResponseEntity(updateResult, HttpStatus.SEE_OTHER);
     }
 
     @ApiOperation(value = "토론게시판 글삭제 API",notes = "글삭제 API입니다.")
@@ -119,13 +111,8 @@ public class DiscussionController {
         String redirect = "/api/discussions";
         DefaultRes deleteData = discussionService.delete(id, userId);
 
-        if(deleteData.getStatusCode() == HttpStatus.SEE_OTHER.value()){
-            response.sendRedirect(redirect);
-            return new ResponseEntity(deleteData, HttpStatus.SEE_OTHER);
-        }else {
-            return new ResponseEntity(deleteData, HttpStatus.OK);
-        }
-
+        response.sendRedirect(redirect);
+        return new ResponseEntity(deleteData, HttpStatus.SEE_OTHER);
     }
 
     @ApiOperation(value = "토론게시판 제목 검색 API",notes = "제목 검색 API입니다.")
