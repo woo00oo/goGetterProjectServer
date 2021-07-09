@@ -43,7 +43,7 @@ public class DiscussionReplyService {
             replyRepository.save(requestDto.toEntity(board, user, requestDto));
         }
 
-        return DefaultRes.response(HttpStatus.SEE_OTHER.value(), "등록성공");
+        return DefaultRes.response(HttpStatus.OK.value(), "등록성공");
     }
 
     // 댓글 조회
@@ -73,7 +73,7 @@ public class DiscussionReplyService {
 
                     replyQueryRepository.updateBoard(requestDto, board.getId(), board.getUser().getId());
 
-                    return DefaultRes.response(HttpStatus.SEE_OTHER.value(), "수정성공");
+                    return DefaultRes.response(HttpStatus.OK.value(), "수정성공");
                 }).orElseGet(() -> DefaultRes.response(HttpStatus.OK.value(), "수정실패"));
 
     }
@@ -93,7 +93,7 @@ public class DiscussionReplyService {
 
                     replyQueryRepository.deleteById(board.getId(), board.getUser().getId());
 
-                    return DefaultRes.response(HttpStatus.SEE_OTHER.value(), "삭제성공");
+                    return DefaultRes.response(HttpStatus.OK.value(), "삭제성공");
                 }).orElseGet(() -> DefaultRes.response(HttpStatus.OK.value(), "삭제실패"));
     }
 }

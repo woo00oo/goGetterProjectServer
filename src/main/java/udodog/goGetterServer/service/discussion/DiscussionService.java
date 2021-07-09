@@ -113,7 +113,7 @@ public class DiscussionService {
 
             readhitRepository.save(readhit);
 
-            return DefaultRes.response(HttpStatus.SEE_OTHER.value(), "등록성공");
+            return DefaultRes.response(HttpStatus.OK.value(), "등록성공");
 
             }).orElseGet(() -> DefaultRes.response(HttpStatus.OK.value(), "등록실패"));
     }
@@ -133,7 +133,7 @@ public class DiscussionService {
 
                     queryRepository.updateBoard(update, board.getId(), board.getUser().getId());
 
-                    return DefaultRes.response(HttpStatus.SEE_OTHER.value(), "수정성공");
+                    return DefaultRes.response(HttpStatus.OK.value(), "수정성공");
                 }).orElseGet(() -> DefaultRes.response(HttpStatus.OK.value(), "수정실패"));
     }
 
@@ -152,7 +152,7 @@ public class DiscussionService {
                     replyQueryRepository.deleteByDiscussionId(board.getId());
                     queryRepository.deleteBoard(board.getId(), board.getUser().getId());
 
-                    return DefaultRes.response(HttpStatus.SEE_OTHER.value(), "삭제성공");
+                    return DefaultRes.response(HttpStatus.OK.value(), "삭제성공");
                 })
                 .orElseGet(()-> DefaultRes.response(HttpStatus.OK.value(), "삭제실패"));
 

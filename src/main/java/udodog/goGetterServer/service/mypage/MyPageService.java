@@ -35,11 +35,11 @@ public class MyPageService {
             return DefaultRes.response(HttpStatus.OK.value(), "데이터없음");
         }
 
-        return userInfo.filter(detailUser -> userInfo.get().getId().equals(userId))
+        return userInfo.filter(detailUser -> detailUser.getId().equals(userId))
                 .map(detailUser -> {
                     myPageQueryRepository.modifyUserInfo(requestDto, detailUser.getId());
 
-                    return DefaultRes.response(HttpStatus.SEE_OTHER.value(), "수정성공");
+                    return DefaultRes.response(HttpStatus.OK.value(), "수정성공");
                 }).orElseGet(() -> DefaultRes.response(HttpStatus.OK.value(), "수정실패"));
 
     }
