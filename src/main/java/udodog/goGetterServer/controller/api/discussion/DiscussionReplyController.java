@@ -46,12 +46,8 @@ public class DiscussionReplyController {
         String redirect = "/api/bkusers/discussions/" + discussionId + "?userId=" + userId;
         DefaultRes createReply = replyService.createReply(requestDto, discussionId, userId);
 
-        if(createReply.getStatusCode() == HttpStatus.SEE_OTHER.value()){
-            response.sendRedirect(redirect);
-            return new ResponseEntity(createReply, HttpStatus.SEE_OTHER);
-        }else{
-            return new ResponseEntity(createReply, HttpStatus.OK);
-        }
+        response.sendRedirect(redirect);
+        return new ResponseEntity(createReply, HttpStatus.SEE_OTHER);
     }
 
 
@@ -86,12 +82,9 @@ public class DiscussionReplyController {
         String redirect = "/api/bkusers/discussions/" + discussionId + "?userId=" + userId;
         DefaultRes updateReply = replyService.updateReply(requestDto, discussionId, replyId, userId);
 
-        if(updateReply.getStatusCode() == HttpStatus.SEE_OTHER.value()){
-            response.sendRedirect(redirect);
-            return new ResponseEntity(updateReply, HttpStatus.SEE_OTHER);
-        }else{
-            return new ResponseEntity(updateReply, HttpStatus.OK);
-        }
+
+        response.sendRedirect(redirect);
+        return new ResponseEntity(updateReply, HttpStatus.SEE_OTHER);
     }
 
     @ApiOperation(value = "토론게시판 댓글삭제 API",notes = "댓글삭제 API입니다.")
@@ -109,11 +102,7 @@ public class DiscussionReplyController {
 
         DefaultRes deleteReply = replyService.delete(discussionId, replyId, userId);
 
-        if (deleteReply.getStatusCode() == HttpStatus.SEE_OTHER.value()){
-            response.sendRedirect(redirect);
-            return new ResponseEntity(deleteReply, HttpStatus.SEE_OTHER);
-        } else {
-            return new ResponseEntity(deleteReply, HttpStatus.OK);
-        }
+        response.sendRedirect(redirect);
+        return new ResponseEntity(deleteReply, HttpStatus.SEE_OTHER);
     }
 }
