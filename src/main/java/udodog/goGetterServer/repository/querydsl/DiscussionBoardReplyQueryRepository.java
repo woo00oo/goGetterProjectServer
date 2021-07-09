@@ -42,7 +42,7 @@ public class DiscussionBoardReplyQueryRepository {
                         .from(discussionBoardReply)
                         .innerJoin(discussionBoardReply.user, user)
                         .where(discussionBoardReply.discussionBoard.id.eq(discussionId))
-                        .orderBy(discussionBoardReply.id.desc())
+                        .orderBy(discussionBoardReply.createAt.desc())
                         .fetch();
 
         int start = (int)pageable.getOffset();
