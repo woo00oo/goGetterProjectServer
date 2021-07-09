@@ -142,9 +142,18 @@ public class SharingBoardService {
             Integer likeCnt = sharingBoard.getLikeCnt();
             User user = sharingBoard.getUser();
 
+            SharingBoardTag sharingBoardTag = sharingBoardTagRepository.findBySharingBoardId(sharingBoard.getId());
             WriterInfo writerInfo = WriterInfo.builder().nickName(user.getNickName()).profileUrl(user.getProfileUrl()).writerId(user.getId()).build();
 
-            SimpleBoardResponse simpleBoardResponse = new SimpleBoardResponse(sharingBoard, replyCnt, likeCnt, writerInfo);
+            SimpleBoardResponse simpleBoardResponse;
+
+            if(sharingBoardTag != null){
+                simpleBoardResponse = new SimpleBoardResponse(sharingBoard, replyCnt, likeCnt, writerInfo,sharingBoardTag.getContent());
+            }
+            else{
+                simpleBoardResponse = new SimpleBoardResponse(sharingBoard, replyCnt, likeCnt, writerInfo);
+            }
+
             simpleBoardResponseList.add(simpleBoardResponse);
         }
         return simpleBoardResponseList;

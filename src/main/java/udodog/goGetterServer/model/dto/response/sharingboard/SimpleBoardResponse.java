@@ -27,6 +27,7 @@ public class SimpleBoardResponse {
     //책 제목
     private String bookTitle;
 
+    private String tagContent;
 
     public SimpleBoardResponse(SharingBoard sharingBoard, Integer replyCnt, Integer likeCnt, WriterInfo writerInfo) {
         this.id = sharingBoard.getId();
@@ -37,5 +38,18 @@ public class SimpleBoardResponse {
 
         this.replyCnt = replyCnt;
         this.likeCnt = likeCnt;
+    }
+
+    public SimpleBoardResponse(SharingBoard sharingBoard, Integer replyCnt, Integer likeCnt, WriterInfo writerInfo, String content) {
+        this.id = sharingBoard.getId();
+        this.writerInfo = writerInfo;
+        this.title = sharingBoard.getTitle();
+        this.createdAt = sharingBoard.getCreatedAt();
+        this.bookTitle = sharingBoard.getBookTitle();
+
+        this.replyCnt = replyCnt;
+        this.likeCnt = likeCnt;
+        this.tagContent = content;
+
     }
 }
