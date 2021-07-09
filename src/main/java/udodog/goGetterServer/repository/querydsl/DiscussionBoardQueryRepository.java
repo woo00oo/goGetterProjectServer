@@ -65,9 +65,11 @@ public class DiscussionBoardQueryRepository {
                                 user.nickName,
                                 discussionBoard.title,
                                 discussionBoard.content,
-                                discussionBoard.createAt))
+                                discussionBoard.createAt,
+                                discussionBoardReadhit.count))
                         .from(discussionBoard)
                         .innerJoin(discussionBoard.user, user)
+                        .join(discussionBoardReadhit).on(discussionBoardReadhit.discussionBoard.id.eq(discussionBoard.id))
                         .where(discussionBoard.id.eq(id))
                         .fetchOne();
 

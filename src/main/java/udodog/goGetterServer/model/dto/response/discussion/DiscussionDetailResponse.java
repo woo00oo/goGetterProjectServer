@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -21,7 +20,8 @@ public class DiscussionDetailResponse {
     private String userNickName;     // 유저 닉네임
     private String title;            // 게시판 제목
     private String content;          // 게시판 내용
-    private LocalDate createAt;      // 게시판 등록일
+    private LocalDateTime createAt;      // 게시판 등록일
+    private Integer readhit;         // 조회수
 
 
     public DiscussionDetailResponse(Optional<DiscussionDetailResponse> discussionBoard) {
@@ -32,6 +32,7 @@ public class DiscussionDetailResponse {
         this.title = discussionBoard.get().getTitle();
         this.content = discussionBoard.get().getContent();
         this.createAt = discussionBoard.get().getCreateAt();
+        this.readhit = discussionBoard.get().getReadhit();
 
     }
 }
