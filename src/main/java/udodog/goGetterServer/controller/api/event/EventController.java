@@ -51,7 +51,7 @@ public class EventController {
     })
     @GetMapping("/events")
     public ResponseEntity<EntityModel<DefaultRes<Page<EventsResponseDto>>>> progressEventFindAll(
-            @PageableDefault(sort = "startDate", direction = Sort.Direction.DESC, size = 12) Pageable pageable
+            @PageableDefault(size = 12) Pageable pageable
     ){
         return new ResponseEntity<>(eventConverter.toModel(eventService.progressEventFindAll(pageable)), HttpStatus.OK);
     }

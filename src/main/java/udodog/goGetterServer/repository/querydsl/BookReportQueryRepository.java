@@ -32,20 +32,20 @@ public class BookReportQueryRepository {
     private final EntityManager entityManager;
 
     // 전체 조회
-    public Page<BookreportResponseDto> findAllWithFetchJoin(Pageable pageable) { // 페이징 처리
+    public Page<BookreportResponseDto> findAllWithFetchJoin(Pageable pageable, Long userId) { // 페이징 처리
 
-        List<BookreportResponseDto> reportList = jpaQueryFactory.select(Projections.constructor(BookreportResponseDto.class,
-                bookReport.bookReportId,
-                user.nickName,
-                bookReport.bookName,
-                bookReport.title,
-                bookReport.createdAt,
-                bookReportTag.tagName))
-           .from(bookReport)
-           .innerJoin(bookReport.user, user)
-           .join(bookReportTag).on(bookReportTag.bookReport.bookReportId.eq(bookReport.bookReportId))
-           .orderBy(bookReport.bookReportId.desc())
-           .fetch();
+        List<BookreportResponseDto> reportList = jpaQueryFactory
+                .select(Projections.constructor(BookreportResponseDto.class,
+                        bookReport.bookReportId,
+                        bookReport.bookName,
+                        bookReport.title,
+                        bookReport.createdAt,
+                        bookReportTag.tagName))
+                .from(bookReport)
+                .innerJoin(bookReportTag).on(bookReportTag.bookReport.bookReportId.eq(bookReport.bookReportId))
+                .where(bookReport.user.id.eq(userId))
+                .orderBy(bookReport.createdAt.desc())
+                .fetch();
 
         int start = (int)pageable.getOffset();
         int end = Math.min((start + pageable.getPageSize()), reportList.size());
@@ -53,30 +53,22 @@ public class BookReportQueryRepository {
         return new PageImpl<>(reportList.subList(start, end), pageable, reportList.size());
     } // reportList끝
 
-    // 독서 기록 상세 조회
-    public Optional<BookReportDetailResponseDto> findById(Long bookReportId, Long userId) {
 
-        BookReportDetailResponseDto report = jpaQueryFactory.select(Projections.constructor(BookReportDetailResponseDto.class,
-                                                        bookReport.bookReportId,
-                                                        user.nickName,
-                                                        bookReport.bookName,
-                                                        bookReport.title,
-                                                        bookReport.content,
-                                                        bookReport.createdAt,
-                                                        bookReportTag.tagName))
-                                                         .from(bookReport)
-                                                         .where(bookReport.bookReportId.eq(bookReportId))
-                                                         .innerJoin(bookReport.user, user)
-                                                         .join(bookReportTag).on(bookReportTag.bookReport.bookReportId.eq(bookReport.bookReportId))
-//                                                         .fetchJoin()
-                                                         .fetchOne();
+    public Optional<BookReportDetailResponseDto> findByBookReportId(Long bookReportId){
+        BookReportDetailResponseDto result = jpaQueryFactory
+                .select(Projections.constructor(BookReportDetailResponseDto.class,
+                        bookReport.bookName,
+                        bookReport.title,
+                        bookReport.content,
+                        bookReport.createdAt,
+                        bookReportTag.tagName))
+                .from(bookReport)
+                .innerJoin(bookReportTag).on(bookReportTag.bookReport.bookReportId.eq(bookReport.bookReportId))
+                .where(bookReport.bookReportId.eq(bookReportId))
+                .fetchOne();
 
-        return Optional.ofNullable(report);
-
-
-
-
-    } // findById() 끝
+        return Optional.ofNullable(result);
+    }
 
     // 독서 기록 수정
     @Transactional

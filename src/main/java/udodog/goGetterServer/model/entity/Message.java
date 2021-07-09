@@ -1,11 +1,13 @@
 package udodog.goGetterServer.model.entity;
 
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
@@ -15,30 +17,33 @@ public class Message {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    private User receiver;
-
-    @OneToOne(fetch =  FetchType.LAZY)
+    @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "sender_id")
     private User sender;
 
-    private String title;
+    @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "receiver_id")
+    private User receiver;
 
     private String content;
 
     @CreatedDate
-    private LocalDate sendAt;
+    private LocalDateTime sendAt;
 
-    private boolean isChecked;
+    private Boolean isChecked;
 
-    private boolean isDeleted;
+    private Boolean isDeleted;
 
     @Builder
-    public Message(User receiver, User sender, String title, String content) {
+    public Message(User receiver, User sender, String content, LocalDateTime sendAt) {
         this.receiver = receiver;
         this.sender = sender;
-        this.title = title;
         this.content = content;
+        this.sendAt = sendAt;
+        this.isChecked = false;
+        this.isDeleted = false;
     }
+
 
     public void checkMessage(){
         this.isChecked = true;

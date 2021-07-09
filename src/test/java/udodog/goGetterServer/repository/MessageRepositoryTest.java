@@ -53,7 +53,6 @@ class MessageRepositoryTest {
                           sender(sender).
                           receiver(receiver).
                           content("Message Test Content").
-                          title("Message Test Title").
                           build();
 
         //when

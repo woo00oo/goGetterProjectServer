@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import udodog.goGetterServer.model.dto.DefaultRes;
 import udodog.goGetterServer.model.dto.request.coupon.CouponCreateRequestDto;
+import udodog.goGetterServer.model.dto.response.coupon.selectbox.CouponSelectBoxResponseDto;
 import udodog.goGetterServer.model.entity.Coupon;
 import udodog.goGetterServer.model.entity.CouponUseHistory;
 import udodog.goGetterServer.model.entity.User;
@@ -15,8 +16,10 @@ import udodog.goGetterServer.repository.UserRepository;
 import udodog.goGetterServer.repository.querydsl.CouponQueryRepository;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -73,5 +76,20 @@ public class CouponService {
         }else{
             return DefaultRes.response(HttpStatus.OK.value(), "실패(중복)");
         }
+    }
+
+    public DefaultRes<List<CouponSelectBoxResponseDto>> couponSelectBox(){
+
+        List<Coupon> couponList = couponRepository.findAll();
+
+        if(couponList.size() == 0){
+            return DefaultRes.response(HttpStatus.OK.value(), "데이터없음");
+        }
+
+        List<CouponSelectBoxResponseDto> couponSelectBoxResponseDtoList = couponList.stream()
+                .map(coupon -> new CouponSelectBoxResponseDto(coupon.getId(), coupon.getName()))
+                .collect(Collectors.toList());
+
+        return DefaultRes.response(HttpStatus.OK.value(), "조회성공",couponSelectBoxResponseDtoList);
     }
 }

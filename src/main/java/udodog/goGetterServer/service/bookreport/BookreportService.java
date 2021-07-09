@@ -33,9 +33,9 @@ public class BookreportService {
     private final BookReportQueryRepository bookReportQueryRepository;
 
     // 전체 조회
-    public DefaultRes<Page<BookreportResponseDto>> searchBookReportList(Pageable pageable) { // 페이징 처리
+    public DefaultRes<Page<BookreportResponseDto>> searchBookReportList(Pageable pageable, Long userId) { // 페이징 처리
 
-        Page<BookreportResponseDto> bookReportPage = bookReportQueryRepository.findAllWithFetchJoin(pageable);
+        Page<BookreportResponseDto> bookReportPage = bookReportQueryRepository.findAllWithFetchJoin(pageable, userId);
 
         if (bookReportPage.getTotalElements() == 0) { // bookreport의 내용이 없다면?
             return DefaultRes.response(HttpStatus.OK.value(), "데이터없음");
@@ -66,9 +66,9 @@ public class BookreportService {
     } // insertReport() 끝
 
     // 독서 기록 상세 조회 Method
-    public DefaultRes<BookReportDetailResponseDto> viewDetailBookReport(Long bookReportId, Long userId) {
+    public DefaultRes<BookReportDetailResponseDto> viewDetailBookReport(Long bookReportId) {
 
-        Optional<BookReportDetailResponseDto> bookReportOptional = bookReportQueryRepository.findById(bookReportId, userId);
+        Optional<BookReportDetailResponseDto> bookReportOptional = bookReportQueryRepository.findByBookReportId(bookReportId);
 
 
         if (bookReportOptional.isEmpty()) { // 독서 기록이 비어 있다면?
@@ -76,7 +76,7 @@ public class BookreportService {
 
         } else {                            // 독서 기록 내용이 있다면?
 
-            return bookReportOptional.map(bookReport -> DefaultRes.response(HttpStatus.OK.value(), "조회성공", new BookReportDetailResponseDto(bookReportOptional)))
+            return bookReportOptional.map(bookReport -> DefaultRes.response(HttpStatus.OK.value(), "조회성공", bookReport))
                     .orElseGet(() -> DefaultRes.response(HttpStatus.OK.value(), "조회실패"));
         } // if-else 끝
     } // viewDetailBookReport() 끝
