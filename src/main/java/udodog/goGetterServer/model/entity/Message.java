@@ -1,11 +1,13 @@
 package udodog.goGetterServer.model.entity;
 
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
@@ -24,14 +26,14 @@ public class Message {
     private String content;
 
     @CreatedDate
-    private LocalDate sendAt;
+    private LocalDateTime sendAt;
 
     private boolean isChecked;
 
     private boolean isDeleted;
 
     @Builder
-    public Message(User receiver, User sender, String content, LocalDate sendAt) {
+    public Message(User receiver, User sender, String content, LocalDateTime sendAt) {
         this.receiver = receiver;
         this.sender = sender;
         this.content = content;
