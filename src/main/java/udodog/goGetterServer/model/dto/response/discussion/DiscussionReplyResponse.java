@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -15,6 +15,6 @@ public class DiscussionReplyResponse {
     private Long userId;            // 유저 번호
     private String userNickName;    // 유저 닉네임
     private String content;         // 댓글 내용
-    private LocalDate createAt;     // 댓글 작성일
+    private LocalDateTime createAt;     // 댓글 작성일
 
 }

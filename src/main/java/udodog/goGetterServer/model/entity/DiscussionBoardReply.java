@@ -8,7 +8,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import udodog.goGetterServer.model.dto.request.discussion.DiscussionReplyEditRequest;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -30,7 +30,7 @@ public class DiscussionBoardReply {
     private String content;
 
     @CreatedDate
-    private LocalDate createAt;
+    private LocalDateTime createAt;
 
     @Builder
     public DiscussionBoardReply(DiscussionBoard discussionBoard, User user, String content) {
