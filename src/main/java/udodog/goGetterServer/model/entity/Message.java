@@ -35,11 +35,10 @@ public class Message {
     private Boolean isDeleted;
 
     @Builder
-    public Message(User receiver, User sender, String content, LocalDateTime sendAt) {
+    public Message(User receiver, User sender, String content) {
         this.receiver = receiver;
         this.sender = sender;
         this.content = content;
-        this.sendAt = sendAt;
         this.isChecked = false;
         this.isDeleted = false;
     }
