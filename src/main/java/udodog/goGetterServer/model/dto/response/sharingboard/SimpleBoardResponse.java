@@ -1,7 +1,6 @@
 package udodog.goGetterServer.model.dto.response.sharingboard;
 
 import lombok.*;
-import org.springframework.format.annotation.DateTimeFormat;
 import udodog.goGetterServer.model.entity.SharingBoard;
 
 import java.time.LocalDateTime;

@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import udodog.goGetterServer.model.dto.DefaultRes;
 import udodog.goGetterServer.model.dto.Pagination;
-import udodog.goGetterServer.model.dto.request.UpdateSharingReplyRequest;
+import udodog.goGetterServer.model.dto.request.sharingboard.UpdateSharingReplyRequest;
 import udodog.goGetterServer.model.dto.request.sharingboard.CreateSharingReplyRequest;
 import udodog.goGetterServer.model.dto.request.sharingboard.DeleteSharingReplyRequest;
 import udodog.goGetterServer.model.dto.response.sharingboard.SharingReplyResponse;

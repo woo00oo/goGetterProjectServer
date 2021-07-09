@@ -1,4 +1,4 @@
-package udodog.goGetterServer.model.dto.request;
+package udodog.goGetterServer.model.dto.request.sharingboard;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;

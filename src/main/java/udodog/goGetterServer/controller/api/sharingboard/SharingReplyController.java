@@ -14,7 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import udodog.goGetterServer.model.converter.sharingboard.SharingReplyConverter;
 import udodog.goGetterServer.model.dto.DefaultRes;
-import udodog.goGetterServer.model.dto.request.UpdateSharingReplyRequest;
+import udodog.goGetterServer.model.dto.request.sharingboard.UpdateSharingReplyRequest;
 import udodog.goGetterServer.model.dto.request.sharingboard.CreateSharingReplyRequest;
 import udodog.goGetterServer.model.dto.request.sharingboard.DeleteSharingReplyRequest;
 import udodog.goGetterServer.model.dto.response.sharingboard.SharingReplyResponse;
