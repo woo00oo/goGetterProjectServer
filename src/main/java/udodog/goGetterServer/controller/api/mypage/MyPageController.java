@@ -15,9 +15,6 @@ import udodog.goGetterServer.model.dto.request.mypage.MyPageRequestDto;
 import udodog.goGetterServer.model.dto.response.mypage.MyPageResponseDto;
 import udodog.goGetterServer.service.mypage.MyPageService;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-
 @Api(tags = {"마이 페이지 관련 API"})
 @RequiredArgsConstructor
 @RestController
@@ -48,19 +45,8 @@ public class MyPageController {
     @PatchMapping("/api/bkusers/mypage/edit/{userId}")
     public ResponseEntity<EntityModel<DefaultRes<MyPageRequestDto>>> updateUser(
             @PathVariable("userId") Long userId,
-            @RequestBody MyPageRequestDto requestDto,
-            HttpServletResponse response
-    ) throws IOException {
-
-        String redirect = "/api/bkusers/mypage/" + userId;
-
-        DefaultRes editUser = myPageService.updateUserInfo(userId, requestDto);
-
-        if(editUser.getStatusCode() == HttpStatus.SEE_OTHER.value()){
-            response.sendRedirect(redirect);
-            return new ResponseEntity(editUser, HttpStatus.SEE_OTHER);
-        }else {
-            return new ResponseEntity(editUser, HttpStatus.OK);
-        }
+            @RequestBody MyPageRequestDto requestDto
+    ) {
+        return new ResponseEntity<>(myPageConverter.toModel(myPageService.updateUserInfo(userId, requestDto)), HttpStatus.OK);
     }
 }

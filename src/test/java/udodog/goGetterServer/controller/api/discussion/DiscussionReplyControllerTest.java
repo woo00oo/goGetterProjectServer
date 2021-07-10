@@ -1,6 +1,5 @@
 package udodog.goGetterServer.controller.api.discussion;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,21 +10,15 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import udodog.goGetterServer.config.WebMvcConfig;
-import udodog.goGetterServer.model.converter.discussion.DiscussionConverter;
-import udodog.goGetterServer.model.converter.discussion.DiscussionListConverter;
 import udodog.goGetterServer.model.converter.discussion.DiscussionReplyListConverter;
 import udodog.goGetterServer.model.dto.DefaultRes;
 import udodog.goGetterServer.service.discussion.DiscussionReplyService;
-import udodog.goGetterServer.service.discussion.DiscussionService;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
@@ -67,8 +60,7 @@ public class DiscussionReplyControllerTest {
                         " \"content\" : \"create reply by testcode\"\n" +
                         "}"))
                 .andDo(print())
-                .andExpect(redirectedUrl("/api/bkusers/discussions/" + discussionId + "?userId=" + userId))
-                .andExpect(status().is3xxRedirection());
+                .andExpect(status().isOk());
 
     }
 
@@ -88,8 +80,7 @@ public class DiscussionReplyControllerTest {
                 .content("{\n" +
                         " \"content\" : \"testcode update reply\"\n" +
                         "}"))
-                .andExpect(redirectedUrl("/api/bkusers/discussions/" + discussionId + "?userId=" + userId))
-                .andExpect(status().is3xxRedirection());
+                .andExpect(status().isOk());
     }
 
     @Test
@@ -104,7 +95,6 @@ public class DiscussionReplyControllerTest {
         mvc.perform(delete("/api/users/discussionreplies/{discussionId}", discussionId)
                 .param("replyId", String.valueOf(replyId))
                 .param("userId", String.valueOf(userId)))
-                .andExpect(redirectedUrl("/api/bkusers/discussions/" + discussionId + "?userId=" + userId))
-                .andExpect(status().is3xxRedirection());
+                .andExpect(status().isOk());
     }
 }

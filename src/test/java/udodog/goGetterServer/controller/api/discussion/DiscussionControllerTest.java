@@ -4,7 +4,6 @@ package udodog.goGetterServer.controller.api.discussion;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.DefaultApplicationArguments;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
@@ -19,10 +18,9 @@ import udodog.goGetterServer.service.discussion.DiscussionService;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
@@ -58,8 +56,7 @@ public class DiscussionControllerTest {
                         "  \"content\": \"testcode test\"\n" +
                         "}"))
                 .andDo(print())
-                .andExpect(redirectedUrl("/api/discussions"))
-                .andExpect(status().is3xxRedirection());
+                .andExpect(status().isOk());
     }
 
     @Test
@@ -93,8 +90,7 @@ public class DiscussionControllerTest {
                         " \"title\" : \" testcode update\",\n" +
                         " \"content\" : \"testcode update\"\n" +
                         "}"))
-                .andExpect(redirectedUrl("/api/bkusers/discussions/" + id + "?userId=" + userId))
-                .andExpect(status().is3xxRedirection());
+                .andExpect(status().isOk());
     }
 
     @Test
@@ -106,7 +102,6 @@ public class DiscussionControllerTest {
         given(discussionService.delete(any(), anyLong())).willReturn(defaultRes);
 
         mvc.perform(delete("/api/users/discussions/del/{id}", id).param("userId", userId))
-                .andExpect(redirectedUrl("/api/discussions"))
-                .andExpect(status().is3xxRedirection());
+                .andExpect(status().isOk());
     }
 }

@@ -19,9 +19,7 @@ import udodog.goGetterServer.model.dto.response.discussion.DiscussionDetailRespo
 import udodog.goGetterServer.model.dto.response.discussion.DiscussionResponseDto;
 import udodog.goGetterServer.service.discussion.DiscussionService;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.io.IOException;
 
 @Api(tags = {"토론 게시판 관련 API"})
 @RestController
@@ -40,8 +38,7 @@ public class DiscussionController {
     // 전체 조회 Controller
     @GetMapping("/api/discussions")
     public ResponseEntity<EntityModel<DefaultRes<Page<DiscussionResponseDto>>>> getBoardList(
-            @PageableDefault(sort = "discussionId", direction = Sort.Direction.DESC, size = 7) Pageable pageable
-    ){
+            @PageableDefault(sort = "discussionId", direction = Sort.Direction.DESC, size = 7) Pageable pageable) {
         return new ResponseEntity<>(discussionListConvertor.toModel(discussionService.getBoardList(pageable)), HttpStatus.OK);
     }
 
@@ -53,7 +50,7 @@ public class DiscussionController {
     // 상세보기 Controller
     @GetMapping("/api/bkusers/discussions/{id}")
     public ResponseEntity<EntityModel<DefaultRes<DiscussionDetailResponse>>> getDetailBoard(@PathVariable("id") Long id,
-                                                                                            @RequestParam Long userId){
+                                                                                            @RequestParam Long userId) {
         return new ResponseEntity<>(discussionConvertor.toModel(discussionService.getDetailBoard(id, userId)), HttpStatus.OK);
     }
 
@@ -67,18 +64,10 @@ public class DiscussionController {
     public ResponseEntity<EntityModel<DefaultRes<DiscussionInsertRequestDto>>> insertBoard(
             @ApiParam(value = "필수 : 모든 항목" )
             @Valid@RequestBody DiscussionInsertRequestDto requestDto,
-            @PathVariable("userId") Long userId,
-            HttpServletResponse response
-    ) throws IOException {
-        String redirectUrl = "/api/discussions";
-        DefaultRes result = discussionService.insertBoard(requestDto, userId);
+            @PathVariable("userId") Long userId) {
 
-        if(result.getStatusCode() == HttpStatus.SEE_OTHER.value()){
-            response.sendRedirect(redirectUrl);
-            return new ResponseEntity(result, HttpStatus.SEE_OTHER);
-        }else {
-            return new ResponseEntity(result, HttpStatus.OK);
-        }
+        return new ResponseEntity<>(discussionConvertor.toModel(discussionService.insertBoard(requestDto, userId)), HttpStatus.OK);
+
     }
 
     @ApiOperation(value = "토론게시판 글수정 API",notes = "글수정 API입니다.")
@@ -90,19 +79,10 @@ public class DiscussionController {
     @PatchMapping("/api/users/discussions/edit/{id}")
     public ResponseEntity<EntityModel<DefaultRes>> updateBoard(
             @Valid@RequestBody DiscussionEditRequest updatetRequestDto, @PathVariable("id") Long id,
-            @RequestParam("userId") Long userId,
-            HttpServletResponse response) throws IOException {
+            @RequestParam("userId") Long userId) {
 
-        DefaultRes updateResult = discussionService.updateBoard(updatetRequestDto, id, userId);
+        return new ResponseEntity<>(discussionConvertor.toModel(discussionService.updateBoard(updatetRequestDto, id, userId)), HttpStatus.OK);
 
-        String redirectUrl = "/api/bkusers/discussions/" + id + "?userId=" + userId;
-
-        if(updateResult.getStatusCode() == HttpStatus.SEE_OTHER.value()){
-            response.sendRedirect(redirectUrl);
-            return new ResponseEntity(updateResult, HttpStatus.SEE_OTHER);
-        }else {
-            return new ResponseEntity(updateResult, HttpStatus.OK);
-        }
     }
 
     @ApiOperation(value = "토론게시판 글삭제 API",notes = "글삭제 API입니다.")
@@ -113,18 +93,10 @@ public class DiscussionController {
     // 글 삭제 Controller
     @DeleteMapping("/api/users/discussions/del/{id}")
     public ResponseEntity<EntityModel<DefaultRes<DiscussionDetailResponse>>> deleteBoard (@PathVariable("id") Long id,
-                                                                                          @RequestParam("userId") Long userId,
-                                                                                          HttpServletResponse response) throws IOException{
+                                                                                          @RequestParam("userId") Long userId)
+    {
 
-        String redirect = "/api/discussions";
-        DefaultRes deleteData = discussionService.delete(id, userId);
-
-        if(deleteData.getStatusCode() == HttpStatus.SEE_OTHER.value()){
-            response.sendRedirect(redirect);
-            return new ResponseEntity(deleteData, HttpStatus.SEE_OTHER);
-        }else {
-            return new ResponseEntity(deleteData, HttpStatus.OK);
-        }
+        return new ResponseEntity<>(discussionConvertor.toModel(discussionService.delete(id, userId)), HttpStatus.OK);
 
     }
 
@@ -136,7 +108,8 @@ public class DiscussionController {
     // 제목으로 검색
     @GetMapping("/api/discussions/search-title/{title}")
     public ResponseEntity<EntityModel<DefaultRes<Page<DiscussionResponseDto>>>> searchTitle (@PathVariable("title") String title,
-                                                                                             @PageableDefault(sort = "id", direction = Sort.Direction.DESC, size = 7) Pageable pageable){
+                                                                                             @PageableDefault(sort = "id", direction = Sort.Direction.DESC, size = 7) Pageable pageable)
+    {
         return new ResponseEntity<>(discussionListConvertor.toModel(discussionService.searchTitle(title, pageable)), HttpStatus.OK);
     }
 
