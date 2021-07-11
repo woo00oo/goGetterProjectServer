@@ -1,6 +1,7 @@
 package udodog.goGetterServer.service.event;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -23,6 +24,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class EventService {
 
     private final EventRepository eventRepository;
@@ -73,7 +75,6 @@ public class EventService {
     public DefaultRes<DetailEventResponseDto> eventDetailFind(Long eventId){
 
         Optional<Event> optionalEvent = eventRepository.findById(eventId);
-
 
         return optionalEvent
                 .map(event -> {

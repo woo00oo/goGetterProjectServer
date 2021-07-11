@@ -13,11 +13,11 @@ public class JwtUtil {
 
     private static Key key;
 
-    //리프레시 토큰 유효시간 24시간(ms단위)
-    public static Long REFRESH_TOKEN_VALID_TIME = 1440 * 60 * 1000L;
+    //리프레시 토큰 유효시간 2주(ms단위)
+    public static Long REFRESH_TOKEN_VALID_TIME = 14 * 1440 * 60 * 1000L;
 
-    //엑세스 토큰 유효시간 5분
-    public static Long ACCESS_TOKEN_VALID_TIME =  5 * 60 * 1000L;
+    //엑세스 토큰 유효시간 15분
+    public static Long ACCESS_TOKEN_VALID_TIME =  15 * 60 * 1000L;
 
     public static String ACCESS_TOKEN_NAME = "ACCESS TOKEN";
 
