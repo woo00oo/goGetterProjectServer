@@ -23,7 +23,7 @@ public class SharingBoardLikeController {
     @ApiResponses(value ={
             @ApiResponse(code = 200, message = "1.좋아요 등록 \t\n 2.좋아요 취소 \t\n 3.글이 존재하지 않음 \t\n 4.토큰 에러"),
     })
-    @PostMapping("/api/user/like")
+    @PostMapping("/api/users/like")
     public ResponseEntity<DefaultRes> sharingBoardLike(@RequestParam("boardId") Long boardId , @RequestBody LikeUserRequest request){
         return new ResponseEntity<>(sharingBoardLikeService.likeFeature(boardId,request.getUserId()), HttpStatus.OK);
     }
