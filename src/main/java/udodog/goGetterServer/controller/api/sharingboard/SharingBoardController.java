@@ -46,7 +46,7 @@ public class SharingBoardController {
     @ApiResponses(value ={
             @ApiResponse(code = 200, message = "1. 조회 성공 \t\n 2. 데이터 없음 \t\n 3. 토큰 에러"),
     })
-    @GetMapping("/api/bkuser/sharings")
+    @GetMapping("/api/bkusers/sharings")
     public ResponseEntity<EntityModel<DefaultRes<BoardResponse>>> getBoardDetail(@RequestParam("id") Long id){
         return new ResponseEntity<>(sharingConverter.toModel(sharingBoardService.getBoardDetail(id)), HttpStatus.OK);
     }
@@ -56,14 +56,14 @@ public class SharingBoardController {
     @ApiResponses(value ={
             @ApiResponse(code = 200, message = "1. 글 등록 성공 \t\n 2. 글 등록 실패 \t\n 3. 토큰 에러"),
     })
-    @PostMapping("/api/user/sharings")
+    @PostMapping("/api/users/sharings")
     public ResponseEntity<DefaultRes> createSharingBoard(@RequestBody CreateBoardRequest request){
         return new ResponseEntity<>(sharingBoardService.createSharingBoard(request), HttpStatus.OK);
     }
 
 
     @ApiOperation(value = "공유 게시판 글 수정 API", notes = "공유 게시판 게시글 수정 시 사용되는 API입니다.")
-    @PatchMapping("/api/user/sharings")
+    @PatchMapping("/api/users/sharings")
     @ApiResponses(value ={
             @ApiResponse(code = 200, message = "1.글 수정 성공 \t\n 2.글 수정 실패 \t\n 3.글이 존재하지 않음 \t\n 4. 토큰 에러"),
     })
@@ -76,7 +76,7 @@ public class SharingBoardController {
     @ApiResponses(value ={
             @ApiResponse(code = 200, message = "1.글 삭제 성공 \t\n 2.글 삭제 실패 \t\n 3.글이 존재하지 않음 \t\n 4.토큰 에러"),
     })
-    @DeleteMapping("/api/user/sharings")
+    @DeleteMapping("/api/users/sharings")
     public ResponseEntity<DefaultRes> deleteSharingBoard(@RequestParam("boardId") Long boardId, @RequestParam("userId") Long userId){
         return new ResponseEntity<>(sharingBoardService.deleteSharingBoard(boardId, userId), HttpStatus.OK);
     }
