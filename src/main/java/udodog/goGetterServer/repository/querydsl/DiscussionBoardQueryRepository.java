@@ -181,7 +181,7 @@ public class DiscussionBoardQueryRepository {
                         .from(discussionBoard)
                         .innerJoin(discussionBoard.user, user)
                         .join(discussionBoardReadhit).on(discussionBoardReadhit.discussionBoard.id.eq(discussionBoard.id))
-                        .where(discussionBoard.title.contains(search), discussionBoard.content.contains(search))
+                        .where(discussionBoard.title.contains(search).or(discussionBoard.content.contains(search)))
                         .orderBy(discussionBoard.id.desc())
                         .fetch();
 
