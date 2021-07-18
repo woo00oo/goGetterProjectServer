@@ -15,6 +15,8 @@ import udodog.goGetterServer.model.entity.QUser;
 import udodog.goGetterServer.model.entity.User;
 import udodog.goGetterServer.model.enumclass.UserGrade;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 
@@ -78,5 +80,23 @@ class UserRepositoryTest{
         //then
         Assertions.assertThat(findUser).isEqualTo(user);
 
-    }
-}
+    } // 회원_조회() 끝
+
+    @Test
+    void 전체회원_조회() {
+        QUser qUser = QUser.user;
+
+        List<User> findUserAll = jpaQueryFactory.selectFrom(qUser).fetch();
+
+        Assertions.assertThat(findUserAll);
+    } // 전체회원_조회() 끝
+
+    @Test
+    void Black회원_조회() {
+        QUser qUser = QUser.user;
+
+        List<User> findBKUserAll = jpaQueryFactory.selectFrom(qUser).where(qUser.grade.eq(UserGrade.BLACK)).fetch();
+
+        Assertions.assertThat(findBKUserAll);
+    } // Black회원_조회() 끝
+} // Class 끝
