@@ -10,6 +10,8 @@ import udodog.goGetterServer.model.dto.Pagination;
 import udodog.goGetterServer.model.dto.response.manager.search.UserSearchResponseDto;
 import udodog.goGetterServer.repository.querydsl.UserQueryRepository;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class UserSearchService {
@@ -43,4 +45,51 @@ public class UserSearchService {
         }  // if-else 문 끝
     } // searchBKUserList() 끝
 
+    // 회원 상세 조회
+    public DefaultRes<UserSearchResponseDto> getMemberDetail (Long userId) {
+        Optional<UserSearchResponseDto> memberById = userQueryRepository.findById(userId);
+
+        if (memberById.isEmpty()) { // 상세 조회를 원하는 Member 정보가 없다면?
+            return DefaultRes.response(HttpStatus.OK.value(), "데이터 없음");
+        } else {
+            return memberById.map(userSearch -> DefaultRes.response(HttpStatus.OK.value(), "조회성공", userSearch))
+                    .orElseGet(() -> DefaultRes.response(HttpStatus.OK.value(), "조회실패"));
+        } // if-else문 끝
+
+    } // getMemberDetail()끝
+    // ################################# 검색 기능 ####################################
+
+    // 회원 이름으로 검색
+    public DefaultRes<Page<UserSearchResponseDto>> memberNameSearch (String name, Pageable pageable) {
+        Page<UserSearchResponseDto> memberByName = userQueryRepository.findByName(name, pageable);
+
+        if (memberByName.isEmpty()) { // 회원 이름 검색 시 결과가 없다면?
+            return DefaultRes.response(HttpStatus.OK.value(), "검색 결과 없음");
+        } // if문 끝
+
+        return DefaultRes.response(HttpStatus.OK.value(), "검색완료", memberByName);
+    } // memberNameSearch()끝
+
+    // 회원 Email로 검색
+    public DefaultRes<Page<UserSearchResponseDto>> memberEmailSearch(String email, Pageable pageable) {
+        Page<UserSearchResponseDto> memberByEmail = userQueryRepository.findByEmail(email, pageable);
+
+        if (memberByEmail.isEmpty()) { // 회원 Email 검색 시 결과가 없다면?
+            return DefaultRes.response(HttpStatus.OK.value(), "검색 결과 없음");
+        } // if문 끝
+
+        return DefaultRes.response(HttpStatus.OK.value(), "검색완료", memberByEmail);
+    } // memberEmailSearch() 끝
+
+    // 회원 별명 검색
+    public DefaultRes<Page<UserSearchResponseDto>> memberNickNameSearch(String nickName, Pageable pageable) {
+        Page<UserSearchResponseDto> memberByNickName = userQueryRepository.findByNickName(nickName, pageable);
+
+        if (memberByNickName.isEmpty()) { // 회원 Email 검색 시 결과가 없다면?
+            return DefaultRes.response(HttpStatus.OK.value(), "검색 결과 없음");
+        } // if문 끝
+
+        return DefaultRes.response(HttpStatus.OK.value(), "검색완료", memberByNickName);
+
+    } // memberNickNameSearch() 끝
 } // Class 끝

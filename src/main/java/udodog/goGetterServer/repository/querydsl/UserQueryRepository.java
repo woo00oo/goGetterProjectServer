@@ -58,6 +58,7 @@ public class UserQueryRepository {
                         user.id,
                         user.email,
                         user.name,
+                        user.phoneNumber,
                         user.nickName,
                         user.grade,
                         user.createdAt))
@@ -81,6 +82,7 @@ public class UserQueryRepository {
                         user.id,
                         user.email,
                         user.name,
+                        user.phoneNumber,
                         user.nickName,
                         user.grade,
                         user.createdAt))
@@ -95,4 +97,83 @@ public class UserQueryRepository {
         return new PageImpl<>(userList.subList(start, end), pageable, userList.size());
 
     } // bkFindAll() 끝
-}
+
+    // Member 식별번호로 상세정보 조회
+    public Optional<UserSearchResponseDto> findById (Long userId) {
+        UserSearchResponseDto userSearchResponseDto = queryFactory.select(Projections.constructor(UserSearchResponseDto.class,
+                user.id,
+                user.email,
+                user.name,
+                user.phoneNumber,
+                user.nickName,
+                user.grade,
+                user.createdAt)).from(user)
+                                .where(user.id.eq(userId))
+                                .fetchOne();
+
+        return Optional.ofNullable(userSearchResponseDto);
+    } // findById() 끝
+
+    // ######################## 검색 기능 ###########################
+
+    // 회원 이름으로 검색
+    public Page<UserSearchResponseDto> findByName(String name, Pageable pageable) {
+
+        List<UserSearchResponseDto> userSearchResponseDtoList = queryFactory.select( Projections.constructor(UserSearchResponseDto.class,
+                user.id,
+                user.email,
+                user.name,
+                user.phoneNumber,
+                user.nickName,
+                user.grade,
+                user.createdAt)).from(user)
+                                .where(user.name.contains(name))
+                                .fetch();
+
+        int start = (int) pageable.getOffset();
+        int end = Math.min(start + pageable.getPageSize(), userSearchResponseDtoList.size());
+
+        return new PageImpl<>(userSearchResponseDtoList.subList(start, end), pageable, userSearchResponseDtoList.size());
+    } // findByName()끝
+
+    // 회원 Email로 검색
+    public Page<UserSearchResponseDto> findByEmail(String email, Pageable pageable) {
+
+        List<UserSearchResponseDto> userSearchResponseDtoList = queryFactory.select( Projections.constructor(UserSearchResponseDto.class,
+                user.id,
+                user.email,
+                user.name,
+                user.phoneNumber,
+                user.nickName,
+                user.grade,
+                user.createdAt)).from(user)
+                .where(user.email.contains(email))
+                .fetch();
+
+        int start = (int) pageable.getOffset();
+        int end = Math.min(start + pageable.getPageSize(), userSearchResponseDtoList.size());
+
+        return new PageImpl<>(userSearchResponseDtoList.subList(start, end), pageable, userSearchResponseDtoList.size());
+
+    } // findByEmail() 끝
+
+    // 회원 별명 검색
+    public Page<UserSearchResponseDto> findByNickName(String nickName, Pageable pageable) {
+
+        List<UserSearchResponseDto> userSearchResponseDtoList = queryFactory.select( Projections.constructor(UserSearchResponseDto.class,
+                user.id,
+                user.email,
+                user.name,
+                user.phoneNumber,
+                user.nickName,
+                user.grade,
+                user.createdAt)).from(user)
+                .where(user.nickName.contains(nickName))
+                .fetch();
+
+        int start = (int) pageable.getOffset();
+        int end = Math.min(start + pageable.getPageSize(), userSearchResponseDtoList.size());
+
+        return new PageImpl<>(userSearchResponseDtoList.subList(start, end), pageable, userSearchResponseDtoList.size());
+    } // findByNickName()끝
+} // Class 끝
