@@ -98,7 +98,7 @@ public class EventService {
 
             return optionalEvent.map(event ->{
                 event.update(request, optionalCoupon.get());
-                return DefaultRes.response(HttpStatus.SEE_OTHER.value(), "업데이트성공");
+                return DefaultRes.response(HttpStatus.OK.value(), "업데이트성공");
             }).orElseGet(()-> DefaultRes.response(HttpStatus.OK.value(), "데이터없음"));
         }else{
             return DefaultRes.response(HttpStatus.OK.value(), "쿠폰없음");
