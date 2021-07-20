@@ -20,6 +20,7 @@ public class ManagerPagingConverter implements RepresentationModelAssembler<Defa
                                           linkTo( methodOn( UserManagementController.class ).totalBKMemberFindAll(null)).withRel("BK-Find-All"),
                                           linkTo( methodOn( UserManagementController.class ).nameSearch(null, null)).withRel("nameSearch"),
                                           linkTo( methodOn( UserManagementController.class ).emailSearch(null, null)).withRel("emailSearch"),
-                                          linkTo( methodOn( UserManagementController.class ).nickNameSearch(null, null)).withRel("nickNameSearch"));
+                                          linkTo( methodOn( UserManagementController.class ).nickNameSearch(null, null)).withRel("nickNameSearch"),
+                                          linkTo( methodOn( UserManagementController.class ).gradeSearch(null, null)).withRel("gradeSearch"));
     }
 }

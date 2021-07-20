@@ -1,6 +1,10 @@
 package udodog.goGetterServer.repository.querydsl;
 
+import com.querydsl.core.QueryResults;
+import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
+import com.querydsl.jpa.impl.JPADeleteClause;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.querydsl.jpa.impl.JPAUpdateClause;
 import lombok.RequiredArgsConstructor;
@@ -9,13 +13,20 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import udodog.goGetterServer.model.dto.request.manager.MemberJoinCountRequestDto;
+import udodog.goGetterServer.model.dto.request.manager.MemberUpdateGradeRequestDto;
 import udodog.goGetterServer.model.dto.request.user.UserFindEmailRequest;
 import udodog.goGetterServer.model.dto.response.manager.search.UserSearchResponseDto;
+import udodog.goGetterServer.model.dto.response.manager.visuallization.MemberJoinVisuallizationResponseDto;
 import udodog.goGetterServer.model.dto.response.user.UserFindEmailResponseDto;
+import udodog.goGetterServer.model.entity.QUser;
+import udodog.goGetterServer.model.entity.User;
 import udodog.goGetterServer.model.enumclass.UserGrade;
 
 import javax.persistence.EntityManager;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -114,6 +125,63 @@ public class UserQueryRepository {
         return Optional.ofNullable(userSearchResponseDto);
     } // findById() 끝
 
+    public Optional<User> findByUserId (Long userId) {
+        User user = queryFactory.selectFrom(QUser.user)
+                                .where(QUser.user.id.eq(userId))
+                                .fetchOne();
+
+        return Optional.ofNullable(user);
+
+    } // findById()
+
+    public Optional<User> findByUserGrade(UserGrade userGrade, Long userId) {
+
+        User user = queryFactory.selectFrom(QUser.user)
+                                .where(QUser.user.id.eq(userId))
+                                .fetchOne();
+
+        return Optional.ofNullable(user);
+
+    } // findByUserGrade() 끝
+
+    //회원 등급 변경 Method
+    @Transactional
+    public void updateMemberGrade(MemberUpdateGradeRequestDto memberUpdateGradeRequestDto, Long userId) {
+
+        JPAUpdateClause jpaUpdateClause = new JPAUpdateClause(em, user);
+
+        jpaUpdateClause.where(user.id.eq(userId))
+                       .set(user.grade, memberUpdateGradeRequestDto.getUserGrade())
+                        .execute();
+    } // updateMemberGrade() 끝
+
+    // Black 회원 강제 탈퇴 Method
+    @Transactional
+    public void blackMemberWithdrawal(Long userId, UserGrade userGrade) {
+
+        JPADeleteClause deleteClause = new JPADeleteClause(em, user);
+
+        deleteClause.where(user.id.eq(userId)).execute();
+    } // blackMemberWithdrawal() 끝
+
+    // 회원 가입일 전체 조회
+
+    public Optional<List<MemberJoinVisuallizationResponseDto>> findByCreatedAt(MemberJoinCountRequestDto requestDto) {
+
+        List<MemberJoinVisuallizationResponseDto> selectJoinCount =
+                queryFactory
+                        .select(Projections.constructor(MemberJoinVisuallizationResponseDto.class,
+                                user.createdAt.yearMonth().count()
+                        ))
+                        .from(user)
+                        .where(user.createdAt.month().eq(requestDto.getMonth()),
+                                user.createdAt.year().eq(requestDto.getYear()))
+                        .orderBy(user.createdAt.yearMonth().asc())
+                        .fetch();
+
+        return Optional.ofNullable(selectJoinCount);
+    } // findByCreatedAt() 끝
+
     // ######################## 검색 기능 ###########################
 
     // 회원 이름으로 검색
@@ -176,4 +244,25 @@ public class UserQueryRepository {
 
         return new PageImpl<>(userSearchResponseDtoList.subList(start, end), pageable, userSearchResponseDtoList.size());
     } // findByNickName()끝
+
+    // 회원 등급 검색
+    public Page<UserSearchResponseDto> findByGrade(UserGrade userGrade, Pageable pageable) {
+
+        List<UserSearchResponseDto> userSearchResponseDtoList = queryFactory.select( Projections.constructor(UserSearchResponseDto.class,
+                user.id,
+                user.email,
+                user.name,
+                user.phoneNumber,
+                user.nickName,
+                user.grade,
+                user.createdAt)).from(user)
+                .where(user.grade.eq(userGrade))
+                .fetch();
+
+        int start = (int) pageable.getOffset();
+        int end = Math.min(start + pageable.getPageSize(), userSearchResponseDtoList.size());
+
+        return new PageImpl<>(userSearchResponseDtoList.subList(start, end), pageable, userSearchResponseDtoList.size());
+
+    } // findByGrade() 끝
 } // Class 끝

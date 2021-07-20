@@ -5,7 +5,6 @@ import lombok.NoArgsConstructor;
 import udodog.goGetterServer.model.enumclass.UserGrade;
 
 import java.time.LocalDate;
-import java.util.Optional;
 
 @Getter
 @NoArgsConstructor
