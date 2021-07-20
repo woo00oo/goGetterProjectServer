@@ -1,10 +1,7 @@
 package udodog.goGetterServer.repository.querydsl;
 
-import com.querydsl.core.QueryResults;
-import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPADeleteClause;
-import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.querydsl.jpa.impl.JPAUpdateClause;
 import lombok.RequiredArgsConstructor;
@@ -24,9 +21,6 @@ import udodog.goGetterServer.model.entity.User;
 import udodog.goGetterServer.model.enumclass.UserGrade;
 
 import javax.persistence.EntityManager;
-
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -84,30 +78,6 @@ public class UserQueryRepository {
         return new PageImpl<>(userList.subList(start, end), pageable, userList.size());
 
     } // findAll() 끝
-
-    // Black 회원 전체 조회
-    public Page<UserSearchResponseDto> bkFindAll (Pageable pageable ) { // 페이징 처리
-
-        List<UserSearchResponseDto> userList = queryFactory
-                .select(Projections.constructor(UserSearchResponseDto.class,
-                        user.id,
-                        user.email,
-                        user.name,
-                        user.phoneNumber,
-                        user.nickName,
-                        user.grade,
-                        user.createdAt))
-                .from(user)
-                .where(user.grade.eq(UserGrade.BLACK))
-                .orderBy(user.name.desc())
-                .fetch();
-
-        int start = (int) pageable.getOffset();
-        int end = Math.min((start + pageable.getPageSize()), userList.size());
-
-        return new PageImpl<>(userList.subList(start, end), pageable, userList.size());
-
-    } // bkFindAll() 끝
 
     // Member 식별번호로 상세정보 조회
     public Optional<UserSearchResponseDto> findById (Long userId) {

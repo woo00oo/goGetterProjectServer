@@ -47,17 +47,6 @@ public class UserManagementController {
         return new ResponseEntity<>(managerPagingConverter.toModel( userSearchService.searchUserList( pageable )), HttpStatus.OK);
     } // totalMemberFindAll() 끝
 
-    @ApiOperation(value = "Black 회원 전체 조회 API", notes = "관리자 Page Black 회원 전체 목록 조회 API")
-    @ApiResponses(value = { @ApiResponse(code=200, message = "1. 조회 성공 \t\n 2. 데이터 없음 \t\n 3.Token Error")})
-
-    // Black User 전체 조회 관련 Method
-    @GetMapping("/bkuser/list")
-    public ResponseEntity<EntityModel<DefaultRes<Page<UserSearchResponseDto>>>> totalBKMemberFindAll (@PageableDefault(size = 20)Pageable pageable) { //  페이지당 20개씩 출력
-
-        return new ResponseEntity<>(managerPagingConverter.toModel( userSearchService.searchBKUserList( pageable )), HttpStatus.OK);
-    } // totalBKMemberFindAll() 끝
-
-
     @ApiOperation(value = "Member 상세 조회 API", notes = "Member 상세 조회 API")
     @ApiResponses(value = { @ApiResponse( code = 200, message = "1. 상세보기성공 \t\n 2. 데이터없음 \t\n 3. 토큰에러") })
 

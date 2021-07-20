@@ -37,19 +37,6 @@ public class UserSearchService {
         } // if-else 문 끝
     } // searchUserList() 끝
 
-    // Black 회원 전체 조회
-    public DefaultRes<Page<UserSearchResponseDto>> searchBKUserList ( Pageable pageable ) { // 페이징 처리
-
-        Page<UserSearchResponseDto> bkMemberPage = userQueryRepository.bkFindAll(pageable);
-
-        if (bkMemberPage.getTotalElements() == 0) { // Black 회원이 없다면?
-            return DefaultRes.response(HttpStatus.OK.value(), "데이터없음");
-
-        } else {
-            return DefaultRes.response(HttpStatus.OK.value(), "조회성공", bkMemberPage, new Pagination(bkMemberPage));
-        }  // if-else 문 끝
-    } // searchBKUserList() 끝
-
     // 회원 상세 조회
     public DefaultRes<UserSearchResponseDto> getMemberDetail (Long userId) {
         Optional<UserSearchResponseDto> memberById = userQueryRepository.findById(userId);
