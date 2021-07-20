@@ -7,7 +7,6 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
-import org.springframework.test.annotation.Rollback;
 import udodog.goGetterServer.config.JpaAuditingConfig;
 import udodog.goGetterServer.model.dto.request.sharingboard.CreateBoardRequest;
 import udodog.goGetterServer.model.entity.SharingBoard;
@@ -30,10 +29,7 @@ class SharingBoardRepositoryTest {
 
     @Test
     @DisplayName("SharingBoard Repository save Test")
-    @Rollback(value = false)
     void saveSharingBoard() {
-
-        for (int i = 0; i < 100; i++) {
             //given
             User user = User.builder().
                     email("testEmail@gmail.com").
@@ -47,7 +43,7 @@ class SharingBoardRepositoryTest {
             User saveUser = userRepository.save(user);
 
             String sharingBoardTag = "tag1, tag2, tag3";
-            CreateBoardRequest request = new CreateBoardRequest(user.getId(), "Sharing Board Test Title" + i, "Sharing Board Test Content" + i, "book Title" + i, sharingBoardTag);
+            CreateBoardRequest request = new CreateBoardRequest(user.getId(), "Sharing Board Test Title", "Sharing Board Test Content" , "book Title" , sharingBoardTag);
 
             SharingBoard sharingBoard = new SharingBoard(request, Optional.of(saveUser));
             //when
@@ -55,7 +51,7 @@ class SharingBoardRepositoryTest {
 
             //then
             assertThat(saveSharingBoard).isEqualTo(sharingBoard);
-        }
+
     }
 
 }
