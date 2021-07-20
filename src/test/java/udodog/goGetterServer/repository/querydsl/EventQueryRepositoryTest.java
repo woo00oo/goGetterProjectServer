@@ -1,7 +1,6 @@
 package udodog.goGetterServer.repository.querydsl;
 
 import lombok.extern.slf4j.Slf4j;
-import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +16,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import udodog.goGetterServer.config.JpaAuditingConfig;
 import udodog.goGetterServer.config.TestConfig;
 import udodog.goGetterServer.model.dto.response.event.EventsResponseDto;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 
 @RunWith(SpringRunner.class)
@@ -41,7 +42,7 @@ public class EventQueryRepositoryTest {
         result.stream()
                 .forEach(value -> log.info("title = {}, startDate = {}. endDate = {} ", value.getTitle(), value.getStartDate(), value.getEndDate()));
 
-        Assertions.assertThat(result.get().count()).isEqualTo(0);
+        assertThat(result.get().count()).isEqualTo(0);
     }
 
 }
