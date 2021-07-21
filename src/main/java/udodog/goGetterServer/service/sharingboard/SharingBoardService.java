@@ -124,8 +124,6 @@ public class SharingBoardService {
 
         SharingBoard board = boardById.get();
 
-        sharingBoardTagRepository.deleteAllBySharingBoardId(boardId);
-        sharingBoardReplyRepository.deleteBySharingBoardId(boardId);
         sharingBoardRepository.deleteById(boardId);
 
         return DefaultRes.response(HttpStatus.OK.value(),"글 삭제 성공");
