@@ -18,9 +18,7 @@ import udodog.goGetterServer.model.dto.response.event.DetailEventResponseDto;
 import udodog.goGetterServer.model.dto.response.event.EventsResponseDto;
 import udodog.goGetterServer.service.event.EventService;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.io.IOException;
 
 @Api(tags = {"이벤트 관련 API"})
 @RestController
@@ -80,24 +78,15 @@ public class EventController {
 
     @ApiOperation(value = "이벤트 업데이트 API",notes = "관리자는 이벤트를 업데이트 합니다.")
     @ApiResponses(value ={
-            @ApiResponse(code=200, message = "1. 데이터없음"),
-            @ApiResponse(code =303, message = "1. 업데이트성공")
+            @ApiResponse(code=200, message = "1. 업데이트성공 \n 2. 데이터없음")
     })
     @PatchMapping("/admin/events/{eventId}")
     public ResponseEntity eventUpdate(
             @PathVariable("eventId") Long eventId,
-            @Valid @RequestBody EventUpdateRequestDto request,
-            HttpServletResponse response
-    ) throws IOException {
-        String redirect_uri = "/api/events/" + eventId;
-        DefaultRes result = eventService.eventUpdate(eventId, request);
+            @Valid @RequestBody EventUpdateRequestDto request
+    ){
+        return new ResponseEntity<>(eventService.eventUpdate(eventId, request), HttpStatus.OK);
 
-        if(result.getStatusCode() == HttpStatus.SEE_OTHER.value()){
-            response.sendRedirect(redirect_uri);
-            return new ResponseEntity(result, HttpStatus.SEE_OTHER);
-        }else{
-            return new ResponseEntity(result, HttpStatus.OK);
-        }
     }
 
     @ApiOperation(value = "이벤트 삭제 API",notes = "관리자는 이벤트를 삭제 합니다.")

@@ -2,7 +2,6 @@ package udodog.goGetterServer.service.event;
 
 
 import lombok.extern.slf4j.Slf4j;
-import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -165,8 +164,9 @@ public class EventServiceTest {
         DefaultRes defaultRes2 = eventService.eventUpdate(2L, request);
 
         //then
-        Assertions.assertThat(defaultRes1.getStatusCode()).isEqualTo(303); // 업데이트 성공시 303 리다이렉트
-        Assertions.assertThat(defaultRes2.getStatusCode()).isEqualTo(200); // 업데이트 실패시 200 데이터없음
+        assertThat(defaultRes1.getStatusCode()).isEqualTo(200); // 업데이트 성공시 200
+        assertThat(defaultRes1.getMessage()).isEqualTo("업데이트성공");
+        assertThat(defaultRes2.getStatusCode()).isEqualTo(200); // 업데이트 실패시 200 데이터없음
 
 
 
@@ -189,6 +189,6 @@ public class EventServiceTest {
         DefaultRes result = eventService.eventDelete(1L);
 
         //then
-        Assertions.assertThat(result.getMessage()).isEqualTo("삭제성공");
+        assertThat(result.getMessage()).isEqualTo("삭제성공");
     }
 }

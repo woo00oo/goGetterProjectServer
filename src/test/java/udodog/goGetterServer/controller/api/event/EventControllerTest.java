@@ -82,7 +82,7 @@ public class EventControllerTest {
                         "  \"img_url\" : \"test.jpg\",\n" +
                         "  \"coupon_id\" : \"10\"\n" +
                         "}"))
-                .andExpect(status().is3xxRedirection());
+                .andExpect(status().isOk());
 
     }
 
