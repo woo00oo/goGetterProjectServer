@@ -141,12 +141,23 @@ public class UserQueryRepository {
         List<MemberJoinVisuallizationResponseDto> selectJoinCount =
                 queryFactory
                         .select(Projections.constructor(MemberJoinVisuallizationResponseDto.class,
+                                user.createdAt.yearMonth().count(),
+                                user.createdAt.yearMonth().count(),
+                                user.createdAt.yearMonth().count(),
+                                user.createdAt.yearMonth().count(),
+                                user.createdAt.yearMonth().count(),
+                                user.createdAt.yearMonth().count(),
+                                user.createdAt.yearMonth().count(),
+                                user.createdAt.yearMonth().count(),
+                                user.createdAt.yearMonth().count(),
+                                user.createdAt.yearMonth().count(),
+                                user.createdAt.yearMonth().count(),
                                 user.createdAt.yearMonth().count()
                         ))
                         .from(user)
-                        .where(user.createdAt.month().eq(requestDto.getMonth()),
-                                user.createdAt.year().eq(requestDto.getYear()))
+                        .where(user.createdAt.year().eq(requestDto.getYear()))
                         .orderBy(user.createdAt.yearMonth().asc())
+                        .groupBy(user.createdAt.yearMonth())
                         .fetch();
 
         return Optional.ofNullable(selectJoinCount);
