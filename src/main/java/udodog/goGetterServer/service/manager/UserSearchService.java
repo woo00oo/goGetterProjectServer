@@ -82,9 +82,6 @@ public class UserSearchService {
             return DefaultRes.response(HttpStatus.OK.value(), "Black등급만 삭제가능");
         } // 유효성 검사 끝
 
-
-
-
         return userOptional.filter(detailMember -> detailMember.getId().equals(userId))
                 .map(detailMember -> {
 
@@ -96,20 +93,13 @@ public class UserSearchService {
 
     // 월별 회원 가입 수 Count Method
     public DefaultRes<List<MemberJoinVisuallizationResponseDto>> memberJoinCount(MemberJoinCountRequestDto memberJoinCountRequestDto) {
-        Optional<List<MemberJoinVisuallizationResponseDto>> optionalUser = userQueryRepository.findByCreatedAt(memberJoinCountRequestDto);
+        List<MemberJoinVisuallizationResponseDto> searchUserList = userQueryRepository.findByCreatedAt(memberJoinCountRequestDto);
 
-        if (optionalUser.isEmpty()) { // 해당 시점에 회원 가입이 없다면?
+        if (searchUserList.isEmpty()) { // 해당 시점에 회원 가입이 없다면?
             DefaultRes.response(HttpStatus.OK.value(), "가입수없음");
-        } // if 문 끝
+        }
 
-        return optionalUser.filter(userCount -> userCount.size() > 0)
-                .map(userCount -> {
-                    for (int i = 0; i < userCount.size(); i++) {
-                        new MemberJoinVisuallizationResponseDto(userCount.get(i));
-                    }
-
-                    return DefaultRes.response(HttpStatus.OK.value(), "가입수찾음", userCount);
-                }).orElseGet(() -> DefaultRes.response(HttpStatus.OK.value(), "가입수없음"));
+        return DefaultRes.response(HttpStatus.OK.value(), "가입수 찾음", searchUserList);
 
     } // memberJoinCount() 끝
 

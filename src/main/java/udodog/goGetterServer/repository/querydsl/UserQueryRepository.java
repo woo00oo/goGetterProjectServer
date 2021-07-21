@@ -1,6 +1,11 @@
 package udodog.goGetterServer.repository.querydsl;
 
+import com.querydsl.core.types.ConstantImpl;
+import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.DateTemplate;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.StringTemplate;
 import com.querydsl.jpa.impl.JPADeleteClause;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.querydsl.jpa.impl.JPAUpdateClause;
@@ -21,8 +26,9 @@ import udodog.goGetterServer.model.entity.User;
 import udodog.goGetterServer.model.enumclass.UserGrade;
 
 import javax.persistence.EntityManager;
-import java.util.List;
-import java.util.Optional;
+import java.time.LocalDate;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static udodog.goGetterServer.model.entity.QUser.user;
 
@@ -136,31 +142,39 @@ public class UserQueryRepository {
 
     // 회원 가입일 전체 조회
 
-    public Optional<List<MemberJoinVisuallizationResponseDto>> findByCreatedAt(MemberJoinCountRequestDto requestDto) {
-
-        List<MemberJoinVisuallizationResponseDto> selectJoinCount =
+    public List<MemberJoinVisuallizationResponseDto> findByCreatedAt(MemberJoinCountRequestDto requestDto) {
+        StringTemplate formattedDate = Expressions.stringTemplate(
+                "DATE_FORMAT({0}, {1})"
+                , user.createdAt
+                , ConstantImpl.create("%m"));
+        List<MemberJoinVisuallizationResponseDto> searchJoinCount =
                 queryFactory
                         .select(Projections.constructor(MemberJoinVisuallizationResponseDto.class,
-                                user.createdAt.yearMonth().count(),
-                                user.createdAt.yearMonth().count(),
-                                user.createdAt.yearMonth().count(),
-                                user.createdAt.yearMonth().count(),
-                                user.createdAt.yearMonth().count(),
-                                user.createdAt.yearMonth().count(),
-                                user.createdAt.yearMonth().count(),
-                                user.createdAt.yearMonth().count(),
-                                user.createdAt.yearMonth().count(),
-                                user.createdAt.yearMonth().count(),
-                                user.createdAt.yearMonth().count(),
-                                user.createdAt.yearMonth().count()
+                                formattedDate.as("month"),
+                                user.createdAt.count()
                         ))
                         .from(user)
                         .where(user.createdAt.year().eq(requestDto.getYear()))
-                        .orderBy(user.createdAt.yearMonth().asc())
-                        .groupBy(user.createdAt.yearMonth())
+                        .groupBy(formattedDate)
+                        .orderBy(user.createdAt.asc())
                         .fetch();
+        Map<String, Long> map = new HashMap<>();
 
-        return Optional.ofNullable(selectJoinCount);
+        for (MemberJoinVisuallizationResponseDto month : searchJoinCount) { // Query문을 통해 조회 된 값을 month에 하나씩 넣으면서 반복
+            map.put(month.getMonth(), month.getCount());
+        } // for-each문 끝
+
+        for(int i = 1; i <= 12; i++) {      // 12개월을 기준으로 i를 증가 시켜 반복
+            String key = String.format("%02d", i);
+
+            if (map.get(String.valueOf(key)) == null) { // map안에 넣은 값이 없다면?
+                // 해당 월의 값을 0으로 넣어 값이 없는 달의 값도 출력 되게 한다.
+                MemberJoinVisuallizationResponseDto responseDto = new MemberJoinVisuallizationResponseDto(key, 0L);
+                searchJoinCount.add(responseDto);               // 0으로 된 Value를 가진 key를 다시 query문에 넣어 값이 0이 나오도록 한다.
+            } // if문 끝
+        } // for 문 끝
+
+        return searchJoinCount;
     } // findByCreatedAt() 끝
 
     // ######################## 검색 기능 ###########################

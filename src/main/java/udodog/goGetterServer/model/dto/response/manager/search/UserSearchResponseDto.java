@@ -27,5 +27,4 @@ public class UserSearchResponseDto {
         this.userGrade = userGrade;
         this.createdAt = createdAt;
     } // 생성자 끝
-
 } // Class 끝
