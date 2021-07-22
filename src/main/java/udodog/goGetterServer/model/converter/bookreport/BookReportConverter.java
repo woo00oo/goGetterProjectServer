@@ -15,7 +15,7 @@ public class BookReportConverter implements RepresentationModelAssembler<Default
     @Override
     public EntityModel<DefaultRes<BookReportDetailResponseDto>> toModel(DefaultRes<BookReportDetailResponseDto> entity) {
         return EntityModel.of(entity, linkTo( methodOn( BookReportController.class ).viewDetailBookReport( null)).withRel("detail"),
-                linkTo( methodOn( BookReportController.class ).updateBookReport( null, null, null )).withRel("update"),
-                linkTo( methodOn( BookReportController.class ).deleteReport( null, null )).withRel("delete"));
+                                      linkTo( methodOn( BookReportController.class ).updateBookReport( null, null, null )).withRel("update"),
+                                      linkTo( methodOn( BookReportController.class ).deleteReport( null, null )).withRel("delete"));
     } // toModel() 끝
 } // Class 끝

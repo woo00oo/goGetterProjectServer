@@ -17,8 +17,8 @@ import udodog.goGetterServer.model.entity.User;
 import udodog.goGetterServer.repository.BookReportRepository;
 import udodog.goGetterServer.repository.BookReportTagRepository;
 import udodog.goGetterServer.repository.UserRepository;
-import udodog.goGetterServer.repository.querydsl.BookReportQueryRepository;
-import udodog.goGetterServer.repository.querydsl.BookReportTagQueryRepository;
+import udodog.goGetterServer.repository.querydsl.bookReport.BookReportQueryRepository;
+import udodog.goGetterServer.repository.querydsl.bookReport.BookReportTagQueryRepository;
 
 import java.util.Optional;
 
