@@ -12,10 +12,14 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 import udodog.goGetterServer.config.JpaAuditingConfig;
+import udodog.goGetterServer.model.dto.request.sharingboard.CreateBoardRequest;
 import udodog.goGetterServer.model.entity.SharingBoard;
 import udodog.goGetterServer.model.entity.SharingBoardReply;
 import udodog.goGetterServer.model.entity.User;
 import udodog.goGetterServer.model.enumclass.UserGrade;
+
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -46,13 +50,12 @@ class SharingBoardReplyRepositoryTest {
 
         User saveUser = userRepository.save(user);
 
-        SharingBoard sharingBoard = SharingBoard.builder().
-                user(saveUser).
-                content("Sharing Board Test Content").
-                title("Sharing Board Test Title").
-                build();
+        String sharingBoardTag = "tag1, tag2, tag3";
+        CreateBoardRequest request = new CreateBoardRequest(user.getId(), "Sharing Board Test Title", "Sharing Board Test Content" , "book Title" , sharingBoardTag);
 
-        SharingBoard saveSharingBoard = sharingBoardRepository.save(sharingBoard);
+        SharingBoard sharingBoard = new SharingBoard(request, Optional.of(saveUser));
+
+        SharingBoard saveSharingBoard  = sharingBoardRepository.save(sharingBoard);
 
         SharingBoardReply sharingBoardReply = SharingBoardReply.
                                               builder().

@@ -3,7 +3,6 @@ package udodog.goGetterServer.model.dto.request.sharingboard;
 import lombok.*;
 
 import javax.validation.constraints.NotEmpty;
-import java.util.List;
 
 
 @Getter
