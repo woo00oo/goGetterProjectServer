@@ -45,7 +45,7 @@ public class BookReportController {
 
 
 
-    @ApiOperation(value = "독서기록 상세 페이지 API",notes = "상세 페이지 API")
+    @ApiOperation(value = "독서기록 상세 페이지 API", notes = "상세 페이지 API")
     @ApiResponses(value ={
             @ApiResponse(code=200, message = "1. 상세보기성공 \t\n 2. 데이터없음 \t\n 3. 토큰에러")
     })
