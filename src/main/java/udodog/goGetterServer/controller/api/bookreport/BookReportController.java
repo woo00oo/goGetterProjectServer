@@ -45,7 +45,7 @@ public class BookReportController {
 
 
 
-    @ApiOperation(value = "독서기록 상세 페이지 API",notes = "상세 페이지 API")
+    @ApiOperation(value = "독서기록 상세 페이지 API", notes = "상세 페이지 API")
     @ApiResponses(value ={
             @ApiResponse(code=200, message = "1. 상세보기성공 \t\n 2. 데이터없음 \t\n 3. 토큰에러")
     })
@@ -82,6 +82,9 @@ public class BookReportController {
         return new ResponseEntity<>(bookReportConverter.toModel(bookreportService.updateReport(updateRequestDto, bookReportId, userId)), HttpStatus.OK);
     } // updateBookReport() 끝
 
+    @ApiOperation(value = "독서 기록 삭제 API",notes = "독서 기록 삭제 API")
+    @ApiResponses(value = { @ApiResponse( code = 200, message = "1.삭제성공 \t\n 2.삭제실패 \t\n 3.데이터없음 \t\n 4.토큰에러" )})
+
     // 삭제 Method
     @DeleteMapping("/api/bkusers/book-reports/{bookReportId}")
     public ResponseEntity<EntityModel<DefaultRes<BookReportDetailResponseDto>>> deleteReport (@PathVariable("bookReportId") Long bookReportId, @RequestParam("userId") Long userId) {
@@ -92,6 +95,9 @@ public class BookReportController {
 
 
     // ##################################### 검색 기능 #####################################
+
+    @ApiOperation(value = "독서 기록 제목 검색 API",notes = "독서 기록 제목 검색 API")
+    @ApiResponses(value = { @ApiResponse( code = 200, message = "1.제목 검색성공 \t\n 2.제목 검색실패 \t\n 3.데이터없음 \t\n 4.토큰에러" )})
 
     // 제목 검색
     @GetMapping("/api/bkusers/book-reports/search/{title-search}")

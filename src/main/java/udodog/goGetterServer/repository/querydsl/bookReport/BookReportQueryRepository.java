@@ -1,4 +1,4 @@
-package udodog.goGetterServer.repository.querydsl;
+package udodog.goGetterServer.repository.querydsl.bookReport;
 
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPADeleteClause;
