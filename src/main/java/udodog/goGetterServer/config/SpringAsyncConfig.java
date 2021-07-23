@@ -2,6 +2,7 @@ package udodog.goGetterServer.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
@@ -13,6 +14,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 public class SpringAsyncConfig {
 
     @Bean
+    @Primary
     public Executor threadPoolTaskExecutor()
     {
         ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
