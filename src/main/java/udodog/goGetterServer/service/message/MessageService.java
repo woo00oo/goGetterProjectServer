@@ -94,7 +94,7 @@ public class MessageService {
     }
 
     public void save(Message message){
-
+        messageRepository.save(message);
     }
 
 }
