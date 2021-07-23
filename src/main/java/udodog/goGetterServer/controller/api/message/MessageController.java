@@ -33,10 +33,10 @@ public class MessageController {
             @ApiResponse(code=200, message = "1. 생성성공"),
             @ApiResponse(code=422, message = "1. 발신자정보없음 \n 2. 수신자정보없음")
     })
-    @GetMapping("/api/chat/newChat")
+    @GetMapping("/api/users/chat/newChat")
     public ResponseEntity<DefaultRes<MessageRoomResponseDto>> newMessageRoom(
-            @RequestParam("receiver") Long receiverId,
-            @RequestParam("sender") Long senderId){
+            @RequestParam("receiverId") Long receiverId,
+            @RequestParam("senderId") Long senderId){
 
         DefaultRes<MessageRoomResponseDto> result = messageService.newMessageRoom(receiverId, senderId);
 

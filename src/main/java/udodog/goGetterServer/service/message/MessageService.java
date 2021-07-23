@@ -72,6 +72,7 @@ public class MessageService {
         }
 
         List<MessageRoomJoin> listSecond = messageRoomJoinRepository.findAllByUserId(senderId);
+
         for(MessageRoomJoin chatRoomJoin : listSecond){
             if(setFirst.contains(chatRoomJoin.getMessageRoom())){
                 return chatRoomJoin.getMessageRoom().getId();
