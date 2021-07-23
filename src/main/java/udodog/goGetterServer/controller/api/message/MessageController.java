@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import udodog.goGetterServer.model.dto.DefaultRes;
@@ -53,4 +54,10 @@ public class MessageController {
         messageService.save(message);
         simpMessagingTemplate.convertAndSend("/topic/"+message.getMessageRoom().getId() , message);
     }
+
+    @MessageMapping("/Template")
+    public void SendTemplateMessage() { simpMessagingTemplate.convertAndSend("/topics/template" , "Template"); }
+
+    @RequestMapping(value="/api")
+    public void SendAPI() { simpMessagingTemplate.convertAndSend("/topics/api" , "API"); }
 }
