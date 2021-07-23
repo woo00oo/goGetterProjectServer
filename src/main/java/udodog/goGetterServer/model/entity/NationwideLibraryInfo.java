@@ -98,4 +98,5 @@ public class NationwideLibraryInfo {
         this.longtitude = longtitude;
         this.dataInputDay = dataInputDay;
     }  // 생성자 끝
+
 } // Class End

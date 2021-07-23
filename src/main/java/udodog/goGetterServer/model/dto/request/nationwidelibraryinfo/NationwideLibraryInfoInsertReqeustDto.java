@@ -85,4 +85,5 @@ public class NationwideLibraryInfoInsertReqeustDto {
                 .dataInputDay(infoInsertReqeustDto.dataInputDay)
                 .build();
     } //toEntity() 끝
+
 }// Class 끝
