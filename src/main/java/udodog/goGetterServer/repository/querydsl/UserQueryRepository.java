@@ -74,7 +74,7 @@ public class UserQueryRepository {
                         user.grade,
                         user.createdAt))
                 .from(user)
-                .where(user.grade.eq(UserGrade.USER))
+                .where(user.grade.eq(UserGrade.USER).or(user.grade.eq(UserGrade.BLACK)))
                 .orderBy(user.name.desc())
                 .fetch();
 
