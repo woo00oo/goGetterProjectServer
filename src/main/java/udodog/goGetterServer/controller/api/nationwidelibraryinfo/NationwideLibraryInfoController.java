@@ -70,7 +70,7 @@ public class NationwideLibraryInfoController {
             @Valid @RequestBody NationwideLibraryInfoUpdateReqeustDto updateReqeustDto, @PathVariable("nationwideLibraryInfolibraryInfoId") Long nationwideLibraryInfolibraryInfoId) {
 
         return new ResponseEntity<>(nationwidelibraryInfoConverter.toModel(nationwidelibraryInfoService.updateLibraryInfo(updateReqeustDto, nationwideLibraryInfolibraryInfoId)), HttpStatus.OK);
-    }
+    } // updateLibraryInfo() 끝
 
 
 //    @ApiOperation(value = "전국 도서관 정보 삭제 관련 API", notes = "전국 도서관 정보 삭제 관련 API")

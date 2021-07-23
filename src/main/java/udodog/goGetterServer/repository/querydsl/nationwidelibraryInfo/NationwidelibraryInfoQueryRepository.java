@@ -170,4 +170,5 @@ public class NationwidelibraryInfoQueryRepository {
                         .set(nationwideLibraryInfo.dataInputDay, updateReqeustDto.getDataInputDay())
                         .execute();
     } // updateLibraryInfo() 끝
+
 } // Class 끝

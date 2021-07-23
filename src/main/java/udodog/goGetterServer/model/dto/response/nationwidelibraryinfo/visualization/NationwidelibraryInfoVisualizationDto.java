@@ -38,6 +38,4 @@ public class NationwidelibraryInfoVisualizationDto {
     private String latitude;                    // 도서관 위치 위도값
 
     private String longtitude;                  // 도서관 위치 경도값
-
-
 } // Class 끝

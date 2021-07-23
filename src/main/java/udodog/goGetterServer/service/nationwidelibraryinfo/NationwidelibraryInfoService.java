@@ -61,7 +61,6 @@ public class NationwidelibraryInfoService {
             return DefaultRes.response(HttpStatus.OK.value(), "조회성공", byLocation, new Pagination(byLocation));
         }
 
-
     } // getLibraryLocationInfo() 끝
 
     public DefaultRes insertLibraryInfo(NationwideLibraryInfoInsertReqeustDto infoInsertReqeustDto) {

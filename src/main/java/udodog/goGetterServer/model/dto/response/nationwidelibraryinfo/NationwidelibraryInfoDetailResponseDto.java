@@ -58,5 +58,4 @@ public class NationwidelibraryInfoDetailResponseDto {
         private String longtitude;                  // 도서관 위치 경도값
 
        private String dataInputDay;                // 정보 입력일
-
 } // Class 끝
