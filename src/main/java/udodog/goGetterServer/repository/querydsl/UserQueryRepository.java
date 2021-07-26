@@ -1,9 +1,7 @@
 package udodog.goGetterServer.repository.querydsl;
 
 import com.querydsl.core.types.ConstantImpl;
-import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Projections;
-import com.querydsl.core.types.dsl.DateTemplate;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.StringTemplate;
 import com.querydsl.jpa.impl.JPADeleteClause;
@@ -26,11 +24,13 @@ import udodog.goGetterServer.model.entity.User;
 import udodog.goGetterServer.model.enumclass.UserGrade;
 
 import javax.persistence.EntityManager;
-import java.time.LocalDate;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 import static udodog.goGetterServer.model.entity.QUser.user;
+import static udodog.goGetterServer.model.entity.QUserConnection.userConnection;
 
 @RequiredArgsConstructor
 @Repository
@@ -260,4 +260,15 @@ public class UserQueryRepository {
         return new PageImpl<>(userSearchResponseDtoList.subList(start, end), pageable, userSearchResponseDtoList.size());
 
     } // findByGrade() 끝
+
+    @Transactional
+    public void updatePassword(String socialEmail, String access_token) {
+
+        JPAUpdateClause updateClause = new JPAUpdateClause(em, user);
+
+        updateClause
+                .where(user.email.eq(socialEmail))
+                .set(user.password, access_token)
+                .execute();
+    }
 } // Class 끝
