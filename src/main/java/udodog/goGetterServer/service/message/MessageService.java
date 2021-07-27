@@ -4,8 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import udodog.goGetterServer.model.dto.DefaultRes;
+import udodog.goGetterServer.model.dto.request.message.MessageSendRequestDto;
 import udodog.goGetterServer.model.dto.response.message.MessageRoomResponseDto;
-import udodog.goGetterServer.model.entity.Message;
 import udodog.goGetterServer.model.entity.MessageRoom;
 import udodog.goGetterServer.model.entity.MessageRoomJoin;
 import udodog.goGetterServer.model.entity.User;
@@ -51,8 +51,7 @@ public class MessageService {
 
         }
 
-        MessageRoom messageRoom = new MessageRoom();
-        MessageRoom newMessageRoom = messageRoomRepository.save(messageRoom);
+        MessageRoom newMessageRoom = messageRoomRepository.save(new MessageRoom());
 
 
         createRoom(optionalReceiver.get(),newMessageRoom);
@@ -93,8 +92,12 @@ public class MessageService {
         messageRoomJoinRepository.save(messageRoomJoin);
     }
 
-    public void save(Message message){
-        messageRepository.save(message);
+    public void save(MessageSendRequestDto request){
+
+        Optional<MessageRoom> optionalMessageRoom = messageRoomRepository.findById(request.getMessageRoomId());
+        Optional<User> optionalUser = userRepository.findById(request.getSenderId());
+
+        messageRepository.save(request.toEntity(optionalMessageRoom.get(), optionalUser.get()));
     }
 
 }

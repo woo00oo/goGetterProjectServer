@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -15,14 +16,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import udodog.goGetterServer.model.dto.DefaultRes;
+import udodog.goGetterServer.model.dto.request.message.MessageSendRequestDto;
 import udodog.goGetterServer.model.dto.response.message.MessageRoomResponseDto;
-import udodog.goGetterServer.model.entity.Message;
 import udodog.goGetterServer.service.message.MessageService;
 
 
 @Api(tags = {"메시지 관련 API"})
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 public class MessageController {
 
     private final MessageService messageService;
@@ -50,9 +52,10 @@ public class MessageController {
 
 
     @MessageMapping("/chat/send")
-    public void SendToMessage(Message message){
-        messageService.save(message);
-        simpMessagingTemplate.convertAndSend("/topic/"+message.getMessageRoom().getId() , message);
+    public void SendToMessage(MessageSendRequestDto request){
+        messageService.save(request);
+//       simpMessagingTemplate.convertAndSendToUser("");
+        simpMessagingTemplate.convertAndSend("/topic/"+request.getMessageRoomId() , request);
     }
 
     @MessageMapping("/Template")
