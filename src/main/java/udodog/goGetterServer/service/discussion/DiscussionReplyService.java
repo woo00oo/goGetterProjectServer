@@ -15,8 +15,8 @@ import udodog.goGetterServer.model.entity.DiscussionBoardReply;
 import udodog.goGetterServer.model.entity.User;
 import udodog.goGetterServer.repository.DiscussionBoardReplyRepository;
 import udodog.goGetterServer.repository.UserRepository;
-import udodog.goGetterServer.repository.querydsl.DiscussionBoardQueryRepository;
-import udodog.goGetterServer.repository.querydsl.DiscussionBoardReplyQueryRepository;
+import udodog.goGetterServer.repository.querydsl.disccussion.DiscussionBoardQueryRepository;
+import udodog.goGetterServer.repository.querydsl.disccussion.DiscussionBoardReplyQueryRepository;
 
 import java.util.Optional;
 
