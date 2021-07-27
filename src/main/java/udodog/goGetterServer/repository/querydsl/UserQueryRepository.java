@@ -24,6 +24,10 @@ import udodog.goGetterServer.model.entity.User;
 import udodog.goGetterServer.model.enumclass.UserGrade;
 
 import javax.persistence.EntityManager;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
+import java.util.stream.Collectors;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -142,7 +146,7 @@ public class UserQueryRepository {
 
     // 회원 가입일 전체 조회
 
-    public List<MemberJoinVisuallizationResponseDto> findByCreatedAt(MemberJoinCountRequestDto requestDto) {
+    public List<MemberJoinVisuallizationResponseDto> findByCreatedAt(String year) {
         StringTemplate formattedDate = Expressions.stringTemplate(
                 "DATE_FORMAT({0}, {1})"
                 , user.createdAt
@@ -154,7 +158,7 @@ public class UserQueryRepository {
                                 user.createdAt.count()
                         ))
                         .from(user)
-                        .where(user.createdAt.year().eq(requestDto.getYear()))
+                        .where(user.createdAt.year().eq(Integer.parseInt(year)))
                         .groupBy(formattedDate)
                         .orderBy(user.createdAt.asc())
                         .fetch();
