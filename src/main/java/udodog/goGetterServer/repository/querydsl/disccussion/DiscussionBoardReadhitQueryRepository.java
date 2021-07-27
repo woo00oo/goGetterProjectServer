@@ -1,4 +1,4 @@
-package udodog.goGetterServer.repository.querydsl;
+package udodog.goGetterServer.repository.querydsl.disccussion;
 
 import com.querydsl.jpa.impl.JPADeleteClause;
 import com.querydsl.jpa.impl.JPAQueryFactory;

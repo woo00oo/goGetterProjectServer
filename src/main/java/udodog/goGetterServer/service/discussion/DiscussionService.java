@@ -18,9 +18,9 @@ import udodog.goGetterServer.model.entity.User;
 import udodog.goGetterServer.repository.DiscussionBoardReadhitRepository;
 import udodog.goGetterServer.repository.DiscussionBoardRepository;
 import udodog.goGetterServer.repository.UserRepository;
-import udodog.goGetterServer.repository.querydsl.DiscussionBoardQueryRepository;
-import udodog.goGetterServer.repository.querydsl.DiscussionBoardReadhitQueryRepository;
-import udodog.goGetterServer.repository.querydsl.DiscussionBoardReplyQueryRepository;
+import udodog.goGetterServer.repository.querydsl.disccussion.DiscussionBoardQueryRepository;
+import udodog.goGetterServer.repository.querydsl.disccussion.DiscussionBoardReadhitQueryRepository;
+import udodog.goGetterServer.repository.querydsl.disccussion.DiscussionBoardReplyQueryRepository;
 
 import java.time.LocalDate;
 import java.util.List;
