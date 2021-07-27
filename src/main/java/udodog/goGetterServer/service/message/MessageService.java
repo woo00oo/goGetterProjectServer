@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import udodog.goGetterServer.model.dto.DefaultRes;
 import udodog.goGetterServer.model.dto.request.message.MessageSendRequestDto;
 import udodog.goGetterServer.model.dto.response.message.MessageRoomResponseDto;
-import udodog.goGetterServer.model.dto.response.message.findall.MessageFindAllResponseDto;
+import udodog.goGetterServer.model.dto.response.message.MessageFindAllResponseDto;
 import udodog.goGetterServer.model.entity.Message;
 import udodog.goGetterServer.model.entity.MessageRoom;
 import udodog.goGetterServer.model.entity.MessageRoomJoin;
@@ -105,16 +105,15 @@ public class MessageService {
 
     public DefaultRes<List<MessageFindAllResponseDto>> findAllMessage(Long userId){
 
-        Optional<User> optionalUser = userRepository.findById(userId);
-
         List<MessageRoomJoin> messageRoomJoinList = messageRoomJoinRepository.findAllByUserId(userId);
 
         List<MessageFindAllResponseDto> messageFindAllResponseDtoList = new ArrayList<>();
 
         messageRoomJoinList.forEach(messageRoomJoin -> {
             Message message = messageQueryRepository.findMessage(messageRoomJoin.getMessageRoom());
-            User theOtherUser = messageQueryRepository.findTheOtherUser(messageRoomJoin.getMessageRoom(), optionalUser.get());
-            messageFindAllResponseDtoList.add(new MessageFindAllResponseDto(theOtherUser.getId(), theOtherUser.getNickName(), message.getContent(), message.getSendAt()));
+            User theOtherUser = messageQueryRepository.findTheOtherUser(messageRoomJoin.getMessageRoom(), userId);
+            messageFindAllResponseDtoList.add(new MessageFindAllResponseDto(theOtherUser.getId(), theOtherUser.getNickName(),
+                    message.getContent(), message.getSendAt(), messageRoomJoin.getMessageRoom().getId()));
         });
 
         return DefaultRes.response(HttpStatus.OK.value(), "조회성공", messageFindAllResponseDtoList);

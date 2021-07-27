@@ -17,8 +17,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import udodog.goGetterServer.model.dto.DefaultRes;
 import udodog.goGetterServer.model.dto.request.message.MessageSendRequestDto;
+import udodog.goGetterServer.model.dto.response.message.MessageFindDetailResponseDto;
 import udodog.goGetterServer.model.dto.response.message.MessageRoomResponseDto;
-import udodog.goGetterServer.model.dto.response.message.findall.MessageFindAllResponseDto;
+import udodog.goGetterServer.model.dto.response.message.MessageFindAllResponseDto;
 import udodog.goGetterServer.service.message.MessageService;
 
 import java.util.List;
@@ -70,6 +71,17 @@ public class MessageController {
             @PathVariable("userId") Long userId
     ){
         return new ResponseEntity<>(messageService.findAllMessage(userId), HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "채팅방 상세조회 API",notes = "채팅방 상세조회시 사용되는 API 입니다.")
+    @ApiResponses(value ={
+            @ApiResponse(code=200, message = "1. 조회성공")
+
+    })
+    public ResponseEntity<DefaultRes<List<MessageFindDetailResponseDto>>> findDetailMessage(
+
+    ){
+        return null;
     }
 
 

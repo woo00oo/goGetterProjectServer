@@ -6,6 +6,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import udodog.goGetterServer.model.entity.*;
 
+import static udodog.goGetterServer.model.entity.QMessage.message;
+import static udodog.goGetterServer.model.entity.QMessageRoomJoin.messageRoomJoin;
+import static udodog.goGetterServer.model.entity.QUser.user;
+
 @RequiredArgsConstructor
 @Repository
 public class MessageQueryRepository {
@@ -14,19 +18,19 @@ public class MessageQueryRepository {
 
     public Message findMessage(MessageRoom messageRoom){
 
-        return queryFactory.select(QMessage.message)
-                .from(QMessage.message)
-                .where(QMessage.message.messageRoom.eq(messageRoom))
-                .orderBy(QMessage.message.sendAt.desc())
+        return queryFactory.select(message)
+                .from(message)
+                .where(message.messageRoom.eq(messageRoom))
+                .orderBy(message.sendAt.desc())
                 .limit(1)
                 .fetchOne();
 
     }
 
-    public User findTheOtherUser(MessageRoom messageRoom, User user){
-        return queryFactory.select(QUser.user)
-                .from(QMessageRoomJoin.messageRoomJoin)
-                .where(QMessageRoomJoin.messageRoomJoin.messageRoom.eq(messageRoom).and(QMessageRoomJoin.messageRoomJoin.user.eq(user).not()))
+    public User findTheOtherUser(MessageRoom messageRoom, Long userId){
+        return queryFactory.select(user)
+                .from(messageRoomJoin)
+                .where(messageRoomJoin.messageRoom.eq(messageRoom).and(messageRoomJoin.user.id.eq(userId).not()))
                 .fetchOne();
     }
 
