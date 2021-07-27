@@ -27,7 +27,7 @@ public class OauthService {
         try {
             response.sendRedirect(redirectURL);
         } catch (IOException e) {
-            new IllegalArgumentException("알 수 없는 구글 로그인 Access Token 요청 URL 입니다");
+            new IllegalArgumentException("알 수 없는 Access Token 요청 URL 입니다");
         }
     }
 
@@ -36,10 +36,10 @@ public class OauthService {
 
         if(socialLoginType == SocialLoginType.GOOGLE){
             String token = socialOauth.requestAccessToken(code);
-            googleOauth.requestAccessTokenUsingURL(token);
+            return DefaultRes.response(HttpStatus.OK.value(), "등록성공", googleOauth.requestAccessTokenUsingURL(token));
         }else if (socialLoginType == SocialLoginType.FACEBOOK){
             String token = socialOauth.requestAccessToken(code);
-            facebookOauth.requestAccessTokenUsingURL(token);
+            return DefaultRes.response(HttpStatus.OK.value(), "등록성공", facebookOauth.requestAccessTokenUsingURL(token));
         }
 
         return DefaultRes.response(HttpStatus.OK.value(), "등록실패");

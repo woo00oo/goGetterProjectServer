@@ -271,4 +271,16 @@ public class UserQueryRepository {
                 .set(user.password, access_token)
                 .execute();
     }
+
+    public User findBySocialEmail(String socialEmail){
+        User userInfo =
+                queryFactory
+                        .selectFrom(user)
+                        .innerJoin(user.userConnection, userConnection)
+                        .fetchJoin()
+                        .where(user.email.eq(socialEmail))
+                        .fetchOne();
+
+        return userInfo;
+    }
 } // Class 끝

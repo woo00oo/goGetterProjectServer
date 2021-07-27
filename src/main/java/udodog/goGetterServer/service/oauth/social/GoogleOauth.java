@@ -164,13 +164,17 @@ public class GoogleOauth implements SocialOauth {
 
                     userRepository.save(user);
 
-                    return DefaultRes.response(HttpStatus.OK.value(), "등록성공");
+                    user = userQueryRepository.findBySocialEmail(email);
+
+                    return DefaultRes.response(HttpStatus.OK.value(), "등록성공", user);
 
                 }else{
                     userConnectionQueryRepository.updatePassword(email, access_token);
                     userQueryRepository.updatePassword(email, access_token);
 
-                    return DefaultRes.response(HttpStatus.OK.value(), "토큰수정완료");
+                    User user = userQueryRepository.findBySocialEmail(email);
+
+                    return DefaultRes.response(HttpStatus.OK.value(), "토큰수정완료", user);
                 }
             }
 
