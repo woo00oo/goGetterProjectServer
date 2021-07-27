@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 import udodog.goGetterServer.model.dto.DefaultRes;
 import udodog.goGetterServer.model.dto.request.message.MessageSendRequestDto;
 import udodog.goGetterServer.model.dto.response.message.MessageRoomResponseDto;
+import udodog.goGetterServer.model.dto.response.message.findall.MessageFindAllResponseDto;
+import udodog.goGetterServer.model.entity.Message;
 import udodog.goGetterServer.model.entity.MessageRoom;
 import udodog.goGetterServer.model.entity.MessageRoomJoin;
 import udodog.goGetterServer.model.entity.User;
@@ -13,11 +15,9 @@ import udodog.goGetterServer.repository.MessageRepository;
 import udodog.goGetterServer.repository.MessageRoomJoinRepository;
 import udodog.goGetterServer.repository.MessageRoomRepository;
 import udodog.goGetterServer.repository.UserRepository;
+import udodog.goGetterServer.repository.querydsl.message.MessageQueryRepository;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -30,6 +30,8 @@ public class MessageService {
     private final MessageRoomJoinRepository messageRoomJoinRepository;
 
     private final UserRepository userRepository;
+
+    private final MessageQueryRepository messageQueryRepository;
 
 
     public DefaultRes<MessageRoomResponseDto> newMessageRoom(Long receiverId, Long senderId){
@@ -98,6 +100,25 @@ public class MessageService {
         Optional<User> optionalUser = userRepository.findById(request.getSenderId());
 
         messageRepository.save(request.toEntity(optionalMessageRoom.get(), optionalUser.get()));
+    }
+
+
+    public DefaultRes<List<MessageFindAllResponseDto>> findAllMessage(Long userId){
+
+        Optional<User> optionalUser = userRepository.findById(userId);
+
+        List<MessageRoomJoin> messageRoomJoinList = messageRoomJoinRepository.findAllByUserId(userId);
+
+        List<MessageFindAllResponseDto> messageFindAllResponseDtoList = new ArrayList<>();
+
+        messageRoomJoinList.forEach(messageRoomJoin -> {
+            Message message = messageQueryRepository.findMessage(messageRoomJoin.getMessageRoom());
+            User theOtherUser = messageQueryRepository.findTheOtherUser(messageRoomJoin.getMessageRoom(), optionalUser.get());
+            messageFindAllResponseDtoList.add(new MessageFindAllResponseDto(theOtherUser.getId(), theOtherUser.getNickName(), message.getContent(), message.getSendAt()));
+        });
+
+        return DefaultRes.response(HttpStatus.OK.value(), "조회성공", messageFindAllResponseDtoList);
+
     }
 
 }

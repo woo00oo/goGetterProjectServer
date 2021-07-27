@@ -12,13 +12,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import udodog.goGetterServer.model.dto.DefaultRes;
 import udodog.goGetterServer.model.dto.request.message.MessageSendRequestDto;
 import udodog.goGetterServer.model.dto.response.message.MessageRoomResponseDto;
+import udodog.goGetterServer.model.dto.response.message.findall.MessageFindAllResponseDto;
 import udodog.goGetterServer.service.message.MessageService;
+
+import java.util.List;
 
 
 @Api(tags = {"메시지 관련 API"})
@@ -36,7 +39,7 @@ public class MessageController {
             @ApiResponse(code=200, message = "1. 생성성공"),
             @ApiResponse(code=422, message = "1. 발신자정보없음 \n 2. 수신자정보없음")
     })
-    @GetMapping("/api/users/chat/newChat")
+    @GetMapping("/api/users/chats/newChat")
     public ResponseEntity<DefaultRes<MessageRoomResponseDto>> newMessageRoom(
             @RequestParam("receiverId") Long receiverId,
             @RequestParam("senderId") Long senderId){
@@ -54,13 +57,20 @@ public class MessageController {
     @MessageMapping("/chat/send")
     public void SendToMessage(MessageSendRequestDto request){
         messageService.save(request);
-//       simpMessagingTemplate.convertAndSendToUser("");
         simpMessagingTemplate.convertAndSend("/topic/"+request.getMessageRoomId() , request);
     }
 
-    @MessageMapping("/Template")
-    public void SendTemplateMessage() { simpMessagingTemplate.convertAndSend("/topics/template" , "Template"); }
+    @ApiOperation(value = "채팅방 전체조회 API",notes = "채팅방 전체조회시 사용되는 API 입니다.")
+    @ApiResponses(value ={
+            @ApiResponse(code=200, message = "1. 조회성공")
 
-    @RequestMapping(value="/api")
-    public void SendAPI() { simpMessagingTemplate.convertAndSend("/topics/api" , "API"); }
+    })
+    @GetMapping("/api/users/chats/{userId}")
+    public ResponseEntity<DefaultRes<List<MessageFindAllResponseDto>>> findAllMessage(
+            @PathVariable("userId") Long userId
+    ){
+        return new ResponseEntity<>(messageService.findAllMessage(userId), HttpStatus.OK);
+    }
+
+
 }

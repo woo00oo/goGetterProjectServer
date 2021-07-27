@@ -15,7 +15,7 @@ public class MessageFindAllResponseDto {
 
     private LocalDateTime sendAt;
 
-    private Integer uncheckedMessageCnt;
+   // private Integer uncheckedMessageCnt;
 
     public MessageFindAllResponseDto(Long theOtherUserId, String nickName, String content, LocalDateTime sendAt) {
         this.theOtherUserId = theOtherUserId;
