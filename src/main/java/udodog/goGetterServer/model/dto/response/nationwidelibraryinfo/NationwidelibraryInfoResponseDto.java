@@ -78,4 +78,5 @@ public class NationwidelibraryInfoResponseDto {
         this.website = website;
         this.dataInputDay = dataInputDay;
     } // 생성자 끝
+
 } // class 끝
