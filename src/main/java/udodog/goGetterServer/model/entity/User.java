@@ -41,15 +41,20 @@ public class User {
 
     private String profileUrl;
 
+    @OneToOne(fetch = FetchType.LAZY, targetEntity = UserConnection.class)
+    @JoinColumn(name = "user_connection_id")
+    private UserConnection userConnection;
+
     @Builder
     public User(String email, String password, String name, String nickName, String phoneNumber,
-                UserGrade grade) {
+                UserGrade grade, UserConnection userConnection) {
         this.email = email;
         this.password = password;
         this.name = name;
         this.nickName = nickName;
         this.phoneNumber = phoneNumber;
         this.grade = grade;
+        this.userConnection = userConnection;
     }
 
     public void setRefreshToken(String refreshToken){

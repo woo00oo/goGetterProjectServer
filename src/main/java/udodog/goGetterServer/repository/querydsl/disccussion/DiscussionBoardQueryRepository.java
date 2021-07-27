@@ -1,4 +1,4 @@
-package udodog.goGetterServer.repository.querydsl;
+package udodog.goGetterServer.repository.querydsl.disccussion;
 
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPADeleteClause;
@@ -84,7 +84,6 @@ public class DiscussionBoardQueryRepository {
                 queryFactory
                         .selectFrom(discussionBoard)
                         .innerJoin(discussionBoard.user, user)
-                        .fetchJoin()
                         .where(discussionBoard.id.eq(id))
                         .fetchOne();
 
@@ -181,7 +180,7 @@ public class DiscussionBoardQueryRepository {
                         .from(discussionBoard)
                         .innerJoin(discussionBoard.user, user)
                         .join(discussionBoardReadhit).on(discussionBoardReadhit.discussionBoard.id.eq(discussionBoard.id))
-                        .where(discussionBoard.title.contains(search), discussionBoard.content.contains(search))
+                        .where(discussionBoard.title.contains(search).or(discussionBoard.content.contains(search)))
                         .orderBy(discussionBoard.id.desc())
                         .fetch();
 
