@@ -16,7 +16,6 @@ import udodog.goGetterServer.config.TestConfig;
 import udodog.goGetterServer.model.entity.Coupon;
 import udodog.goGetterServer.model.entity.CouponUseHistory;
 import udodog.goGetterServer.model.entity.User;
-import udodog.goGetterServer.model.enumclass.UserGrade;
 import udodog.goGetterServer.repository.CouponRepository;
 import udodog.goGetterServer.repository.CouponUseHistoryRepository;
 import udodog.goGetterServer.repository.UserRepository;
@@ -53,7 +52,7 @@ public class CouponQueryRepositoryTest {
         //given
         Coupon coupon = new Coupon("쿠폰",3000,30,1000);
         couponRepository.save(coupon);
-        User user= new User( "test@test.com", "12345", "테스터", "테스트", "01011112222", UserGrade.USER);
+        User user= new User();
         userRepository.save(user);
         CouponUseHistory couponUseHistory = new CouponUseHistory(user, coupon, "11111-2222222", LocalDate.now());
         CouponUseHistory savedCouponUseHistory = couponUseHistoryRepository.save(couponUseHistory);
