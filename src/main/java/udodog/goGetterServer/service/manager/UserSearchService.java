@@ -92,8 +92,8 @@ public class UserSearchService {
     } // blackMemberWithdrawal() 끝
 
     // 월별 회원 가입 수 Count Method
-    public DefaultRes<List<MemberJoinVisuallizationResponseDto>> memberJoinCount(MemberJoinCountRequestDto memberJoinCountRequestDto) {
-        List<MemberJoinVisuallizationResponseDto> searchUserList = userQueryRepository.findByCreatedAt(memberJoinCountRequestDto);
+    public DefaultRes<List<MemberJoinVisuallizationResponseDto>> memberJoinCount(String year) {
+        List<MemberJoinVisuallizationResponseDto> searchUserList = userQueryRepository.findByCreatedAt(year);
 
         if (searchUserList.isEmpty()) { // 해당 시점에 회원 가입이 없다면?
             DefaultRes.response(HttpStatus.OK.value(), "가입수없음");

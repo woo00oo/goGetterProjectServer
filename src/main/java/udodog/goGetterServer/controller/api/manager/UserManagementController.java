@@ -81,8 +81,8 @@ public class UserManagementController {
 
     // 월 별 회원가입수 시각화 값 전달 Method
     @GetMapping("/join-visuallization")
-    public ResponseEntity<EntityModel<DefaultRes<List<MemberJoinVisuallizationResponseDto>>>> memberJoingCount(@RequestBody MemberJoinCountRequestDto memberJoinCountRequestDto) {
-        return new ResponseEntity<>(listConverter.toModel(userSearchService.memberJoinCount(memberJoinCountRequestDto)), HttpStatus.OK);
+    public ResponseEntity<EntityModel<DefaultRes<List<MemberJoinVisuallizationResponseDto>>>> memberJoingCount(@RequestParam("year") String year) {
+        return new ResponseEntity<>(listConverter.toModel(userSearchService.memberJoinCount(year)), HttpStatus.OK);
     } // countMemberJoin() 끝
 
 
