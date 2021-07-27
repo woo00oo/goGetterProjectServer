@@ -33,10 +33,11 @@ public class OauthController {
     @ApiParam("GOOGLE, FACEBOOK")
 
     @GetMapping(value = "/{socialLoginType}")
-    public void socialLoginType(
+    public ResponseEntity<EntityModel<DefaultRes>> socialLoginType(
             @PathVariable(name = "socialLoginType") SocialLoginType socialLoginType) {
         log.info(">> 사용자로부터 SNS 로그인 요청을 받음 :: {} Social Login", socialLoginType);
-        oauthService.request(socialLoginType);
+
+        return new ResponseEntity<>(oauthConverter.toModel(oauthService.request(socialLoginType)), HttpStatus.OK);
     }
 
     /**

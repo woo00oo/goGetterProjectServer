@@ -9,26 +9,20 @@ import udodog.goGetterServer.service.oauth.social.FacebookOauth;
 import udodog.goGetterServer.service.oauth.social.GoogleOauth;
 import udodog.goGetterServer.service.oauth.social.SocialOauth;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class OauthService {
     private final List<SocialOauth> socialOauthList;
-    private final HttpServletResponse response;
     private final GoogleOauth googleOauth;
     private final FacebookOauth facebookOauth;
 
-    public void request(SocialLoginType socialLoginType) {
+    public DefaultRes request(SocialLoginType socialLoginType) {
         SocialOauth socialOauth = this.findSocialOauthByType(socialLoginType);
         String redirectURL = socialOauth.getOauthRedirectURL();
-        try {
-            response.sendRedirect(redirectURL);
-        } catch (IOException e) {
-            new IllegalArgumentException("알 수 없는 Access Token 요청 URL 입니다");
-        }
+
+        return DefaultRes.response(HttpStatus.OK.value(), "리다이렉트주소", redirectURL);
     }
 
     public DefaultRes requestAccessToken(SocialLoginType socialLoginType, String code) {

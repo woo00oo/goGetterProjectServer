@@ -16,6 +16,7 @@ public class OauthConverter implements RepresentationModelAssembler<DefaultRes, 
     public EntityModel<DefaultRes> toModel(DefaultRes entity) {
 
         return EntityModel.of(entity,
+                linkTo(methodOn(OauthController.class).socialLoginType(null)).withSelfRel(),
                 linkTo(methodOn(OauthController.class).callback(null, null)).withSelfRel());
     }
 }
