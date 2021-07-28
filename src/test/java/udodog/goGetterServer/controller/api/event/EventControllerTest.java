@@ -14,9 +14,11 @@ import udodog.goGetterServer.model.converter.event.EventConverter;
 import udodog.goGetterServer.model.dto.DefaultRes;
 import udodog.goGetterServer.service.event.EventService;
 
+import static org.hamcrest.core.IsEqual.equalTo;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
@@ -82,7 +84,8 @@ public class EventControllerTest {
                         "  \"img_url\" : \"test.jpg\",\n" +
                         "  \"coupon_id\" : \"10\"\n" +
                         "}"))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message", equalTo(response.getMessage())));
 
     }
 

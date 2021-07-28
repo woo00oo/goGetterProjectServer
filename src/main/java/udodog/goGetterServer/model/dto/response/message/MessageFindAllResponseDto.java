@@ -1,5 +1,6 @@
-package udodog.goGetterServer.model.dto.response.message.findall;
+package udodog.goGetterServer.model.dto.response.message;
 
+import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
@@ -15,12 +16,17 @@ public class MessageFindAllResponseDto {
 
     private LocalDateTime sendAt;
 
-    private Integer uncheckedMessageCnt;
+    private Long messageRoomId;
 
-    public MessageFindAllResponseDto(Long theOtherUserId, String nickName, String content, LocalDateTime sendAt) {
+   // private Integer uncheckedMessageCnt;
+
+    @Builder
+    public MessageFindAllResponseDto(Long theOtherUserId, String nickName,
+                                     String content, LocalDateTime sendAt, Long messageRoomId) {
         this.theOtherUserId = theOtherUserId;
         this.nickName = nickName;
         this.content = content;
         this.sendAt = sendAt;
+        this.messageRoomId = messageRoomId;
     }
 }
