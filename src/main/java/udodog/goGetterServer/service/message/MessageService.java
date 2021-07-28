@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import udodog.goGetterServer.model.dto.DefaultRes;
 import udodog.goGetterServer.model.dto.request.message.MessageSendRequestDto;
+import udodog.goGetterServer.model.dto.response.message.MessageFindDetailResponseDto;
 import udodog.goGetterServer.model.dto.response.message.MessageRoomResponseDto;
 import udodog.goGetterServer.model.dto.response.message.MessageFindAllResponseDto;
 import udodog.goGetterServer.model.entity.Message;
@@ -110,14 +111,43 @@ public class MessageService {
         List<MessageFindAllResponseDto> messageFindAllResponseDtoList = new ArrayList<>();
 
         messageRoomJoinList.forEach(messageRoomJoin -> {
+            // 가장 최근 메시지 조회
             Message message = messageQueryRepository.findMessage(messageRoomJoin.getMessageRoom());
+            // 상대방 닉네임, Id 조회
             User theOtherUser = messageQueryRepository.findTheOtherUser(messageRoomJoin.getMessageRoom(), userId);
-            messageFindAllResponseDtoList.add(new MessageFindAllResponseDto(theOtherUser.getId(), theOtherUser.getNickName(),
-                    message.getContent(), message.getSendAt(), messageRoomJoin.getMessageRoom().getId()));
+            messageFindAllResponseDtoList.add(
+                    MessageFindAllResponseDto
+                            .builder()
+                            .theOtherUserId(theOtherUser.getId())
+                            .nickName(theOtherUser.getNickName())
+                            .content(message.getContent())
+                            .sendAt(message.getSendAt())
+                            .messageRoomId(messageRoomJoin.getMessageRoom().getId())
+                            .build());
         });
 
         return DefaultRes.response(HttpStatus.OK.value(), "조회성공", messageFindAllResponseDtoList);
 
     }
 
+    public DefaultRes<List<MessageFindDetailResponseDto>> findDetailMessage(Long messageRoomId){
+
+        List<MessageFindDetailResponseDto> result = new ArrayList<>();
+
+        List<Message> messageList = messageQueryRepository.findDetailMessage(messageRoomId);
+
+        messageList.forEach(message -> {
+            result.add(
+                    MessageFindDetailResponseDto.builder()
+                    .sendNickName(message.getUser().getNickName())
+                    .content(message.getContent())
+                    .sendAt(message.getSendAt())
+                    .build()
+            );
+            message.checkMessage();
+        });
+
+        return DefaultRes.response(HttpStatus.OK.value(), "조회성공", result);
+
+    }
 }

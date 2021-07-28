@@ -78,10 +78,11 @@ public class MessageController {
             @ApiResponse(code=200, message = "1. 조회성공")
 
     })
+    @GetMapping("/api/users/chats/detail/{messageRoomId}")
     public ResponseEntity<DefaultRes<List<MessageFindDetailResponseDto>>> findDetailMessage(
-
+        @PathVariable("messageRoomId") Long messageRoomId
     ){
-        return null;
+        return new ResponseEntity<>(messageService.findDetailMessage(messageRoomId), HttpStatus.OK);
     }
 
 

@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import udodog.goGetterServer.model.entity.*;
 
+import java.util.List;
+
 import static udodog.goGetterServer.model.entity.QMessage.message;
 import static udodog.goGetterServer.model.entity.QMessageRoomJoin.messageRoomJoin;
 import static udodog.goGetterServer.model.entity.QUser.user;
@@ -34,4 +36,16 @@ public class MessageQueryRepository {
                 .fetchOne();
     }
 
+    public List<Message> findDetailMessage(Long messageRoomId){
+
+
+        return queryFactory.select(message)
+                .from(message)
+                .where(message.messageRoom.id.eq(messageRoomId))
+                .innerJoin(message.user, user)
+                .fetchJoin()
+                .orderBy(message.sendAt.desc())
+                .fetch();
+
+    }
 }
