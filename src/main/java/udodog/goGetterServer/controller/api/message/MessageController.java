@@ -20,6 +20,7 @@ import udodog.goGetterServer.model.dto.request.message.MessageSendRequestDto;
 import udodog.goGetterServer.model.dto.response.message.MessageFindDetailResponseDto;
 import udodog.goGetterServer.model.dto.response.message.MessageRoomResponseDto;
 import udodog.goGetterServer.model.dto.response.message.MessageFindAllResponseDto;
+import udodog.goGetterServer.model.dto.response.message.MessageSendResponseDto;
 import udodog.goGetterServer.service.message.MessageService;
 
 import java.util.List;
@@ -57,8 +58,12 @@ public class MessageController {
 
     @MessageMapping("/chat/send")
     public void SendToMessage(MessageSendRequestDto request){
-        messageService.save(request);
-        simpMessagingTemplate.convertAndSend("/topic/"+request.getReceiverId() , request);
+        MessageSendResponseDto responseDto = messageService.save(request);
+
+        if (responseDto != null){
+            simpMessagingTemplate.convertAndSend("/topic/"+request.getReceiverId() , responseDto);
+        }
+
     }
 
     @ApiOperation(value = "채팅방 전체조회 API",notes = "채팅방 전체조회시 사용되는 API 입니다.")

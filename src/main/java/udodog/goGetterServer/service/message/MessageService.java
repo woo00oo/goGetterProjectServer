@@ -8,6 +8,7 @@ import udodog.goGetterServer.model.dto.request.message.MessageSendRequestDto;
 import udodog.goGetterServer.model.dto.response.message.MessageFindDetailResponseDto;
 import udodog.goGetterServer.model.dto.response.message.MessageRoomResponseDto;
 import udodog.goGetterServer.model.dto.response.message.MessageFindAllResponseDto;
+import udodog.goGetterServer.model.dto.response.message.MessageSendResponseDto;
 import udodog.goGetterServer.model.entity.Message;
 import udodog.goGetterServer.model.entity.MessageRoom;
 import udodog.goGetterServer.model.entity.MessageRoomJoin;
@@ -95,12 +96,18 @@ public class MessageService {
         messageRoomJoinRepository.save(messageRoomJoin);
     }
 
-    public void save(MessageSendRequestDto request){
+    public MessageSendResponseDto save(MessageSendRequestDto request){
 
         Optional<MessageRoom> optionalMessageRoom = messageRoomRepository.findById(request.getMessageRoomId());
         Optional<User> optionalUser = userRepository.findById(request.getSenderId());
 
-        messageRepository.save(request.toEntity(optionalMessageRoom.get(), optionalUser.get()));
+        if (optionalMessageRoom.isEmpty() || optionalUser.isEmpty()){
+            return null;
+        }
+
+        Message message = messageRepository.save(request.toEntity(optionalMessageRoom.get(), optionalUser.get()));
+
+        return new MessageSendResponseDto(message);
     }
 
 
