@@ -16,10 +16,14 @@ public class UserSignInResponseDto {
 
     private UserGrade userGrade;
 
-    public UserSignInResponseDto(String accessToken, String refreshToken, Long userId, UserGrade userGrade) {
+    private String nickName;
+
+    public UserSignInResponseDto(String accessToken, String refreshToken,
+                                 Long userId, UserGrade userGrade, String nickName) {
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
         this.userId = userId;
         this.userGrade = userGrade;
+        this.nickName = nickName;
     }
 }
