@@ -44,7 +44,7 @@ public class MessageQueryRepository {
                 .where(message.messageRoom.id.eq(messageRoomId))
                 .innerJoin(message.user, user)
                 .fetchJoin()
-                .orderBy(message.sendAt.desc())
+                .orderBy(message.sendAt.asc())
                 .fetch();
 
     }

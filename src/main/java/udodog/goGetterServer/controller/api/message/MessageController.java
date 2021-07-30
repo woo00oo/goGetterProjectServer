@@ -58,7 +58,7 @@ public class MessageController {
     @MessageMapping("/chat/send")
     public void SendToMessage(MessageSendRequestDto request){
         messageService.save(request);
-        simpMessagingTemplate.convertAndSend("/topic/"+request.getMessageRoomId() , request);
+        simpMessagingTemplate.convertAndSend("/topic/"+request.getReceiverId() , request);
     }
 
     @ApiOperation(value = "채팅방 전체조회 API",notes = "채팅방 전체조회시 사용되는 API 입니다.")
