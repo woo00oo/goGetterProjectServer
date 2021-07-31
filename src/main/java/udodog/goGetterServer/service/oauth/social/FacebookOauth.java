@@ -174,7 +174,7 @@ public class FacebookOauth implements SocialOauth {
                     String refreshToken = JwtUtil.createRefreshToken(user.getId(), user.getGrade());
                     user.setRefreshToken(refreshToken);
 
-                    return DefaultRes.response(HttpStatus.OK.value(), "등록성공", new UserSignInResponseDto(accessToken, refreshToken, user.getId(), user.getGrade()));
+                    return DefaultRes.response(HttpStatus.OK.value(), "등록성공", new UserSignInResponseDto(accessToken, refreshToken, user.getId(), user.getGrade(), user.getNickName()));
 
                 }else{
                     userConnectionQueryRepository.updatePassword(email, access_token);
