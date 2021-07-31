@@ -21,6 +21,9 @@ public class MessageSendRequestDto {
     @NotNull
     private Long senderId;
 
+    @NotNull
+    private Long receiverId;
+
     @NotEmpty
     private String content;
 
