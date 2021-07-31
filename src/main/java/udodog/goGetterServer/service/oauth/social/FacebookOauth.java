@@ -7,16 +7,17 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import udodog.goGetterServer.model.dto.DefaultRes;
+import udodog.goGetterServer.model.dto.response.user.UserSignInResponseDto;
 import udodog.goGetterServer.model.entity.User;
 import udodog.goGetterServer.model.entity.UserConnection;
 import udodog.goGetterServer.model.enumclass.UserGrade;
 import udodog.goGetterServer.model.enumclass.oauth.SocialLoginType;
+import udodog.goGetterServer.model.utils.JwtUtil;
 import udodog.goGetterServer.repository.UserConnectionRepository;
 import udodog.goGetterServer.repository.UserRepository;
 import udodog.goGetterServer.repository.querydsl.UserQueryRepository;
 import udodog.goGetterServer.repository.querydsl.oauth.UserConnectionQueryRepository;
 
-import javax.xml.bind.SchemaOutputResolver;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -169,13 +170,19 @@ public class FacebookOauth implements SocialOauth {
 
                     userRepository.save(user);
 
-                    return DefaultRes.response(HttpStatus.OK.value(), "등록성공");
+                    String accessToken = JwtUtil.createAccessToken(user.getId(), user.getGrade());
+                    String refreshToken = JwtUtil.createRefreshToken(user.getId(), user.getGrade());
+                    user.setRefreshToken(refreshToken);
+
+                    return DefaultRes.response(HttpStatus.OK.value(), "등록성공", new UserSignInResponseDto(accessToken, refreshToken, user.getId(), user.getGrade()));
 
                 }else{
                     userConnectionQueryRepository.updatePassword(email, access_token);
                     userQueryRepository.updatePassword(email, access_token);
 
-                    return DefaultRes.response(HttpStatus.OK.value(), "토큰수정완료");
+                    User user = userQueryRepository.findBySocialEmail(email);
+
+                    return DefaultRes.response(HttpStatus.OK.value(), "토큰수정완료", user);
                 }
             }
 
