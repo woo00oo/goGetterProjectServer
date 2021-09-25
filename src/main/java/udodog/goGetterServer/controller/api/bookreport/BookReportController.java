@@ -101,7 +101,9 @@ public class BookReportController {
 
     // 제목 검색
     @GetMapping("/api/bkusers/book-reports/search/{title-search}")
-    public ResponseEntity<EntityModel<DefaultRes<Page<BookreportResponseDto>>>> titleSearch ( @PathVariable("title-search") String title, @PageableDefault (sort = "bookReportId", direction = Sort.Direction.DESC, size = 10) Pageable pageable) {
+    public ResponseEntity<EntityModel<DefaultRes<Page<BookreportResponseDto>>>> titleSearch ( 
+        @PathVariable("title-search") String title, 
+        @PageableDefault (sort = "bookReportId", direction = Sort.Direction.DESC, size = 10) Pageable pageable) {
 
         return new ResponseEntity<>(bookReportPagingConverter.toModel(bookreportService.titleSearch(title, pageable)), HttpStatus.OK);
 
